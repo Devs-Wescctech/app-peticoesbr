@@ -68,7 +68,10 @@ router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      name, type, petition_id, message, subject, status, sent_count, failed_count
+      name, type, petition_id, message, subject, status, 
+      sent_count, success_count, failed_count,
+      total_recipients, api_token, sender_email, sender_name,
+      target_petitions, target_filters, delay_seconds, messages_per_hour, avoid_night_hours
     } = req.body;
     
     const result = await pool.query(
@@ -80,11 +83,24 @@ router.put('/:id', async (req, res) => {
         subject = COALESCE($5, subject),
         status = COALESCE($6, status),
         sent_count = COALESCE($7, sent_count),
-        failed_count = COALESCE($8, failed_count),
+        success_count = COALESCE($8, success_count),
+        failed_count = COALESCE($9, failed_count),
+        total_recipients = COALESCE($10, total_recipients),
+        api_token = COALESCE($11, api_token),
+        sender_email = COALESCE($12, sender_email),
+        sender_name = COALESCE($13, sender_name),
+        target_petitions = COALESCE($14, target_petitions),
+        target_filters = COALESCE($15, target_filters),
+        delay_seconds = COALESCE($16, delay_seconds),
+        messages_per_hour = COALESCE($17, messages_per_hour),
+        avoid_night_hours = COALESCE($18, avoid_night_hours),
         updated_date = CURRENT_TIMESTAMP
-      WHERE id = $9
+      WHERE id = $19
       RETURNING *`,
-      [name, type, petition_id, message, subject, status, sent_count, failed_count, id]
+      [name, type, petition_id, message, subject, status, 
+       sent_count, success_count, failed_count, total_recipients,
+       api_token, sender_email, sender_name, target_petitions, target_filters,
+       delay_seconds, messages_per_hour, avoid_night_hours, id]
     );
     
     if (result.rows.length === 0) {
