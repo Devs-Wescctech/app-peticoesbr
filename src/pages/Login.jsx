@@ -169,32 +169,11 @@ export default function Login() {
                   'Entrar no Sistema'
                 )}
               </Button>
-
-              <div className="mt-6 p-5 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl border border-indigo-100">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center">
-                    <Shield className="w-3.5 h-3.5 text-white" />
-                  </div>
-                  <p className="text-sm font-semibold text-gray-700">Contas de Demonstração</p>
-                </div>
-                <div className="space-y-2.5">
-                  <div className="bg-white/60 backdrop-blur-sm rounded-lg p-3 border border-indigo-100">
-                    <p className="text-xs font-medium text-indigo-900 mb-1">Super Administrador</p>
-                    <p className="text-xs text-gray-600 font-mono">tecnologia@wescctech.com.br</p>
-                    <p className="text-xs text-gray-500 mt-1">Acesso completo ao sistema</p>
-                  </div>
-                  <div className="bg-white/60 backdrop-blur-sm rounded-lg p-3 border border-purple-100">
-                    <p className="text-xs font-medium text-purple-900 mb-1">Usuário Padrão</p>
-                    <p className="text-xs text-gray-600 font-mono">admin@peticoes.com / senha123</p>
-                    <p className="text-xs text-gray-500 mt-1">Acesso ao tenant padrão</p>
-                  </div>
-                </div>
-              </div>
             </form>
           </div>
 
           <p className="text-center text-sm text-gray-500 mt-6">
-            &copy; 2025 PetiçõesBR. Todos os direitos reservados.
+            &copy; 2025 PetiçõesBR. Todos os direitos reservados By Wescctech.
           </p>
         </div>
       </div>
