@@ -94,7 +94,7 @@ export default function Layout({ children, currentPageName }) {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    navigate('/Login');
+    navigate('/login');
   };
 
   if (isPublicPage) {

@@ -44,6 +44,20 @@ The frontend utilizes Radix UI for accessible and customizable components, style
 
 ## Recent Changes
 
+### November 12, 2025 - Navigation Fix & UI Icon Improvements
+- **Routing System Standardization** - Fixed broken navigation throughout the application:
+  - Converted all routes from PascalCase to lowercase (/Dashboard → /dashboard)
+  - Added 19 redirect routes for backward compatibility with old PascalCase URLs
+  - Updated all imperative navigations (navigate calls) to use lowercase paths
+  - Fixed menu navigation in both desktop and mobile sidebars
+- **UI Modernization** - Replaced emojis with Lucide React icons in AdminDashboard:
+  - Dashboard tab: LayoutDashboard icon
+  - Usuários tab: Users icon
+  - Tenants tab: Building2 icon
+  - Atribuições tab: Link2 icon
+  - Improved visual consistency across the entire application
+- **Impact**: All menu links now work correctly, bookmarks preserved via redirects, professional icon system
+
 ### November 12, 2025 - Complete Docker Migration Infrastructure
 - **Docker Configuration** - Complete containerization setup for production deployment:
   - Backend Dockerfile: Node.js 20 Alpine with production optimizations
