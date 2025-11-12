@@ -1,15 +1,19 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 class APIClient {
   async request(method, endpoint, { body, params } = {}) {
-    const url = new URL(`${API_BASE_URL}${endpoint}`);
+    let url = `${API_BASE_URL}${endpoint}`;
     
     if (params) {
+      const searchParams = new URLSearchParams();
       Object.keys(params).forEach(key => {
         if (params[key] !== undefined && params[key] !== null) {
-          url.searchParams.append(key, params[key]);
+          searchParams.append(key, params[key]);
         }
       });
+      if (searchParams.toString()) {
+        url += '?' + searchParams.toString();
+      }
     }
     
     const options = {
@@ -23,7 +27,7 @@ class APIClient {
       options.body = JSON.stringify(body);
     }
     
-    const response = await fetch(url.toString(), options);
+    const response = await fetch(url, options);
     
     if (!response.ok) {
       const error = await response.text();
@@ -90,9 +94,8 @@ export async function uploadFile(file) {
   }
   
   const result = await response.json();
-  const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
   return {
-    url: `${baseUrl}${result.url}`,
+    url: result.url,
     path: result.url,
   };
 }
