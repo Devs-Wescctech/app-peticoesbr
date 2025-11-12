@@ -42,7 +42,8 @@ export default function EmailCampaigns() {
       return allCampaigns.filter(c => c.type === 'email');
     },
     refetchInterval: (data) => {
-      const hasActiveCampaigns = data?.some(c => c.status === 'enviando');
+      if (!Array.isArray(data)) return false;
+      const hasActiveCampaigns = data.some(c => c.status === 'enviando');
       return hasActiveCampaigns ? 3000 : false;
     },
   });

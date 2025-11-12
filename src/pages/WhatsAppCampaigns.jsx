@@ -56,7 +56,8 @@ export default function WhatsAppCampaigns() {
       return allCampaigns.filter(c => c.type === 'whatsapp');
     },
     refetchInterval: (data) => {
-      const hasActiveCampaigns = data?.some(c => c.status === 'enviando');
+      if (!Array.isArray(data)) return false;
+      const hasActiveCampaigns = data.some(c => c.status === 'enviando');
       return hasActiveCampaigns ? 3000 : false;
     },
   });
