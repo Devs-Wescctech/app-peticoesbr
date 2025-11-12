@@ -1,0 +1,74 @@
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'auth.c',
+  line: '530',
+  routine: 'ClientAuthentication'
+}
+🔄 Initializing database...
+🔄 Creating control-plane schema...
+❌ Error initializing database: error: no pg_hba.conf entry for host "172.23.0.2", user "sup_cristian", database "peticoesbr", no encryption
+    at /app/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async initDatabase (file:///app/src/utils/initDatabase.js:17:5)
+    at async startServer (file:///app/src/server.js:53:5) {
+  length: 164,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'auth.c',
+  line: '530',
+  routine: 'ClientAuthentication'
+}
+❌ Failed to start server: error: no pg_hba.conf entry for host "172.23.0.2", user "sup_cristian", database "peticoesbr", no encryption
+    at /app/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async initDatabase (file:///app/src/utils/initDatabase.js:17:5)
+    at async startServer (file:///app/src/server.js:53:5) {
+  length: 164,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'auth.c',
+  line: '530',
+  routine: 'ClientAuthentication'
+}
+🔄 Initializing database...
+🔄 Creating control-plane schema...
+✅ Control-plane schema created
+🔄 Creating tenant schema...
+✅ Tenant schema created
+✅ Database schema initialized successfully
+✅ Server running on port 3001
+📡 API available at http://localhost:3001/api
+📁 Uploads available at http://localhost:3001/uploads
+🔄 Initializing database...
+🔄 Creating control-plane schema...
+✅ Control-plane schema created
+🔄 Creating tenant schema...
+✅ Tenant schema created
+✅ Database schema initialized successfully
+✅ Server running on port 3001
+📡 API available at http://localhost:3001/api
+📁 Uploads available at http://localhost:3001/uploads
