@@ -99,7 +99,7 @@ export default function Login() {
       </div>
 
       <div className="flex-1 flex items-center justify-center p-8 bg-gray-50">
-        <div className="w-full max-w-md animate-fade-in">
+        <div className="w-full max-w-xl animate-fade-in">
           <div className="lg:hidden mb-8 text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 mb-4 shadow-lg">
               <TrendingUp className="w-8 h-8 text-white" />
