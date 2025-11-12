@@ -7,11 +7,11 @@ router.get('/', async (req, res) => {
   try {
     const { type } = req.query;
     
-    let query = 'SELECT * FROM message_templates ORDER BY created_at DESC';
+    let query = 'SELECT * FROM message_templates ORDER BY created_date DESC';
     let params = [];
     
     if (type) {
-      query = 'SELECT * FROM message_templates WHERE type = $1 ORDER BY created_at DESC';
+      query = 'SELECT * FROM message_templates WHERE type = $1 ORDER BY created_date DESC';
       params = [type];
     }
     
@@ -74,7 +74,7 @@ router.put('/:id', async (req, res) => {
         subject = COALESCE($3, subject),
         content = COALESCE($4, content),
         variables = COALESCE($5, variables),
-        updated_at = CURRENT_TIMESTAMP
+        updated_date = CURRENT_TIMESTAMP
       WHERE id = $6
       RETURNING *`,
       [name, type, subject, content, variables, id]

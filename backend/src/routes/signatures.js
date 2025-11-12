@@ -7,11 +7,11 @@ router.get('/', async (req, res) => {
   try {
     const { petition_id } = req.query;
     
-    let query = 'SELECT * FROM signatures ORDER BY created_at DESC';
+    let query = 'SELECT * FROM signatures ORDER BY created_date DESC';
     let params = [];
     
     if (petition_id) {
-      query = 'SELECT * FROM signatures WHERE petition_id = $1 ORDER BY created_at DESC';
+      query = 'SELECT * FROM signatures WHERE petition_id = $1 ORDER BY created_date DESC';
       params = [petition_id];
     }
     

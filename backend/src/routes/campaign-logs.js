@@ -7,11 +7,11 @@ router.get('/', async (req, res) => {
   try {
     const { campaign_id } = req.query;
     
-    let query = 'SELECT * FROM campaign_logs ORDER BY created_at DESC';
+    let query = 'SELECT * FROM campaign_logs ORDER BY created_date DESC';
     let params = [];
     
     if (campaign_id) {
-      query = 'SELECT * FROM campaign_logs WHERE campaign_id = $1 ORDER BY created_at DESC';
+      query = 'SELECT * FROM campaign_logs WHERE campaign_id = $1 ORDER BY created_date DESC';
       params = [campaign_id];
     }
     

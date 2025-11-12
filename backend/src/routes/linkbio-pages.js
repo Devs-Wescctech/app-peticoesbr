@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM linkbio_pages ORDER BY created_at DESC'
+      'SELECT * FROM linkbio_pages ORDER BY created_date DESC'
     );
     res.json(result.rows);
   } catch (error) {
@@ -53,7 +53,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const {
-      title, slug, description, avatar_url, background_color, text_color, bio, links
+      title, slug, description, avatar_url, background_color, status, petition_ids
     } = req.body;
     
     if (!title || !slug) {
@@ -62,15 +62,14 @@ router.post('/', async (req, res) => {
     
     const result = await pool.query(
       `INSERT INTO linkbio_pages (
-        title, slug, description, avatar_url, background_color, text_color, bio, links
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        title, slug, description, avatar_url, background_color, status, petition_ids
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *`,
       [
         title, slug, description, avatar_url,
-        background_color || '#ffffff',
-        text_color || '#000000',
-        bio,
-        JSON.stringify(links || [])
+        background_color || '#6366f1',
+        status || 'rascunho',
+        petition_ids || []
       ]
     );
     
@@ -87,7 +86,7 @@ router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      title, slug, description, avatar_url, background_color, text_color, bio, links
+      title, slug, description, avatar_url, background_color, status, petition_ids
     } = req.body;
     
     const result = await pool.query(
@@ -97,13 +96,12 @@ router.put('/:id', async (req, res) => {
         description = COALESCE($3, description),
         avatar_url = COALESCE($4, avatar_url),
         background_color = COALESCE($5, background_color),
-        text_color = COALESCE($6, text_color),
-        bio = COALESCE($7, bio),
-        links = COALESCE($8, links),
-        updated_at = CURRENT_TIMESTAMP
-      WHERE id = $9
+        status = COALESCE($6, status),
+        petition_ids = COALESCE($7, petition_ids),
+        updated_date = CURRENT_TIMESTAMP
+      WHERE id = $8
       RETURNING *`,
-      [title, slug, description, avatar_url, background_color, text_color, bio, links ? JSON.stringify(links) : null, id]
+      [title, slug, description, avatar_url, background_color, status, petition_ids, id]
     );
     
     if (result.rows.length === 0) {

@@ -7,11 +7,11 @@ router.get('/', async (req, res) => {
   try {
     const { type } = req.query;
     
-    let query = 'SELECT * FROM campaigns ORDER BY created_at DESC';
+    let query = 'SELECT * FROM campaigns ORDER BY created_date DESC';
     let params = [];
     
     if (type) {
-      query = 'SELECT * FROM campaigns WHERE type = $1 ORDER BY created_at DESC';
+      query = 'SELECT * FROM campaigns WHERE type = $1 ORDER BY created_date DESC';
       params = [type];
     }
     
@@ -81,7 +81,7 @@ router.put('/:id', async (req, res) => {
         status = COALESCE($6, status),
         sent_count = COALESCE($7, sent_count),
         error_count = COALESCE($8, error_count),
-        updated_at = CURRENT_TIMESTAMP
+        updated_date = CURRENT_TIMESTAMP
       WHERE id = $9
       RETURNING *`,
       [name, type, petition_id, message, subject, status, sent_count, error_count, id]

@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM linktree_pages ORDER BY created_at DESC'
+      'SELECT * FROM linktree_pages ORDER BY created_date DESC'
     );
     res.json(result.rows);
   } catch (error) {
@@ -98,7 +98,7 @@ router.put('/:id', async (req, res) => {
         background_color = COALESCE($5, background_color),
         text_color = COALESCE($6, text_color),
         links = COALESCE($7, links),
-        updated_at = CURRENT_TIMESTAMP
+        updated_date = CURRENT_TIMESTAMP
       WHERE id = $8
       RETURNING *`,
       [title, slug, description, avatar_url, background_color, text_color, links ? JSON.stringify(links) : null, id]

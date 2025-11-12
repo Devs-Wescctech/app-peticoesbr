@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM petitions ORDER BY created_at DESC'
+      'SELECT * FROM petitions ORDER BY created_date DESC'
     );
     res.json(result.rows);
   } catch (error) {
@@ -107,7 +107,7 @@ router.put('/:id', async (req, res) => {
         collect_state = COALESCE($12, collect_state),
         collect_cpf = COALESCE($13, collect_cpf),
         collect_comment = COALESCE($14, collect_comment),
-        updated_at = CURRENT_TIMESTAMP
+        updated_date = CURRENT_TIMESTAMP
       WHERE id = $15
       RETURNING *`,
       [
