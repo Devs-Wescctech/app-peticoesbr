@@ -109,6 +109,11 @@ The frontend utilizes Radix UI for accessible and customizable components, style
 - Tested and verified tenant isolation: Tenant 2 cannot access Tenant 1 data (returns 404)
 - Security improvements: Removed hardcoded JWT secrets, implemented fail-fast environment variable validation
 
+## Test Credentials (Updated Nov 12, 2025)
+- **Super Admin:** tecnologia@wescctech.com.br / admin123
+- **Tenant 2 User:** user@tenant2.com / demo123
+- **Test User:** teste@teste / teste123
+
 ## External Dependencies
 - **PostgreSQL**: Primary database for all application data, hosted on Replit's Neon integration.
 - **Multer**: Node.js middleware for handling `multipart/form-data`, used for file uploads.
