@@ -15,6 +15,7 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
+  Shield,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -49,6 +50,12 @@ const navigationItems = [
     url: createPageUrl("EmailCampaigns"),
     icon: Mail,
   },
+  {
+    title: "Painel Admin",
+    url: createPageUrl("AdminDashboard"),
+    icon: Shield,
+    superAdminOnly: true,
+  },
 ];
 
 export default function Layout({ children, currentPageName }) {
@@ -64,6 +71,25 @@ export default function Layout({ children, currentPageName }) {
                        currentPageName === 'p' || 
                        currentPageName === 'bio' ||
                        currentPageName === 'Login';
+
+  const getUserInfo = () => {
+    try {
+      const userStr = localStorage.getItem('user');
+      return userStr ? JSON.parse(userStr) : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const user = getUserInfo();
+  const isSuperAdmin = user?.email === 'tecnologia@wescctech.com.br' || user?.isSuperAdmin === true;
+
+  const filteredNavigationItems = navigationItems.filter(item => {
+    if (item.superAdminOnly) {
+      return isSuperAdmin;
+    }
+    return true;
+  });
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -128,7 +154,7 @@ export default function Layout({ children, currentPageName }) {
         </div>
 
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-          {navigationItems.map((item) => {
+          {filteredNavigationItems.map((item) => {
             const isActive = location.pathname === item.url;
             return (
               <Link
@@ -210,7 +236,7 @@ export default function Layout({ children, currentPageName }) {
 
         {mobileMenuOpen && (
           <nav className="bg-white border-t border-gray-200 p-4 space-y-1">
-            {navigationItems.map((item) => {
+            {filteredNavigationItems.map((item) => {
               const isActive = location.pathname === item.url;
               return (
                 <Link
@@ -228,6 +254,13 @@ export default function Layout({ children, currentPageName }) {
                 </Link>
               );
             })}
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200"
+            >
+              <LogOut className="w-5 h-5" />
+              <span className="font-medium text-sm">Sair</span>
+            </button>
           </nav>
         )}
       </div>
