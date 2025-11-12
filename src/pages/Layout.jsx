@@ -59,7 +59,6 @@ export default function Layout({ children, currentPageName }) {
   const secondaryColor = "#a855f7";
 
   const isPublicPage = currentPageName === 'PetitionLanding' || 
-                       currentPageName === 'LinkBioView' ||
                        currentPageName === 'p' || 
                        currentPageName === 'bio';
 

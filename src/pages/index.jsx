@@ -16,7 +16,6 @@ import CreateEmailCampaign from "./CreateEmailCampaign";
 import MessageTemplates from "./MessageTemplates";
 import ImportSignatures from "./ImportSignatures";
 import LinkBioPages from "./LinkBioPages";
-import LinkBioView from "./LinkBioView";
 
 // ⚠️ componentes devem começar com maiúscula senão o React trata como tag HTML
 import PPage from "./p";
@@ -41,7 +40,6 @@ const PAGES = {
   MessageTemplates,
   ImportSignatures,
   LinkBioPages,
-  LinkBioView,
   p: PPage,
   bio: BioPage,
 };
@@ -80,7 +78,6 @@ function PagesContent() {
         <Route path="/MessageTemplates" element={<MessageTemplates />} />
         <Route path="/ImportSignatures" element={<ImportSignatures />} />
         <Route path="/LinkBioPages" element={<LinkBioPages />} />
-        <Route path="/LinkBioView" element={<LinkBioView />} />
         <Route path="/p" element={<PPage />} />
         <Route path="/bio" element={<BioPage />} />
       </Routes>
