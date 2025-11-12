@@ -15,29 +15,57 @@ export default function LinkBioView() {
   const { data: page, isLoading: loadingPage } = useQuery({
     queryKey: ['linkbio-page', slug],
     queryFn: async () => {
+      console.log('Fetching LinkBio page with slug:', slug);
       const pages = await base44.entities.LinkBioPage.list();
-      return pages.find(p => p.slug === slug);
+      console.log('All LinkBio pages:', pages);
+      const found = pages.find(p => p.slug === slug);
+      console.log('Found page:', found);
+      return found;
     },
+    enabled: !!slug,
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 
   const { data: petitions = [], isLoading: loadingPetitions } = useQuery({
     queryKey: ['petitions'],
-    queryFn: () => base44.entities.Petition.list(),
-    staleTime: 30000,
-    refetchOnWindowFocus: false,
+    queryFn: async () => {
+      console.log('Fetching petitions...');
+      const result = await base44.entities.Petition.list();
+      console.log('Petitions loaded:', result.length, result);
+      return result;
+    },
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 
   const { data: signatures = [], isLoading: loadingSignatures } = useQuery({
     queryKey: ['signatures'],
-    queryFn: () => base44.entities.Signature.list(),
-    staleTime: 30000,
-    refetchOnWindowFocus: false,
+    queryFn: async () => {
+      console.log('Fetching signatures...');
+      const result = await base44.entities.Signature.list();
+      console.log('Signatures loaded:', result.length);
+      return result;
+    },
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 
-  if (loadingPage || !page) {
+  if (loadingPage) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600">
         <Loader2 className="w-12 h-12 animate-spin text-white" />
+      </div>
+    );
+  }
+
+  if (!page) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600">
+        <div className="text-center text-white">
+          <p className="text-2xl font-bold mb-4">Página não encontrada</p>
+          <p>Slug buscado: {slug}</p>
+        </div>
       </div>
     );
   }
