@@ -72,6 +72,17 @@ export default function LinkBioView() {
 
   const petitionIds = normalizePetitionIds(page?.petition_ids);
   const pagePetitions = petitions.filter(p => petitionIds.includes(p.id));
+  
+  // Temporary debug logs
+  React.useEffect(() => {
+    console.log('=== LinkBio Debug ===');
+    console.log('Page:', page);
+    console.log('Raw petition_ids:', page?.petition_ids);
+    console.log('Normalized IDs:', petitionIds);
+    console.log('All petitions loaded:', petitions.length, petitions);
+    console.log('Matched petitions:', pagePetitions.length, pagePetitions);
+    console.log('Loading states:', { loadingPage, loadingPetitions, loadingSignatures });
+  }, [page, petitions, pagePetitions, petitionIds, loadingPage, loadingPetitions, loadingSignatures]);
 
   const getSignaturesForPetition = (petitionId) => {
     return signatures.filter(s => s.petition_id === petitionId).length;
@@ -150,6 +161,16 @@ export default function LinkBioView() {
             Compartilhar Página
           </Button>
         </div>
+
+        {/* Debug Info */}
+        <Card className="bg-white/95 backdrop-blur-sm border-none shadow-xl p-4 mb-4">
+          <p className="text-xs text-gray-600 mb-2">DEBUG INFO:</p>
+          <p className="text-xs">Total Petitions Loaded: {petitions.length}</p>
+          <p className="text-xs">Page petition_ids: {JSON.stringify(page?.petition_ids)}</p>
+          <p className="text-xs">Normalized IDs: {JSON.stringify(petitionIds)}</p>
+          <p className="text-xs">Matched: {pagePetitions.length}</p>
+          <p className="text-xs">Loading: {loadingPetitions ? 'Yes' : 'No'}</p>
+        </Card>
 
         {/* Petitions Links */}
         <div className="space-y-6">
