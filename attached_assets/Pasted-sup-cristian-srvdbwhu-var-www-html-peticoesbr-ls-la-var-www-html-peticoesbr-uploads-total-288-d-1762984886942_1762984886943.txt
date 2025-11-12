@@ -1,0 +1,34 @@
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ ls -la /var/www/html/peticoesbr/uploads/
+total 288
+drwxrwsr-x+ 2 sup_cristian webdev   4096 Nov 12 21:59 .
+drwxrwsr-x+ 3 sup_cristian webdev   4096 Nov 12 21:18 ..
+-rw-rw-r--+ 1 sup_cristian webdev   8006 Nov 12 21:50 download--3--1762984257215-405561377.jpg
+-rwxrwxr-x+ 1 sup_cristian webdev  37331 Nov 12 21:18 whatsapp-image-2025-05-22-at-14-56-05-1762981902887-97677593.jpg
+-rw-r--r--+ 1 sup_cristian webdev  37331 Nov 12 21:18 whatsapp-image-2025-05-22-at-14-56-05-1762982065787-758318406.jpg
+-rw-rw-r--+ 1 sup_cristian webdev  37331 Nov 12 21:19 whatsapp-image-2025-05-22-at-14-56-05-1762982391503-350916256.jpg
+-rw-rw-r--+ 1 sup_cristian webdev 146239 Nov 12 21:59 whatsapp-image-2025-11-10-at-09-59-05--1--1762984765922-948900499.jpeg
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ curl http://localhost:3001/uploads/whatsapp-image-2025-05-22-at-14-56-05-1762981902887-97677593.jpg -I
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Access-Control-Allow-Origin: *
+Accept-Ranges: bytes
+Cache-Control: public, max-age=0
+Last-Modified: Wed, 12 Nov 2025 21:18:17 GMT
+ETag: W/"91d3-19a79eefe4a"
+Content-Type: image/jpeg
+Content-Length: 37331
+Date: Wed, 12 Nov 2025 22:01:06 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ # Ver estrutura de pastas do container
+docker exec peticoesbr-backend ls -la /app/uploads/
+total 284
+drwxrwsr-x    2 node     1001          4096 Nov 12 21:59 .
+drwxr-xr-x    1 root     root          4096 Nov 12 21:52 ..
+-rw-rw-r--    1 node     1001          8006 Nov 12 21:50 download--3--1762984257215-405561377.jpg
+-rwxrwxr-x    1 node     1001         37331 Nov 12 21:18 whatsapp-image-2025-05-22-at-14-56-05-1762981902887-97677593.jpg
+-rw-r--r--    1 node     1001         37331 Nov 12 21:18 whatsapp-image-2025-05-22-at-14-56-05-1762982065787-758318406.jpg
+-rw-rw-r--    1 node     1001         37331 Nov 12 21:19 whatsapp-image-2025-05-22-at-14-56-05-1762982391503-350916256.jpg
+-rw-rw-r--    1 node     1001        146239 Nov 12 21:59 whatsapp-image-2025-11-10-at-09-59-05--1--1762984765922-948900499.jpeg
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ 
