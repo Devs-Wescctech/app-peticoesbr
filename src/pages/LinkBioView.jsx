@@ -20,16 +20,18 @@ export default function LinkBioView() {
     },
   });
 
-  const { data: petitions = [] } = useQuery({
+  const { data: petitions = [], isLoading: loadingPetitions } = useQuery({
     queryKey: ['petitions'],
     queryFn: () => base44.entities.Petition.list(),
-    enabled: !!page,
+    staleTime: 30000,
+    refetchOnWindowFocus: false,
   });
 
-  const { data: signatures = [] } = useQuery({
+  const { data: signatures = [], isLoading: loadingSignatures } = useQuery({
     queryKey: ['signatures'],
     queryFn: () => base44.entities.Signature.list(),
-    enabled: !!page,
+    staleTime: 30000,
+    refetchOnWindowFocus: false,
   });
 
   if (loadingPage || !page) {
@@ -151,7 +153,22 @@ export default function LinkBioView() {
 
         {/* Petitions Links */}
         <div className="space-y-6">
-          {pagePetitions.map((petition) => {
+          {loadingPetitions || loadingSignatures ? (
+            <div className="flex justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-white" />
+            </div>
+          ) : pagePetitions.length === 0 ? (
+            <Card className="bg-white/95 backdrop-blur-sm border-none shadow-xl p-8 text-center">
+              <Heart className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+              <p className="text-gray-600 font-medium">
+                Nenhuma petição disponível no momento
+              </p>
+              <p className="text-gray-400 text-sm mt-2">
+                As petições aparecerão aqui quando forem adicionadas à página
+              </p>
+            </Card>
+          ) : (
+            pagePetitions.map((petition) => {
             const signatureCount = getSignaturesForPetition(petition.id);
             const progress = Math.min((signatureCount / petition.goal) * 100, 100);
             const landingUrl = createPageUrl(`p?s=${petition.slug}`);
@@ -254,17 +271,9 @@ export default function LinkBioView() {
                 </Card>
               </Link>
             );
-          })}
+          })
+          )}
         </div>
-
-        {pagePetitions.length === 0 && (
-          <Card className="bg-white/95 backdrop-blur-sm border-none shadow-xl p-12 text-center">
-            <Heart className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-            <p className="text-gray-600 text-lg font-medium">
-              Nenhuma petição disponível nesta página
-            </p>
-          </Card>
-        )}
 
         {/* Footer */}
         <div className="mt-12 text-center">
