@@ -44,6 +44,32 @@ The frontend utilizes Radix UI for accessible and customizable components, style
 
 ## Recent Changes
 
+### November 12, 2025 - Complete Docker Migration Infrastructure
+- **Docker Configuration** - Complete containerization setup for production deployment:
+  - Backend Dockerfile: Node.js 20 Alpine with production optimizations
+  - Frontend Dockerfile: Multi-stage build (Vite build + Nginx runtime)
+  - docker-compose.yml: Development with integrated PostgreSQL
+  - docker-compose.prod.yml: Production with external PostgreSQL 18
+  - .dockerignore: Optimized build contexts for both frontend and backend
+- **GitHub Actions CI/CD** - Automated build and deployment pipeline:
+  - Workflow: `.github/workflows/docker-publish.yml`
+  - Auto-build on push to main/master/production branches
+  - Automatic push to GitHub Container Registry (GHCR)
+  - Multi-architecture support (amd64, arm64)
+  - Tag strategy: latest, branch name, semver, SHA
+- **Database Migration Tools**:
+  - `scripts/export-database.sh`: Complete PostgreSQL export (schema + data)
+  - `scripts/import-database.sh`: Database restore with validation
+  - Current backup created: `database-backup/peticoesbr_backup_20251112_183833.sql` (50KB)
+  - Compressed backup: `database-backup/peticoesbr_backup_20251112_183849.sql.gz` (9KB)
+- **Documentation**:
+  - DEPLOY.md: Complete step-by-step production deployment guide
+  - README.md: Updated with Docker deployment instructions
+  - MIGRATION_SUMMARY.md: Migration checklist and overview
+  - .env.example: Environment variable templates for both frontend and backend
+- **Production Architecture**: Docker containers + external PostgreSQL 18 + GHCR images + Nginx proxy
+- **Health Checks**: Configured for both backend (/api/health) and frontend containers
+
 ### November 12, 2025 - JWT Authentication Fix in Frontend API Client
 - **Critical Bug Fix**: Updated `src/api/client.js` to include JWT token in all API requests
 - **Issue**: APIClient was not sending Authorization header, causing 403 errors for all protected endpoints
