@@ -23,15 +23,15 @@ export default function LinkBioView() {
   const { data: petitions = [] } = useQuery({
     queryKey: ['petitions'],
     queryFn: () => base44.entities.Petition.list(),
-    initialData: [],
-    enabled: !!page,
+    staleTime: 30000,
+    refetchOnWindowFocus: false,
   });
 
   const { data: signatures = [] } = useQuery({
     queryKey: ['signatures'],
     queryFn: () => base44.entities.Signature.list(),
-    initialData: [],
-    enabled: !!page,
+    staleTime: 30000,
+    refetchOnWindowFocus: false,
   });
 
   if (loadingPage || !page) {
@@ -42,7 +42,46 @@ export default function LinkBioView() {
     );
   }
 
-  const pagePetitions = petitions.filter(p => page.petition_ids?.includes(p.id));
+  // Normalize petition_ids to always be an array
+  const normalizePetitionIds = (ids) => {
+    if (!ids) return [];
+    if (Array.isArray(ids)) return ids;
+    
+    if (typeof ids === 'string') {
+      // Handle PostgreSQL TEXT[] format: {uuid1,uuid2}
+      if (ids.startsWith('{') && ids.endsWith('}')) {
+        return ids
+          .slice(1, -1)
+          .split(',')
+          .map(id => id.trim().replace(/^["']|["']$/g, ''))
+          .filter(id => id.length > 0);
+      }
+      
+      // Handle JSON string: ["uuid1","uuid2"]
+      try {
+        const parsed = JSON.parse(ids);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        // Single ID as string
+        return ids.trim() ? [ids.trim()] : [];
+      }
+    }
+    
+    return [];
+  };
+
+  const petitionIds = normalizePetitionIds(page.petition_ids);
+  const pagePetitions = petitions.filter(p => petitionIds.includes(p.id));
+  
+  // Debug
+  console.log('🔍 Bio Debug:', {
+    'page.petition_ids': page.petition_ids,
+    'type': typeof page.petition_ids,
+    'isArray': Array.isArray(page.petition_ids),
+    'normalized': petitionIds,
+    'total petitions': petitions.length,
+    'matched': pagePetitions.length
+  });
 
   const getSignaturesForPetition = (petitionId) => {
     return signatures.filter(s => s.petition_id === petitionId).length;
