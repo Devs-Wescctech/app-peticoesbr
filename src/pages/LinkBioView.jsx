@@ -72,17 +72,6 @@ export default function LinkBioView() {
 
   const petitionIds = normalizePetitionIds(page?.petition_ids);
   const pagePetitions = petitions.filter(p => petitionIds.includes(p.id));
-  
-  // Temporary debug logs
-  React.useEffect(() => {
-    console.log('=== LinkBio Debug ===');
-    console.log('Page:', page);
-    console.log('Raw petition_ids:', page?.petition_ids);
-    console.log('Normalized IDs:', petitionIds);
-    console.log('All petitions loaded:', petitions.length, petitions);
-    console.log('Matched petitions:', pagePetitions.length, pagePetitions);
-    console.log('Loading states:', { loadingPage, loadingPetitions, loadingSignatures });
-  }, [page, petitions, pagePetitions, petitionIds, loadingPage, loadingPetitions, loadingSignatures]);
 
   const getSignaturesForPetition = (petitionId) => {
     return signatures.filter(s => s.petition_id === petitionId).length;
