@@ -23,6 +23,7 @@ The frontend utilizes Radix UI for accessible and customizable components, style
 ### Technical Implementations & Feature Specifications
 - **Multi-Tenancy**: Central `control-plane` schema manages tenants and authentication. All data tables include `tenant_id` column for row-level tenant isolation.
 - **Tenant Data Isolation** (Implemented Nov 12, 2025): All API routes enforce tenant scoping via `authenticate` and `requireTenant` middleware. Every CRUD operation filters data by `tenant_id` from JWT token. Signatures validate tenant ownership via JOIN with petitions table. Cross-tenant access returns 404.
+- **Super Admin System** (Implemented Nov 12, 2025): Dedicated super administrator with system-wide privileges via `is_super_admin` boolean field in `auth_users` table. Super admin account (tecnologia@wescctech.com.br) has elevated access to manage all tenants and users. JWT includes `isSuperAdmin` flag for authorization. Protected routes use `requireSuperAdmin` middleware. Admin panel at `/AdminDashboard` with real-time statistics, tenant management (activate/suspend/delete), and user overview.
 - **Authentication**: JWT-based authentication with refresh token rotation, supporting email/password and ready for Google OAuth. JWT tokens include `tenantId` claim extracted from `tenant_users` table. Includes role-based access control (owner, admin, member) per tenant. Environment variables `JWT_SECRET` and `JWT_REFRESH_SECRET` are required at startup (fail-fast validation).
 - **Petition Management**: CRUD operations for petitions with tenant scoping, including goal tracking, slug generation, and signature collection. All petitions are isolated by tenant_id.
 - **Campaign Tools**: Creation and management of Email and WhatsApp campaigns with tenant scoping, real-time progress updates and message templates. All campaigns isolated by tenant_id.
@@ -42,6 +43,25 @@ The frontend utilizes Radix UI for accessible and customizable components, style
 - **Replit-Optimized Deployment**: Configured for dual workflows (backend on 3001, frontend on 5000) and uses `0.0.0.0` host and `allowedHosts: true` for Replit's dynamic proxy.
 
 ## Recent Changes
+
+### November 12, 2025 - Super Admin System Implementation
+- Added `is_super_admin` boolean field to `auth_users` table
+- Created super admin account: tecnologia@wescctech.com.br with system-wide privileges
+- Implemented `requireSuperAdmin` middleware for protecting admin-only routes
+- Built comprehensive admin API at `/api/admin/*`:
+  - `GET /api/admin/stats`: System-wide statistics (tenants, users, petitions, signatures, campaigns)
+  - `GET /api/admin/tenants`: List all tenants with user/petition counts
+  - `PUT /api/admin/tenants/:id/status`: Update tenant status (active/suspended/cancelled)
+  - `DELETE /api/admin/tenants/:id`: Delete tenant and all associated data
+  - `GET /api/admin/users`: List all users with tenant associations
+- Created AdminDashboard frontend component (`/AdminDashboard`) with:
+  - Real-time system statistics dashboard
+  - Tenant management table with activate/suspend/delete actions
+  - User overview with super admin badges and verification status
+  - Responsive design with Radix UI components
+- Updated JWT authentication to include `isSuperAdmin` flag in token claims
+- Fixed auth.js to fetch `is_super_admin` field during login
+- Tested and verified super admin access control: Only tecnologia@wescctech.com.br can access admin routes
 
 ### November 12, 2025 - Tenant Data Isolation Implementation
 - Added `tenant_id` columns to all data tables (petitions, campaigns, message_templates, linkbio_pages, linktree_pages, campaign_logs)
