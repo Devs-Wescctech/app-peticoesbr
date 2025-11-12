@@ -460,7 +460,7 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
               {/* Stats Cards with improved design */}
               <Card className="group shadow-lg border-0 bg-white hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-semibold text-gray-600">Tenants</CardTitle>
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -479,7 +479,7 @@ export default function AdminDashboard() {
               </Card>
 
               <Card className="group shadow-lg border-0 bg-white hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-semibold text-gray-600">Usuários</CardTitle>
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -498,7 +498,7 @@ export default function AdminDashboard() {
               </Card>
 
               <Card className="group shadow-lg border-0 bg-white hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-600/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-semibold text-gray-600">Petições</CardTitle>
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -517,7 +517,7 @@ export default function AdminDashboard() {
               </Card>
 
               <Card className="group shadow-lg border-0 bg-white hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-amber-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-amber-600/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-semibold text-gray-600">Assinaturas</CardTitle>
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -536,7 +536,7 @@ export default function AdminDashboard() {
               </Card>
 
               <Card className="group shadow-lg border-0 bg-white hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-rose-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-rose-600/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-semibold text-gray-600">Campanhas</CardTitle>
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -557,7 +557,7 @@ export default function AdminDashboard() {
 
             {/* System Status Card */}
             <Card className="shadow-xl border-0 bg-white overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-green-500/5"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-green-500/5 pointer-events-none"></div>
               <CardHeader className="relative">
                 <CardTitle className="flex items-center gap-3 text-xl">
                   <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center">
@@ -573,7 +573,7 @@ export default function AdminDashboard() {
                     <div className="flex items-center gap-4">
                       <div className="relative">
                         <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
-                        <div className="absolute inset-0 w-3 h-3 rounded-full bg-emerald-500 animate-ping"></div>
+                        <div className="absolute inset-0 w-3 h-3 rounded-full bg-emerald-500 animate-ping pointer-events-none"></div>
                       </div>
                       <span className="font-semibold text-gray-900 text-lg">Sistema Operacional</span>
                     </div>
