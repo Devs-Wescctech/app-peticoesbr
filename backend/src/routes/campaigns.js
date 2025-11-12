@@ -119,12 +119,14 @@ router.put('/:id', authenticate, requireTenant, async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
+    const { tenantId } = req.user;
+    
     const result = await pool.query(
-      'DELETE FROM campaigns WHERE id = $1 RETURNING *',
-      [id]
+      'DELETE FROM campaigns WHERE id = $1 AND tenant_id = $2 RETURNING *',
+      [id, tenantId]
     );
     
     if (result.rows.length === 0) {

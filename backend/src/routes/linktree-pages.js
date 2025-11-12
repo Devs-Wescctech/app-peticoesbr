@@ -1,12 +1,15 @@
 import express from 'express';
 import pool from '../config/database.js';
+import { authenticate, requireTenant } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', authenticate, requireTenant, async (req, res) => {
   try {
+    const { tenantId } = req.user;
     const result = await pool.query(
-      'SELECT * FROM linktree_pages ORDER BY created_date DESC'
+      'SELECT * FROM linktree_pages WHERE tenant_id = $1 ORDER BY created_date DESC',
+      [tenantId]
     );
     res.json(result.rows);
   } catch (error) {
@@ -32,12 +35,14 @@ router.get('/slug/:slug', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
+    const { tenantId } = req.user;
+    
     const result = await pool.query(
-      'SELECT * FROM linktree_pages WHERE id = $1',
-      [id]
+      'SELECT * FROM linktree_pages WHERE id = $1 AND tenant_id = $2',
+      [id, tenantId]
     );
     
     if (result.rows.length === 0) {
@@ -50,8 +55,9 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', authenticate, requireTenant, async (req, res) => {
   try {
+    const { tenantId } = req.user;
     const {
       title, slug, description, avatar_url, background_color, text_color, links
     } = req.body;
@@ -62,14 +68,15 @@ router.post('/', async (req, res) => {
     
     const result = await pool.query(
       `INSERT INTO linktree_pages (
-        title, slug, description, avatar_url, background_color, text_color, links
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+        title, slug, description, avatar_url, background_color, text_color, links, tenant_id
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *`,
       [
         title, slug, description, avatar_url,
         background_color || '#ffffff',
         text_color || '#000000',
-        JSON.stringify(links || [])
+        JSON.stringify(links || []),
+        tenantId
       ]
     );
     
@@ -82,9 +89,10 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
+    const { tenantId } = req.user;
     const {
       title, slug, description, avatar_url, background_color, text_color, links
     } = req.body;
@@ -99,9 +107,9 @@ router.put('/:id', async (req, res) => {
         text_color = COALESCE($6, text_color),
         links = COALESCE($7, links),
         updated_date = CURRENT_TIMESTAMP
-      WHERE id = $8
+      WHERE id = $8 AND tenant_id = $9
       RETURNING *`,
-      [title, slug, description, avatar_url, background_color, text_color, links ? JSON.stringify(links) : null, id]
+      [title, slug, description, avatar_url, background_color, text_color, links ? JSON.stringify(links) : null, id, tenantId]
     );
     
     if (result.rows.length === 0) {
@@ -114,12 +122,14 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
+    const { tenantId } = req.user;
+    
     const result = await pool.query(
-      'DELETE FROM linktree_pages WHERE id = $1 RETURNING *',
-      [id]
+      'DELETE FROM linktree_pages WHERE id = $1 AND tenant_id = $2 RETURNING *',
+      [id, tenantId]
     );
     
     if (result.rows.length === 0) {

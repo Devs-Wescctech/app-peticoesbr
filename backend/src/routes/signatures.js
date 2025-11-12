@@ -1,18 +1,30 @@
 import express from 'express';
 import pool from '../config/database.js';
+import { authenticate, requireTenant } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', authenticate, requireTenant, async (req, res) => {
   try {
+    const { tenantId } = req.user;
     const { petition_id } = req.query;
     
-    let query = 'SELECT * FROM signatures ORDER BY created_date DESC';
-    let params = [];
+    let query = `
+      SELECT s.* FROM signatures s
+      INNER JOIN petitions p ON s.petition_id = p.id
+      WHERE p.tenant_id = $1
+      ORDER BY s.created_date DESC
+    `;
+    let params = [tenantId];
     
     if (petition_id) {
-      query = 'SELECT * FROM signatures WHERE petition_id = $1 ORDER BY created_date DESC';
-      params = [petition_id];
+      query = `
+        SELECT s.* FROM signatures s
+        INNER JOIN petitions p ON s.petition_id = p.id
+        WHERE p.tenant_id = $1 AND s.petition_id = $2
+        ORDER BY s.created_date DESC
+      `;
+      params = [tenantId, petition_id];
     }
     
     const result = await pool.query(query, params);
@@ -22,12 +34,16 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
+    const { tenantId } = req.user;
+    
     const result = await pool.query(
-      'SELECT * FROM signatures WHERE id = $1',
-      [id]
+      `SELECT s.* FROM signatures s
+       INNER JOIN petitions p ON s.petition_id = p.id
+       WHERE s.id = $1 AND p.tenant_id = $2`,
+      [id, tenantId]
     );
     
     if (result.rows.length === 0) {
@@ -40,8 +56,9 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', authenticate, requireTenant, async (req, res) => {
   try {
+    const { tenantId } = req.user;
     const {
       petition_id, name, email, phone, city, state, cpf, comment
     } = req.body;
@@ -50,6 +67,15 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ 
         error: 'petition_id, name e email são obrigatórios' 
       });
+    }
+    
+    const petitionCheck = await pool.query(
+      'SELECT id FROM petitions WHERE id = $1 AND tenant_id = $2',
+      [petition_id, tenantId]
+    );
+    
+    if (petitionCheck.rows.length === 0) {
+      return res.status(404).json({ error: 'Petition not found' });
     }
     
     const result = await pool.query(
@@ -66,12 +92,17 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
+    const { tenantId } = req.user;
+    
     const result = await pool.query(
-      'DELETE FROM signatures WHERE id = $1 RETURNING *',
-      [id]
+      `DELETE FROM signatures s
+       USING petitions p
+       WHERE s.id = $1 AND s.petition_id = p.id AND p.tenant_id = $2
+       RETURNING s.*`,
+      [id, tenantId]
     );
     
     if (result.rows.length === 0) {

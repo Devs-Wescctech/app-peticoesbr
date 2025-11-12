@@ -1,12 +1,15 @@
 import express from 'express';
 import pool from '../config/database.js';
+import { authenticate, requireTenant } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', authenticate, requireTenant, async (req, res) => {
   try {
+    const { tenantId } = req.user;
     const result = await pool.query(
-      'SELECT * FROM linkbio_pages ORDER BY created_date DESC'
+      'SELECT * FROM linkbio_pages WHERE tenant_id = $1 ORDER BY created_date DESC',
+      [tenantId]
     );
     res.json(result.rows);
   } catch (error) {
@@ -32,12 +35,14 @@ router.get('/slug/:slug', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
+    const { tenantId } = req.user;
+    
     const result = await pool.query(
-      'SELECT * FROM linkbio_pages WHERE id = $1',
-      [id]
+      'SELECT * FROM linkbio_pages WHERE id = $1 AND tenant_id = $2',
+      [id, tenantId]
     );
     
     if (result.rows.length === 0) {
@@ -50,8 +55,9 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', authenticate, requireTenant, async (req, res) => {
   try {
+    const { tenantId } = req.user;
     const {
       title, slug, description, avatar_url, background_color, status, petition_ids
     } = req.body;
@@ -62,14 +68,15 @@ router.post('/', async (req, res) => {
     
     const result = await pool.query(
       `INSERT INTO linkbio_pages (
-        title, slug, description, avatar_url, background_color, status, petition_ids
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+        title, slug, description, avatar_url, background_color, status, petition_ids, tenant_id
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *`,
       [
         title, slug, description, avatar_url,
         background_color || '#6366f1',
         status || 'rascunho',
-        petition_ids || []
+        petition_ids || [],
+        tenantId
       ]
     );
     
@@ -82,9 +89,10 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
+    const { tenantId } = req.user;
     const {
       title, slug, description, avatar_url, background_color, status, petition_ids
     } = req.body;
@@ -99,9 +107,9 @@ router.put('/:id', async (req, res) => {
         status = COALESCE($6, status),
         petition_ids = COALESCE($7, petition_ids),
         updated_date = CURRENT_TIMESTAMP
-      WHERE id = $8
+      WHERE id = $8 AND tenant_id = $9
       RETURNING *`,
-      [title, slug, description, avatar_url, background_color, status, petition_ids, id]
+      [title, slug, description, avatar_url, background_color, status, petition_ids, id, tenantId]
     );
     
     if (result.rows.length === 0) {
@@ -114,12 +122,14 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
+    const { tenantId } = req.user;
+    
     const result = await pool.query(
-      'DELETE FROM linkbio_pages WHERE id = $1 RETURNING *',
-      [id]
+      'DELETE FROM linkbio_pages WHERE id = $1 AND tenant_id = $2 RETURNING *',
+      [id, tenantId]
     );
     
     if (result.rows.length === 0) {
