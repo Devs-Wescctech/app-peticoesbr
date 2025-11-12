@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS petitions (
     collect_cpf BOOLEAN DEFAULT false,
     collect_comment BOOLEAN DEFAULT true,
     views_count INTEGER DEFAULT 0,
-    created_by VARCHAR(255),
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
     created_date TIMESTAMP DEFAULT NOW(),
     updated_date TIMESTAMP DEFAULT NOW()
 );
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS signatures (
     state VARCHAR(50),
     cpf VARCHAR(14),
     comment TEXT,
-    created_by VARCHAR(255),
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
     created_date TIMESTAMP DEFAULT NOW(),
     updated_date TIMESTAMP DEFAULT NOW(),
     UNIQUE(petition_id, email)
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS campaigns (
     delay_seconds INTEGER DEFAULT 3 CHECK (delay_seconds >= 1),
     messages_per_hour INTEGER DEFAULT 20 CHECK (messages_per_hour > 0),
     avoid_night_hours BOOLEAN DEFAULT true,
-    created_by VARCHAR(255),
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
     created_date TIMESTAMP DEFAULT NOW(),
     updated_date TIMESTAMP DEFAULT NOW()
 );
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS campaign_logs (
     response_status VARCHAR(10),
     response_body TEXT,
     error_message TEXT,
-    created_by VARCHAR(255),
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
     created_date TIMESTAMP DEFAULT NOW(),
     updated_date TIMESTAMP DEFAULT NOW()
 );
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS linkbio_pages (
     status VARCHAR(50) DEFAULT 'rascunho' CHECK (status IN ('rascunho', 'publicada')),
     petition_ids TEXT[],
     views_count INTEGER DEFAULT 0,
-    created_by VARCHAR(255),
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
     created_date TIMESTAMP DEFAULT NOW(),
     updated_date TIMESTAMP DEFAULT NOW()
 );
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS linktree_pages (
     links JSONB DEFAULT '[]',
     status VARCHAR(50) DEFAULT 'rascunho' CHECK (status IN ('rascunho', 'publicada')),
     views_count INTEGER DEFAULT 0,
-    created_by VARCHAR(255),
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
     created_date TIMESTAMP DEFAULT NOW(),
     updated_date TIMESTAMP DEFAULT NOW()
 );
@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS message_templates (
     content TEXT NOT NULL,
     is_default BOOLEAN DEFAULT false,
     thumbnail_url TEXT,
-    created_by VARCHAR(255),
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
     created_date TIMESTAMP DEFAULT NOW(),
     updated_date TIMESTAMP DEFAULT NOW()
 );

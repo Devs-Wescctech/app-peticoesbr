@@ -66,6 +66,7 @@ const createEntity = (endpoint) => ({
   delete: (id) => apiClient.delete(`${endpoint}/${id}`),
 });
 
+export const User = createEntity('/users');
 export const Petition = createEntity('/petitions');
 export const Signature = createEntity('/signatures');
 export const Campaign = createEntity('/campaigns');
