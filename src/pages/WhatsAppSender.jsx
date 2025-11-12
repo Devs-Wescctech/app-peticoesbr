@@ -7,8 +7,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { MessageCircle, Send, Loader2, CheckCircle, AlertCircle, Users, X } from "lucide-react";
+import { MessageCircle, Send, Loader2, CheckCircle, AlertCircle, Users, X, PartyPopper } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function WhatsAppSender() {
   const [accessToken, setAccessToken] = useState("");
@@ -18,6 +25,7 @@ export default function WhatsAppSender() {
   const [sendProgress, setSendProgress] = useState(0);
   const [sendResults, setSendResults] = useState({ success: 0, failed: 0, total: 0 });
   const [errors, setErrors] = useState([]);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   const { data: petitions = [] } = useQuery({
     queryKey: ['petitions'],
@@ -120,6 +128,17 @@ export default function WhatsAppSender() {
     }
 
     setIsSending(false);
+    setShowSuccessDialog(true);
+  };
+
+  const handleResetCampaign = () => {
+    setShowSuccessDialog(false);
+    setSendProgress(0);
+    setSendResults({ success: 0, failed: 0, total: 0 });
+    setErrors([]);
+    setAccessToken("");
+    setMessage("");
+    setSelectedPetition("");
   };
 
   return (
@@ -345,6 +364,64 @@ export default function WhatsAppSender() {
           </div>
         </div>
       </div>
+
+      {/* Success Dialog */}
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                <PartyPopper className="w-8 h-8 text-white" />
+              </div>
+            </div>
+            <DialogTitle className="text-center text-2xl">
+              Campanha Concluída!
+            </DialogTitle>
+            <DialogDescription className="text-center space-y-4">
+              <p className="text-base mt-4">
+                Sua campanha de WhatsApp foi enviada com sucesso.
+              </p>
+              
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-4 space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-gray-700">✅ Enviados com sucesso:</span>
+                  <span className="text-lg font-bold text-green-600">{sendResults.success}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-gray-700">❌ Falhas no envio:</span>
+                  <span className="text-lg font-bold text-red-600">{sendResults.failed}</span>
+                </div>
+                <div className="flex justify-between items-center pt-2 border-t border-green-200">
+                  <span className="text-sm font-medium text-gray-700">📊 Total processado:</span>
+                  <span className="text-lg font-bold text-gray-900">{sendResults.total}</span>
+                </div>
+              </div>
+
+              {errors.length > 0 && (
+                <p className="text-sm text-amber-600">
+                  ⚠️ Alguns envios falharam. Verifique a lista de erros acima para mais detalhes.
+                </p>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="flex gap-3 mt-6">
+            <Button
+              onClick={() => setShowSuccessDialog(false)}
+              variant="outline"
+              className="flex-1"
+            >
+              Fechar
+            </Button>
+            <Button
+              onClick={handleResetCampaign}
+              className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
+            >
+              Nova Campanha
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
