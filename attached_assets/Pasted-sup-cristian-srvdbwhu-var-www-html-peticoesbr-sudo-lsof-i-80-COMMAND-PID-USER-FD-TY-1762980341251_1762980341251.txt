@@ -1,0 +1,45 @@
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ sudo lsof -i :80
+
+COMMAND     PID     USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
+nginx     63931     root    6u  IPv4 41891064      0t0  TCP *:http (LISTEN)
+nginx     63931     root    7u  IPv6 41891065      0t0  TCP *:http (LISTEN)
+nginx   3325030 www-data    6u  IPv4 41891064      0t0  TCP *:http (LISTEN)
+nginx   3325030 www-data    7u  IPv6 41891065      0t0  TCP *:http (LISTEN)
+nginx   3325031 www-data    6u  IPv4 41891064      0t0  TCP *:http (LISTEN)
+nginx   3325031 www-data    7u  IPv6 41891065      0t0  TCP *:http (LISTEN)
+nginx   3325032 www-data    6u  IPv4 41891064      0t0  TCP *:http (LISTEN)
+nginx   3325032 www-data    7u  IPv6 41891065      0t0  TCP *:http (LISTEN)
+nginx   3325033 www-data    6u  IPv4 41891064      0t0  TCP *:http (LISTEN)
+nginx   3325033 www-data    7u  IPv6 41891065      0t0  TCP *:http (LISTEN)
+nginx   3325034 www-data    6u  IPv4 41891064      0t0  TCP *:http (LISTEN)
+nginx   3325034 www-data    7u  IPv6 41891065      0t0  TCP *:http (LISTEN)
+nginx   3325035 www-data    6u  IPv4 41891064      0t0  TCP *:http (LISTEN)
+nginx   3325035 www-data    7u  IPv6 41891065      0t0  TCP *:http (LISTEN)
+nginx   3325036 www-data    6u  IPv4 41891064      0t0  TCP *:http (LISTEN)
+nginx   3325036 www-data    7u  IPv6 41891065      0t0  TCP *:http (LISTEN)
+nginx   3325037 www-data    6u  IPv4 41891064      0t0  TCP *:http (LISTEN)
+nginx   3325037 www-data    7u  IPv6 41891065      0t0  TCP *:http (LISTEN)
+nginx   3325038 www-data    6u  IPv4 41891064      0t0  TCP *:http (LISTEN)
+nginx   3325038 www-data    7u  IPv6 41891065      0t0  TCP *:http (LISTEN)
+nginx   3325039 www-data    6u  IPv4 41891064      0t0  TCP *:http (LISTEN)
+nginx   3325039 www-data    7u  IPv6 41891065      0t0  TCP *:http (LISTEN)
+nginx   3325040 www-data    6u  IPv4 41891064      0t0  TCP *:http (LISTEN)
+nginx   3325040 www-data    7u  IPv6 41891065      0t0  TCP *:http (LISTEN)
+nginx   3325041 www-data    6u  IPv4 41891064      0t0  TCP *:http (LISTEN)
+nginx   3325041 www-data    7u  IPv6 41891065      0t0  TCP *:http (LISTEN)
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ sudo netstat -tulpn | grep :80
+sudo: netstat: command not found
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ cd /var/www/html/peticoesbr
+nano docker-compose.prod.yml
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ docker compose -f docker-compose.prod.yml down
+[+] Running 3/3
+ ✔ Container peticoesbr-frontend          Removed                                                                                                                                                                                       0.0s 
+ ✔ Container peticoesbr-backend           Removed                                                                                                                                                                                       0.0s 
+ ✔ Network peticoesbr_peticoesbr-network  Removed                                                                                                                                                                                       0.3s 
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ docker compose -f docker-compose.prod.yml up -d
+[+] Running 2/3
+ ✔ Network peticoesbr_peticoesbr-network  Created                                                                                                                                                                                       0.0s 
+ ✔ Container peticoesbr-backend           Started                                                                                                                                                                                       0.2s 
+ ⠴ Container peticoesbr-frontend          Starting                                                                                                                                                                                      0.6s 
+Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint peticoesbr-frontend (7f872d56f137437ed114495d348621afb2a706723db8557b3e3231f6514116ab): failed to bind host port for 0.0.0.0:80:172.23.0.3:80/tcp: address already in use
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ docker ps
