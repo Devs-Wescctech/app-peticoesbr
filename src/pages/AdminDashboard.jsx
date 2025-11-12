@@ -8,12 +8,13 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import ConfirmDialog from '../components/ConfirmDialog';
 import { toast } from 'sonner';
 import { 
   Users, Building2, FileText, PenLine, Mail, 
   AlertCircle, CheckCircle, XCircle, Shield,
   Plus, Edit, Trash2, UserPlus, Link2, Loader2,
-  TrendingUp, Activity, LayoutDashboard
+  TrendingUp, Activity, LayoutDashboard, Crown, Settings
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -30,6 +31,11 @@ export default function AdminDashboard() {
   const [userDialog, setUserDialog] = useState({ open: false, mode: 'create', data: {} });
   const [tenantDialog, setTenantDialog] = useState({ open: false, mode: 'create', data: {} });
   const [assignDialog, setAssignDialog] = useState({ open: false, data: {} });
+  
+  // Confirmation dialogs state
+  const [deleteUserDialog, setDeleteUserDialog] = useState({ open: false, target: null, loading: false });
+  const [deleteTenantDialog, setDeleteTenantDialog] = useState({ open: false, target: null, loading: false });
+  const [removeAssignmentDialog, setRemoveAssignmentDialog] = useState({ open: false, target: null, loading: false });
 
   useEffect(() => {
     loadAdminData();
@@ -167,12 +173,15 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleDeleteUser = async (userId, userName) => {
-    if (!confirm(`Tem certeza que deseja excluir o usuário "${userName}"?`)) return;
+  const handleDeleteUser = (userId, userName) => {
+    setDeleteUserDialog({ open: true, target: { id: userId, name: userName } });
+  };
 
+  const confirmDeleteUser = async () => {
     try {
+      setDeleteUserDialog(prev => ({ ...prev, loading: true }));
       const token = localStorage.getItem('token');
-      const res = await fetch(`/api/admin/users/${userId}`, {
+      const res = await fetch(`/api/admin/users/${deleteUserDialog.target.id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -183,9 +192,11 @@ export default function AdminDashboard() {
       }
 
       toast.success('Usuário excluído com sucesso!');
+      setDeleteUserDialog({ open: false, target: null, loading: false });
       await loadAdminData(true);
     } catch (err) {
       toast.error(err.message);
+      setDeleteUserDialog(prev => ({ ...prev, loading: false }));
     }
   };
 

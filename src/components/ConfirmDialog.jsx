@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Loader2 } from "lucide-react";
 
 export default function ConfirmDialog({ 
   isOpen, 
@@ -18,10 +18,11 @@ export default function ConfirmDialog({
   description = "Tem certeza que deseja continuar?",
   confirmText = "Confirmar",
   cancelText = "Cancelar",
-  variant = "destructive"
+  variant = "destructive",
+  loading = false
 }) {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => !loading && onClose(open)}>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <div className="flex items-center gap-3 mb-2">
@@ -47,17 +48,17 @@ export default function ConfirmDialog({
             variant="outline"
             onClick={onClose}
             className="font-semibold"
+            disabled={loading}
           >
             {cancelText}
           </Button>
           <Button
             variant={variant}
-            onClick={() => {
-              onConfirm();
-              onClose();
-            }}
+            onClick={onConfirm}
             className="font-semibold"
+            disabled={loading}
           >
+            {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
             {confirmText}
           </Button>
         </DialogFooter>
