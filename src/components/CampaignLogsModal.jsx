@@ -42,7 +42,6 @@ export default function CampaignLogsModal({ campaignId, isOpen, onClose, campaig
       return allLogs.filter(log => log.campaign_id === campaignId);
     },
     enabled: isOpen && !!campaignId,
-    initialData: [],
   });
 
   const successLogs = logs.filter(l => l.status === 'success');

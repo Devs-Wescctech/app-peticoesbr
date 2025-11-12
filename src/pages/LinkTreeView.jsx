@@ -24,14 +24,12 @@ export default function LinkTreeView() {
   const { data: petitions = [] } = useQuery({
     queryKey: ['petitions'],
     queryFn: () => base44.entities.Petition.list(),
-    initialData: [],
     enabled: !!page,
   });
 
   const { data: signatures = [] } = useQuery({
     queryKey: ['signatures'],
     queryFn: () => base44.entities.Signature.list(),
-    initialData: [],
     enabled: !!page,
   });
 

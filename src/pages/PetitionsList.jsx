@@ -33,7 +33,7 @@ export default function PetitionsList() {
     isLoading: isLoadingPetitions,
     error: petitionsError,
   } = useQuery({
-    queryKey: ["petitions-publicadas"],
+    queryKey: ["petitions"],
     queryFn: () => base44.entities.Petition.list(),
   });
 
@@ -42,7 +42,7 @@ export default function PetitionsList() {
     isLoading: isLoadingSignatures,
     error: signaturesError,
   } = useQuery({
-    queryKey: ["signatures-minimal"],
+    queryKey: ["signatures"],
     queryFn: () => base44.entities.Signature.list(),
   });
 

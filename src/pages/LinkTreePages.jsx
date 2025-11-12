@@ -60,19 +60,16 @@ export default function LinkTreePages() {
   const { data: pages = [] } = useQuery({
     queryKey: ['linktree-pages'],
     queryFn: () => base44.entities.LinkTreePage.list('-created_date'),
-    initialData: [],
   });
 
   const { data: petitions = [] } = useQuery({
     queryKey: ['petitions'],
     queryFn: () => base44.entities.Petition.list(),
-    initialData: [],
   });
 
   const { data: signatures = [] } = useQuery({
     queryKey: ['signatures'],
     queryFn: () => base44.entities.Signature.list(),
-    initialData: [],
   });
 
   const createMutation = useMutation({

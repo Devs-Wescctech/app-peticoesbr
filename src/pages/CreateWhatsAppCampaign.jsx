@@ -119,13 +119,11 @@ export default function CreateWhatsAppCampaign() {
   const { data: petitions = [] } = useQuery({
     queryKey: ['petitions'],
     queryFn: () => base44.entities.Petition.list(),
-    initialData: [],
   });
 
   const { data: signatures = [] } = useQuery({
     queryKey: ['signatures'],
     queryFn: () => base44.entities.Signature.list(),
-    initialData: [],
   });
 
   const { data: campaign } = useQuery({
@@ -144,7 +142,6 @@ export default function CreateWhatsAppCampaign() {
       const allTemplates = await base44.entities.MessageTemplate.list();
       return allTemplates.filter(t => t.type === 'whatsapp');
     },
-    initialData: [],
   });
 
   useEffect(() => {

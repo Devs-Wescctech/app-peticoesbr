@@ -203,7 +203,6 @@ export default function MessageTemplates() {
   const { data: templates = [] } = useQuery({
     queryKey: ['templates'],
     queryFn: () => base44.entities.MessageTemplate.list('-created_date'),
-    initialData: [],
   });
 
   const createMutation = useMutation({

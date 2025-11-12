@@ -41,13 +41,11 @@ export default function EmailCampaigns() {
       const allCampaigns = await base44.entities.Campaign.list('-created_date');
       return allCampaigns.filter(c => c.type === 'email');
     },
-    initialData: [],
   });
 
   const { data: petitions = [] } = useQuery({
     queryKey: ['petitions'],
     queryFn: () => base44.entities.Petition.list(),
-    initialData: [],
   });
 
   const deleteMutation = useMutation({

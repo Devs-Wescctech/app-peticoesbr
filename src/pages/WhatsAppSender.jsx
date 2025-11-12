@@ -30,13 +30,11 @@ export default function WhatsAppSender() {
   const { data: petitions = [] } = useQuery({
     queryKey: ['petitions'],
     queryFn: () => base44.entities.Petition.list(),
-    initialData: [],
   });
 
   const { data: signatures = [] } = useQuery({
     queryKey: ['signatures'],
     queryFn: () => base44.entities.Signature.list(),
-    initialData: [],
   });
 
   const filteredSignatures = selectedPetition 
