@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React, { useState, useEffect } from "react";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -35,6 +35,9 @@ export default function CreatePetition() {
   const queryClient = useQueryClient();
   const [uploading, setUploading] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  const editingId = urlParams.get('id');
 
   const [formData, setFormData] = useState({
     title: "",
@@ -52,6 +55,36 @@ export default function CreatePetition() {
     collect_cpf: false,
     collect_comment: true,
   });
+
+  const { data: existingPetition, isLoading: loadingPetition } = useQuery({
+    queryKey: ['petition', editingId],
+    queryFn: async () => {
+      const petitions = await base44.entities.Petition.list();
+      return petitions.find(p => p.id === editingId);
+    },
+    enabled: !!editingId,
+  });
+
+  useEffect(() => {
+    if (existingPetition) {
+      setFormData({
+        title: existingPetition.title || "",
+        description: existingPetition.description || "",
+        banner_url: existingPetition.banner_url || "",
+        logo_url: existingPetition.logo_url || "",
+        primary_color: existingPetition.primary_color || "#6366f1",
+        share_text: existingPetition.share_text || "",
+        goal: existingPetition.goal || 1000,
+        status: existingPetition.status || "rascunho",
+        slug: existingPetition.slug || "",
+        collect_phone: !!existingPetition.collect_phone,
+        collect_city: !!existingPetition.collect_city,
+        collect_state: !!existingPetition.collect_state,
+        collect_cpf: !!existingPetition.collect_cpf,
+        collect_comment: !!existingPetition.collect_comment,
+      });
+    }
+  }, [existingPetition]);
 
   const SHARE_TEXT_TEMPLATES = [
     'Acabei de assinar esta petição e você também deveria! Juntos podemos fazer a diferença. {link}',
@@ -79,6 +112,10 @@ export default function CreatePetition() {
         collect_cpf: !!data.collect_cpf,
         collect_comment: !!data.collect_comment,
       };
+      
+      if (editingId) {
+        return base44.entities.Petition.update(editingId, payload);
+      }
       return base44.entities.Petition.create(payload);
     },
     onSuccess: () => {
@@ -189,14 +226,14 @@ export default function CreatePetition() {
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
                 <Badge className="bg-white/20 backdrop-blur-xl text-white border-white/30">
-                  Nova Petição
+                  {editingId ? 'Editar Petição' : 'Nova Petição'}
                 </Badge>
               </div>
               <h1 className="text-3xl md:text-5xl font-black text-white mb-2 tracking-tight">
-                Criar Nova Petição
+                {editingId ? 'Editar Petição' : 'Criar Nova Petição'}
               </h1>
               <p className="text-lg text-white/90">
-                Preencha os dados e veja o preview em tempo real
+                {editingId ? 'Atualize os dados e veja as alterações em tempo real' : 'Preencha os dados e veja o preview em tempo real'}
               </p>
             </div>
             <Button
@@ -555,7 +592,7 @@ export default function CreatePetition() {
                     className="flex-1 font-semibold border-2 hover:bg-gray-50"
                   >
                     <Save className="w-4 h-4 mr-2" />
-                    Salvar Rascunho
+                    {editingId ? 'Salvar Alterações' : 'Salvar Rascunho'}
                   </Button>
                   <Button
                     type="button"
@@ -570,12 +607,12 @@ export default function CreatePetition() {
                     {createMutation.isPending ? (
                       <>
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Publicando...
+                        {editingId ? 'Atualizando...' : 'Publicando...'}
                       </>
                     ) : (
                       <>
                         <Rocket className="w-4 h-4 mr-2" />
-                        Publicar
+                        {editingId ? 'Atualizar' : 'Publicar'}
                       </>
                     )}
                   </Button>

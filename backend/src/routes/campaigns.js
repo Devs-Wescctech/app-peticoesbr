@@ -68,7 +68,7 @@ router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      name, type, petition_id, message, subject, status, sent_count, error_count
+      name, type, petition_id, message, subject, status, sent_count, failed_count
     } = req.body;
     
     const result = await pool.query(
@@ -80,11 +80,11 @@ router.put('/:id', async (req, res) => {
         subject = COALESCE($5, subject),
         status = COALESCE($6, status),
         sent_count = COALESCE($7, sent_count),
-        error_count = COALESCE($8, error_count),
+        failed_count = COALESCE($8, failed_count),
         updated_date = CURRENT_TIMESTAMP
       WHERE id = $9
       RETURNING *`,
-      [name, type, petition_id, message, subject, status, sent_count, error_count, id]
+      [name, type, petition_id, message, subject, status, sent_count, failed_count, id]
     );
     
     if (result.rows.length === 0) {
