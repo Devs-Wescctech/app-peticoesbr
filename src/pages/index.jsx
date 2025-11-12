@@ -27,6 +27,7 @@ import BioPage from "./bio";
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from "react-router-dom";
 
 const PAGES = {
+  Login,
   Dashboard,
   AdminDashboard,
   CreatePetition,
