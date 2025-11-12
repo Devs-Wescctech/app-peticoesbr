@@ -44,15 +44,22 @@ The frontend utilizes Radix UI for accessible and customizable components, style
 
 ## Recent Changes
 
-### November 12, 2025 - Login System & Route Protection Implementation
-- Created Login page (`/Login`) with email/password authentication
+### November 12, 2025 - Modern Login UI & Route Protection Implementation
+- Created modern split-screen Login page (`/Login`) with:
+  - Responsive design: split-screen on desktop, stacked on mobile
+  - Animated gradient background with floating orbs
+  - Glassmorphism effects and smooth transitions
+  - Feature showcase on left panel (desktop)
+  - Clean, minimalist form on right panel
+  - Loading states with spinner animation
+  - Error states with shake animation
+  - Demo credentials displayed in styled cards
 - Implemented `PrivateRoute` component to protect all authenticated routes
 - Added automatic redirection: unauthenticated users → Login, authenticated users → Dashboard
 - Added Logout button in sidebar with token cleanup
 - Updated Layout to exclude Login from sidebar/navigation
 - All private routes now require authentication before access
 - Public routes (PetitionLanding, /p, /bio, Login) remain accessible without authentication
-- Login page includes demo credentials for testing
 
 ### November 12, 2025 - Super Admin System Implementation
 - Added `is_super_admin` boolean field to `auth_users` table

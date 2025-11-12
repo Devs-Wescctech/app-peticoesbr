@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import { TrendingUp, Mail, Lock, AlertCircle } from 'lucide-react';
+import { TrendingUp, Mail, Lock, AlertCircle, Sparkles, Shield, Zap, Users } from 'lucide-react';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -47,79 +46,200 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-3">
-          <div className="flex justify-center">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-lg">
-              <TrendingUp className="w-8 h-8 text-white" />
+    <div className="min-h-screen flex">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-white rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        </div>
+
+        <div className="relative z-10 flex flex-col justify-center px-16 text-white">
+          <div className="mb-8 animate-fade-in">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-xl flex items-center justify-center border border-white/30 shadow-2xl">
+                <TrendingUp className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-4xl font-bold">PetiçõesBR</h1>
+                <p className="text-indigo-100 text-sm">Sistema de Gestão de Petições</p>
+              </div>
             </div>
           </div>
-          <CardTitle className="text-2xl text-center">PetiçõesBR</CardTitle>
-          <CardDescription className="text-center">
-            Sistema de Gestão de Petições
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-start gap-2">
-                <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-red-800">{error}</p>
-              </div>
-            )}
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="seu@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10"
-                  required
-                  autoFocus
-                />
-              </div>
+          <div className="space-y-6 animate-slide-up">
+            <h2 className="text-3xl font-bold leading-tight">
+              Amplifique sua voz.<br />
+              Crie mudanças reais.
+            </h2>
+            <p className="text-lg text-indigo-100 leading-relaxed">
+              Plataforma completa para criar petições, gerenciar campanhas e engajar sua comunidade em causas que importam.
+            </p>
+
+            <div className="space-y-4 pt-8">
+              {[
+                { icon: Sparkles, title: 'Petições Ilimitadas', desc: 'Crie e gerencie quantas petições precisar' },
+                { icon: Users, title: 'Multi-Tenancy', desc: 'Sistema isolado para cada organização' },
+                { icon: Zap, title: 'Campanhas Automatizadas', desc: 'Email e WhatsApp integrados' },
+                { icon: Shield, title: 'Seguro e Confiável', desc: 'Autenticação JWT e dados protegidos' },
+              ].map((feature, idx) => (
+                <div key={idx} className="flex items-start gap-4 animate-fade-in" style={{ animationDelay: `${idx * 0.1}s` }}>
+                  <div className="w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 flex-shrink-0">
+                    <feature.icon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">{feature.title}</h3>
+                    <p className="text-sm text-indigo-100">{feature.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex-1 flex items-center justify-center p-8 bg-gray-50">
+        <div className="w-full max-w-md animate-fade-in">
+          <div className="lg:hidden mb-8 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 mb-4 shadow-lg">
+              <TrendingUp className="w-8 h-8 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">PetiçõesBR</h1>
+            <p className="text-gray-600 text-sm">Sistema de Gestão de Petições</p>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Bem-vindo de volta</h2>
+              <p className="text-gray-600">Entre com suas credenciais para continuar</p>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Senha</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10"
-                  required
-                />
-              </div>
-            </div>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3 animate-shake">
+                  <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+                  <p className="text-sm text-red-800 leading-relaxed">{error}</p>
+                </div>
+              )}
 
-            <Button
-              type="submit"
-              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
-              disabled={loading}
-            >
-              {loading ? 'Entrando...' : 'Entrar'}
-            </Button>
-
-            <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <p className="text-xs text-gray-600 font-medium mb-2">Contas de demonstração:</p>
-              <div className="text-xs text-gray-500 space-y-1">
-                <p><strong>Super Admin:</strong> tecnologia@wescctech.com.br</p>
-                <p><strong>Usuário:</strong> admin@peticoes.com / senha123</p>
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-gray-700 font-medium">Email</Label>
+                <div className="relative group">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-indigo-600 transition-colors" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="seu@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="pl-11 h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 transition-all"
+                    required
+                    autoFocus
+                  />
+                </div>
               </div>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-gray-700 font-medium">Senha</Label>
+                <div className="relative group">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-indigo-600 transition-colors" />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-11 h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 transition-all"
+                    required
+                  />
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full h-12 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
+                disabled={loading}
+              >
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    Entrando...
+                  </div>
+                ) : (
+                  'Entrar no Sistema'
+                )}
+              </Button>
+
+              <div className="mt-6 p-5 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl border border-indigo-100">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center">
+                    <Shield className="w-3.5 h-3.5 text-white" />
+                  </div>
+                  <p className="text-sm font-semibold text-gray-700">Contas de Demonstração</p>
+                </div>
+                <div className="space-y-2.5">
+                  <div className="bg-white/60 backdrop-blur-sm rounded-lg p-3 border border-indigo-100">
+                    <p className="text-xs font-medium text-indigo-900 mb-1">Super Administrador</p>
+                    <p className="text-xs text-gray-600 font-mono">tecnologia@wescctech.com.br</p>
+                    <p className="text-xs text-gray-500 mt-1">Acesso completo ao sistema</p>
+                  </div>
+                  <div className="bg-white/60 backdrop-blur-sm rounded-lg p-3 border border-purple-100">
+                    <p className="text-xs font-medium text-purple-900 mb-1">Usuário Padrão</p>
+                    <p className="text-xs text-gray-600 font-mono">admin@peticoes.com / senha123</p>
+                    <p className="text-xs text-gray-500 mt-1">Acesso ao tenant padrão</p>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <p className="text-center text-sm text-gray-500 mt-6">
+            &copy; 2025 PetiçõesBR. Todos os direitos reservados.
+          </p>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slide-up {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-5px); }
+          75% { transform: translateX(5px); }
+        }
+
+        .animate-fade-in {
+          animation: fade-in 0.6s ease-out forwards;
+        }
+
+        .animate-slide-up {
+          animation: slide-up 0.8s ease-out forwards;
+        }
+
+        .animate-shake {
+          animation: shake 0.3s ease-in-out;
+        }
+      `}</style>
     </div>
   );
 }
