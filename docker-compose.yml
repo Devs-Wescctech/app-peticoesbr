@@ -1,0 +1,88 @@
+# Docker Compose - PetiçõesBR
+# Para desenvolvimento local com PostgreSQL integrado
+# Em produção, use apenas backend + frontend (postgres externo)
+
+version: '3.8'
+
+services:
+  # PostgreSQL (apenas para desenvolvimento local)
+  # Em produção, comente este serviço e use PostgreSQL externo
+  postgres:
+    image: postgres:18-alpine
+    container_name: peticoesbr-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: peticoesbr
+      POSTGRES_USER: peticoesbr
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme123}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U peticoesbr"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - peticoesbr-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: peticoesbr-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: ${DATABASE_URL:-postgresql://peticoesbr:changeme123@postgres:5432/peticoesbr}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+    volumes:
+      - backend_uploads:/app/uploads
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - peticoesbr-network
+
+  # Frontend (Nginx)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: peticoesbr-frontend
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:3001/api}
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - peticoesbr-network
+
+volumes:
+  postgres_data:
+    driver: local
+  backend_uploads:
+    driver: local
+
+networks:
+  peticoesbr-network:
+    driver: bridge

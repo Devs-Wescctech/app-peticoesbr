@@ -1,0 +1,67 @@
+# Docker Compose - PRODUÇÃO
+# Para uso em servidor com PostgreSQL 18 externo
+# Usa imagens do GHCR (GitHub Container Registry)
+
+version: '3.8'
+
+services:
+  # Backend API
+  backend:
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/peticoesbr-backend:latest
+    container_name: peticoesbr-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      # PostgreSQL externo - ajuste o host para o IP/hostname do seu servidor
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+    volumes:
+      - /var/peticoesbr/uploads:/app/uploads
+    ports:
+      - "3001:3001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - peticoesbr-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Frontend (Nginx)
+  frontend:
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/peticoesbr-frontend:latest
+    container_name: peticoesbr-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - peticoesbr-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # Para usar SSL (opcional)
+    # volumes:
+    #   - /etc/letsencrypt:/etc/letsencrypt:ro
+    #   - ./nginx-ssl.conf:/etc/nginx/conf.d/default.conf:ro
+
+networks:
+  peticoesbr-network:
+    driver: bridge
