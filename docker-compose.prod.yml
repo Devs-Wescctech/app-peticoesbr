@@ -2,12 +2,10 @@
 # Para uso em servidor com PostgreSQL 18 externo
 # Usa imagens do GHCR (GitHub Container Registry)
 
-version: '3.8'
-
 services:
   # Backend API
   backend:
-    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/peticoesbr-backend:latest
+    image: ghcr.io/devs-wescctech/app-peticoesbr-backend:latest
     container_name: peticoesbr-backend
     restart: unless-stopped
     environment:
@@ -37,7 +35,7 @@ services:
 
   # Frontend (Nginx)
   frontend:
-    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/peticoesbr-frontend:latest
+    image: ghcr.io/devs-wescctech/app-peticoesbr-frontend:latest
     container_name: peticoesbr-frontend
     restart: unless-stopped
     ports:
