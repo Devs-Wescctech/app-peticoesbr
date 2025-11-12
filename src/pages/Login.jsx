@@ -56,40 +56,40 @@ export default function Login() {
 
         <div className="relative z-10 flex flex-col justify-center px-16 text-white">
           <div className="mb-8 animate-fade-in">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-xl flex items-center justify-center border border-white/30 shadow-2xl">
-                <TrendingUp className="w-8 h-8 text-white" />
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-xl flex items-center justify-center border border-white/30 shadow-2xl">
+                <TrendingUp className="w-10 h-10 text-white" />
               </div>
               <div>
-                <h1 className="text-4xl font-bold">PetiçõesBR</h1>
-                <p className="text-indigo-100 text-sm">Sistema de Gestão de Petições</p>
+                <h1 className="text-5xl font-bold">PetiçõesBR</h1>
+                <p className="text-indigo-100 text-base mt-1">Sistema de Gestão de Petições</p>
               </div>
             </div>
           </div>
 
-          <div className="space-y-6 animate-slide-up">
-            <h2 className="text-3xl font-bold leading-tight">
+          <div className="space-y-8 animate-slide-up">
+            <h2 className="text-4xl font-bold leading-tight">
               Amplifique sua voz.<br />
               Crie mudanças reais.
             </h2>
-            <p className="text-lg text-indigo-100 leading-relaxed">
+            <p className="text-xl text-indigo-100 leading-relaxed">
               Plataforma completa para criar petições, gerenciar campanhas e engajar sua comunidade em causas que importam.
             </p>
 
-            <div className="space-y-4 pt-8">
+            <div className="space-y-5 pt-8">
               {[
                 { icon: Sparkles, title: 'Petições Ilimitadas', desc: 'Crie e gerencie quantas petições precisar' },
                 { icon: Users, title: 'Multi-Tenancy', desc: 'Sistema isolado para cada organização' },
                 { icon: Zap, title: 'Campanhas Automatizadas', desc: 'Email e WhatsApp integrados' },
                 { icon: Shield, title: 'Seguro e Confiável', desc: 'Autenticação JWT e dados protegidos' },
               ].map((feature, idx) => (
-                <div key={idx} className="flex items-start gap-4 animate-fade-in" style={{ animationDelay: `${idx * 0.1}s` }}>
-                  <div className="w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 flex-shrink-0">
-                    <feature.icon className="w-5 h-5" />
+                <div key={idx} className="flex items-start gap-5 animate-fade-in" style={{ animationDelay: `${idx * 0.1}s` }}>
+                  <div className="w-12 h-12 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 flex-shrink-0">
+                    <feature.icon className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white">{feature.title}</h3>
-                    <p className="text-sm text-indigo-100">{feature.desc}</p>
+                    <h3 className="font-bold text-white text-lg">{feature.title}</h3>
+                    <p className="text-base text-indigo-100 mt-1">{feature.desc}</p>
                   </div>
                 </div>
               ))}
@@ -108,7 +108,7 @@ export default function Login() {
             <p className="text-gray-600 text-sm">Sistema de Gestão de Petições</p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)' }}>
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Bem-vindo de volta</h2>
               <p className="text-gray-600">Entre com suas credenciais para continuar</p>
@@ -132,7 +132,7 @@ export default function Login() {
                     placeholder="seu@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-12 h-20 text-base border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 transition-all"
+                    className="pl-12 h-12 text-base border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 transition-all"
                     required
                     autoFocus
                   />
@@ -149,7 +149,7 @@ export default function Login() {
                     placeholder="••••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-12 h-20 text-base border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 transition-all"
+                    className="pl-12 h-12 text-base border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 transition-all"
                     required
                   />
                 </div>
