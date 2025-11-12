@@ -1,23 +1,37 @@
-import { base44 } from './base44Client';
+import { uploadFile } from './client.js';
 
+export const Core = {
+  UploadFile: async ({ file }) => {
+    const result = await uploadFile(file);
+    return { file_url: result.url };
+  },
+};
 
+export const UploadFile = Core.UploadFile;
 
+export const InvokeLLM = async () => {
+  throw new Error('InvokeLLM not implemented - use external LLM service');
+};
 
-export const Core = base44.integrations.Core;
+export const SendEmail = async () => {
+  throw new Error('SendEmail not implemented - use external email service');
+};
 
-export const InvokeLLM = base44.integrations.Core.InvokeLLM;
+export const GenerateImage = async () => {
+  throw new Error('GenerateImage not implemented - use external image service');
+};
 
-export const SendEmail = base44.integrations.Core.SendEmail;
+export const ExtractDataFromUploadedFile = async () => {
+  throw new Error('ExtractDataFromUploadedFile not implemented');
+};
 
-export const UploadFile = base44.integrations.Core.UploadFile;
+export const CreateFileSignedUrl = async () => {
+  throw new Error('CreateFileSignedUrl not implemented');
+};
 
-export const GenerateImage = base44.integrations.Core.GenerateImage;
-
-export const ExtractDataFromUploadedFile = base44.integrations.Core.ExtractDataFromUploadedFile;
-
-export const CreateFileSignedUrl = base44.integrations.Core.CreateFileSignedUrl;
-
-export const UploadPrivateFile = base44.integrations.Core.UploadPrivateFile;
+export const UploadPrivateFile = async () => {
+  throw new Error('UploadPrivateFile not implemented - use UploadFile instead');
+};
 
 
 

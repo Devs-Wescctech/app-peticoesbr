@@ -23,67 +23,11 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
+import { base44 } from "@/api";
 
-/* ============================
-   Supabase (REST + Storage)
-   ============================ */
-const API_BASE = import.meta.env.VITE_SUPABASE_URL;                 // ex: https://supabase.wescctech.com.br
-const ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;            // chave ANON (não use service_role no browser)
-const BUCKET   = import.meta.env.VITE_SUPABASE_BUCKET || "petitions";
-
-// helper: POST JSON -> retorna JSON (ou lança erro com texto)
-async function postJson(path, body, extraHeaders = {}) {
-  const res = await fetch(path, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      apikey: ANON_KEY,
-      Authorization: `Bearer ${ANON_KEY}`,
-      Prefer: "return=representation",
-      ...extraHeaders,
-    },
-    body: JSON.stringify(body),
-    credentials: "omit",
-    mode: "cors",
-  });
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text || `Erro HTTP ${res.status}`);
-  }
-  return res.json();
-}
-
-// helper: upload para Storage (bucket público)
-// retorna URL pública do arquivo
 async function uploadToStorage(file, prefix = "banners") {
-  // caminho único: <prefix>/<timestamp>-<nome-sanitizado>
-  const safeName = file.name
-    .toLowerCase()
-    .replace(/[^\w.\-]+/g, "-")
-    .replace(/-+/g, "-");
-  const objectPath = `${prefix}/${Date.now()}-${safeName}`;
-
-  // Upload binário
-  const uploadUrl = `${API_BASE}/storage/v1/object/${BUCKET}/${objectPath}?upsert=true`;
-  const res = await fetch(uploadUrl, {
-    method: "POST",
-    headers: {
-      apikey: ANON_KEY,
-      Authorization: `Bearer ${ANON_KEY}`,
-      "Content-Type": file.type || "application/octet-stream",
-    },
-    body: file,
-  });
-
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text || `Falha no upload (${res.status})`);
-  }
-
-  // Como o bucket é público (policies que criamos), a URL pública é:
-  const publicUrl = `${API_BASE}/storage/v1/object/public/${BUCKET}/${objectPath}`;
-  return { url: publicUrl, path: objectPath };
+  const result = await base44.integrations.Core.UploadFile({ file });
+  return { url: result.file_url, path: result.file_url };
 }
 
 export default function CreatePetition() {
@@ -117,11 +61,8 @@ export default function CreatePetition() {
     '🌟 Sua voz importa! Assine e compartilhe: {link}',
   ];
 
-  // === Mutação: criar petição no PostgREST ===
   const createMutation = useMutation({
     mutationFn: async (data) => {
-      const endpoint = `${API_BASE}/rest/v1/petitions`;
-      // o PostgREST aceita tanto 1 objeto quanto array de objetos
       const payload = {
         title: data.title,
         description: data.description,
@@ -130,7 +71,7 @@ export default function CreatePetition() {
         primary_color: data.primary_color || "#6366f1",
         share_text: data.share_text || null,
         goal: Number(data.goal) || 1,
-        status: data.status, // 'rascunho' | 'publicada' | ...
+        status: data.status,
         slug: data.slug,
         collect_phone: !!data.collect_phone,
         collect_city: !!data.collect_city,
@@ -138,8 +79,7 @@ export default function CreatePetition() {
         collect_cpf: !!data.collect_cpf,
         collect_comment: !!data.collect_comment,
       };
-      const rows = await postJson(endpoint, payload);
-      return rows?.[0] || rows; // Prefer: return=representation → 1 objeto
+      return base44.entities.Petition.create(payload);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["petitions"] });
