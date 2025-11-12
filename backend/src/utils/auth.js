@@ -39,6 +39,7 @@ export function generateAccessToken(user, tenantId = null) {
     userId: user.id,
     email: user.email,
     tenantId: tenantId,
+    isSuperAdmin: user.is_super_admin || false,
   };
   
   return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });

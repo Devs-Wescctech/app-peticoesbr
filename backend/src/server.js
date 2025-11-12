@@ -16,6 +16,7 @@ import linktreePagesRouter from './routes/linktree-pages.js';
 import linkbioPagesRouter from './routes/linkbio-pages.js';
 import uploadRouter from './routes/upload.js';
 import usersRouter from './routes/users.js';
+import adminRouter from './routes/admin.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use('/api/auth', authRouter);
+app.use('/api/admin', adminRouter);
 app.use('/api/tenants', tenantsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/petitions', petitionsRouter);

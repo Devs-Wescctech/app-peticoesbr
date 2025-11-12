@@ -83,7 +83,7 @@ router.post('/login', async (req, res) => {
     
     // Busca usuário
     const result = await pool.query(
-      `SELECT id, email, password_hash, full_name, avatar_url, email_verified, is_active
+      `SELECT id, email, password_hash, full_name, avatar_url, email_verified, is_active, is_super_admin
        FROM auth_users
        WHERE email = $1`,
       [email.toLowerCase()]

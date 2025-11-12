@@ -23,6 +23,7 @@ export function authenticate(req, res, next) {
     userId: decoded.userId,
     email: decoded.email,
     tenantId: decoded.tenantId,
+    isSuperAdmin: decoded.isSuperAdmin || false,
   };
   
   next();
@@ -57,6 +58,17 @@ export function optionalAuthenticate(req, res, next) {
 export function requireTenant(req, res, next) {
   if (!req.user || !req.user.tenantId) {
     return res.status(403).json({ error: 'Tenant não selecionado' });
+  }
+  next();
+}
+
+/**
+ * Middleware que requer super admin
+ * Verifica se o usuário é super admin
+ */
+export function requireSuperAdmin(req, res, next) {
+  if (!req.user || !req.user.isSuperAdmin) {
+    return res.status(403).json({ error: 'Acesso negado. Apenas super admin pode acessar.' });
   }
   next();
 }
