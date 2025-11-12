@@ -89,8 +89,8 @@ function PagesContent() {
 }
 
 export default function Pages() {
-  // Usa o base definido no Vite (base: '/peticoes/'); remove barra final p/ Router
-  const basename = (import.meta.env.BASE_URL || "/peticoes/").replace(/\/$/, "");
+  // Use the base defined in Vite config; remove trailing slash for Router
+  const basename = (import.meta.env.BASE_URL || "/").replace(/\/$/, "");
   return (
     <Router basename={basename}>
       <PagesContent />

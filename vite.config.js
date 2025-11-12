@@ -6,8 +6,8 @@ import { fileURLToPath, URL } from 'node:url'
 export default defineConfig({
   plugins: [react()],
 
-  // Produção: assets sob /peticoes/*
-  base: '/peticoes/',
+  // Use '/' for Replit development, '/peticoes/' for production deployment
+  base: process.env.VITE_BASE_URL || '/',
 
   resolve: {
     alias: [
@@ -20,11 +20,14 @@ export default defineConfig({
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
   },
 
-  // Dev: proxy opcional para evitar CORS durante desenvolvimento local
-  // (em produção o Nginx já resolve; aqui só ajuda no `npm run dev`)
   server: {
+    host: '0.0.0.0',
+    port: 5000,
+    strictPort: true,
+    hmr: {
+      clientPort: 5000,
+    },
     proxy: {
-      // usa VITE_SUPABASE_URL se estiver setado, senão vai direto no host público
       '/supabase': {
         target: process.env.VITE_SUPABASE_URL || 'https://supabase.wescctech.com.br',
         changeOrigin: true,
