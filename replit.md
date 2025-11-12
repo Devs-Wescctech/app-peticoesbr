@@ -21,22 +21,40 @@ This is a full-stack petition management system designed to empower users to cre
 The frontend utilizes Radix UI for accessible and customizable components, styled with TailwindCSS for a modern and responsive design.
 
 ### Technical Implementations & Feature Specifications
-- **Multi-Tenancy**: Central `control-plane` schema manages tenants and authentication, with each tenant having its own isolated schema.
-- **Authentication**: JWT-based authentication with refresh token rotation, supporting email/password and ready for Google OAuth. Includes role-based access control (owner, admin, member) per tenant.
-- **Petition Management**: CRUD operations for petitions, including goal tracking, slug generation, and signature collection.
-- **Campaign Tools**: Creation and management of Email and WhatsApp campaigns, with real-time progress updates and message templates.
-- **Link Pages**: Dedicated builders for "Link Bio" (e.g., Instagram-style) and "Link Tree" (multi-link) pages with custom slugs.
-- **Signature Management**: Functionality for importing and managing petition signatures.
+- **Multi-Tenancy**: Central `control-plane` schema manages tenants and authentication. All data tables include `tenant_id` column for row-level tenant isolation.
+- **Tenant Data Isolation** (Implemented Nov 12, 2025): All API routes enforce tenant scoping via `authenticate` and `requireTenant` middleware. Every CRUD operation filters data by `tenant_id` from JWT token. Signatures validate tenant ownership via JOIN with petitions table. Cross-tenant access returns 404.
+- **Authentication**: JWT-based authentication with refresh token rotation, supporting email/password and ready for Google OAuth. JWT tokens include `tenantId` claim extracted from `tenant_users` table. Includes role-based access control (owner, admin, member) per tenant. Environment variables `JWT_SECRET` and `JWT_REFRESH_SECRET` are required at startup (fail-fast validation).
+- **Petition Management**: CRUD operations for petitions with tenant scoping, including goal tracking, slug generation, and signature collection. All petitions are isolated by tenant_id.
+- **Campaign Tools**: Creation and management of Email and WhatsApp campaigns with tenant scoping, real-time progress updates and message templates. All campaigns isolated by tenant_id.
+- **Link Pages**: Dedicated builders for "Link Bio" (e.g., Instagram-style) and "Link Tree" (multi-link) pages with custom slugs. All link pages isolated by tenant_id.
+- **Signature Management**: Functionality for importing and managing petition signatures with tenant validation via petition ownership (JOIN-based).
 - **File Uploads**: Local storage for petition banners and logos.
 - **API Client**: Custom fetch-based client with a Base44 wrapper for frontend-backend communication.
-- **Environment Variables**: Configurable `DATABASE_URL` and `VITE_BASE_URL` for flexible deployment.
+- **Environment Variables**: Configurable `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, and `VITE_BASE_URL` for flexible deployment.
 
 ### System Design Choices
 - **Idempotent Schema**: All tables use `CREATE TABLE IF NOT EXISTS` for data persistence across server restarts.
 - **UUID Primary Keys**: All tables utilize UUID primary keys with `uuid_generate_v4()`.
-- **Stateless Authentication**: JWT tokens ensure stateless authentication for scalability.
+- **Stateless Authentication**: JWT tokens ensure stateless authentication for scalability. Tokens include `userId`, `email`, and `tenantId` claims.
+- **Tenant Isolation Pattern**: All protected routes use `authenticate` + `requireTenant` middleware chain. Database queries include `WHERE tenant_id = $tenantId` clause. Related tables (signatures, campaign_logs) validate tenant ownership via JOINs with parent tables.
+- **Security**: Fail-fast validation for required environment secrets. All tenant-bound routes return 404 for cross-tenant access attempts. DELETE operations require both authentication and tenant ownership validation.
 - **Optimized Data Fetching**: TanStack React Query is used for efficient data fetching, caching, and state management, with careful handling of `initialData` to prevent stale data.
 - **Replit-Optimized Deployment**: Configured for dual workflows (backend on 3001, frontend on 5000) and uses `0.0.0.0` host and `allowedHosts: true` for Replit's dynamic proxy.
+
+## Recent Changes
+
+### November 12, 2025 - Tenant Data Isolation Implementation
+- Added `tenant_id` columns to all data tables (petitions, campaigns, message_templates, linkbio_pages, linktree_pages, campaign_logs)
+- Migrated existing data to default tenant (4 petitions, 1 campaign, 1 linkbio page)
+- Updated all API routes with tenant scoping:
+  - `petitions.js`: All CRUD operations filter by tenant_id
+  - `campaigns.js`: All CRUD operations filter by tenant_id (fixed critical security bug in DELETE endpoint)
+  - `message_templates.js`: All CRUD operations filter by tenant_id
+  - `linkbio-pages.js`: All CRUD operations filter by tenant_id
+  - `linktree-pages.js`: All CRUD operations filter by tenant_id
+  - `signatures.js`: All CRUD operations validate tenant via JOIN with petitions table
+- Tested and verified tenant isolation: Tenant 2 cannot access Tenant 1 data (returns 404)
+- Security improvements: Removed hardcoded JWT secrets, implemented fail-fast environment variable validation
 
 ## External Dependencies
 - **PostgreSQL**: Primary database for all application data, hosted on Replit's Neon integration.
