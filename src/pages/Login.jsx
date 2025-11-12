@@ -47,7 +47,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex">
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-3/5 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-72 h-72 bg-white rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-20 right-20 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
@@ -132,7 +132,7 @@ export default function Login() {
                     placeholder="seu@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-12 h-14 text-base border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 transition-all"
+                    className="pl-12 h-16 text-base border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 transition-all"
                     required
                     autoFocus
                   />
@@ -149,7 +149,7 @@ export default function Login() {
                     placeholder="••••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-12 h-14 text-base border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 transition-all"
+                    className="pl-12 h-16 text-base border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 transition-all"
                     required
                   />
                 </div>
@@ -157,7 +157,7 @@ export default function Login() {
 
               <Button
                 type="submit"
-                className="w-full h-14 text-base bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
+                className="w-full h-16 text-base bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
                 disabled={loading}
               >
                 {loading ? (
