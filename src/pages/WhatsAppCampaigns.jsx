@@ -6,6 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   MessageCircle,
   Plus,
   Play,
@@ -36,6 +46,8 @@ export default function WhatsAppCampaigns() {
   const [isLogsModalOpen, setIsLogsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const [campaignToDelete, setCampaignToDelete] = useState(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const { data: campaigns = [] } = useQuery({
     queryKey: ['campaigns', 'whatsapp'],
@@ -346,9 +358,8 @@ export default function WhatsAppCampaigns() {
                       size="sm"
                       className="flex-1 border-2 text-red-600 border-red-200 hover:bg-red-50"
                       onClick={() => {
-                        if (confirm('Deseja excluir esta campanha?')) {
-                          deleteMutation.mutate(campaign.id);
-                        }
+                        setCampaignToDelete(campaign);
+                        setIsDeleteDialogOpen(true);
                       }}
                     >
                       <Trash2 className="w-4 h-4 mr-1" />
@@ -432,6 +443,41 @@ export default function WhatsAppCampaigns() {
         onClose={() => setIsLogsModalOpen(false)}
         type="whatsapp"
       />
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-xl font-bold text-gray-900">
+              Confirmar Exclusão
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-600 space-y-3">
+              <p>
+                Tem certeza que deseja excluir a campanha <span className="font-semibold text-gray-900">"{campaignToDelete?.name}"</span>?
+              </p>
+              <p className="text-sm bg-red-50 border border-red-200 rounded-lg p-3 text-red-800">
+                ⚠️ Esta ação não pode ser desfeita. Todos os dados desta campanha serão perdidos permanentemente.
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="border-2">
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (campaignToDelete) {
+                  deleteMutation.mutate(campaignToDelete.id);
+                  setCampaignToDelete(null);
+                }
+              }}
+              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
+            >
+              Excluir Campanha
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

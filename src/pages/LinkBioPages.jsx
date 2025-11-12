@@ -1,6 +1,7 @@
 import { base44 } from "@/api";
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -168,9 +169,18 @@ export default function LinkBioPages() {
     );
   };
 
-  const copyLink = (slug) => {
+  const copyLink = async (slug) => {
     const url = `${window.location.origin}${createPageUrl(`bio?s=${slug}`)}`;
-    navigator.clipboard.writeText(url);
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success('Link copiado!', {
+        description: 'O link da página foi copiado para a área de transferência.',
+      });
+    } catch (error) {
+      toast.error('Erro ao copiar', {
+        description: 'Não foi possível copiar o link. Tente novamente.',
+      });
+    }
   };
 
   const getSignaturesForPetition = (petitionId) => {
