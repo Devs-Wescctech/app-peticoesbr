@@ -90,30 +90,35 @@ Salvar: `Ctrl+X`, `Y`, `Enter`
 
 ---
 
-## 💾 Passo 4: Transferir e Restaurar Banco de Dados
+## 💾 Passo 4: Baixar e Restaurar Banco de Dados
 
-**Do Replit para seu computador:**
-- Baixe: `database-backup/peticoesbr_backup_20251112_183849.sql.gz`
-
-**Do computador para servidor:**
-
-```bash
-# No seu computador
-scp database-backup/peticoesbr_backup_20251112_183849.sql.gz usuario@SEU_SERVIDOR:/opt/peticoesbr/
-```
-
-**No servidor, restaurar:**
+### **Opção 1: Download Direto do GitHub** ⭐ (Mais Fácil)
 
 ```bash
 cd /opt/peticoesbr
 
+# Baixar backup direto do GitHub
+wget https://raw.githubusercontent.com/Devs-Wescctech/app-peticoesbr/main/database-backup/peticoesbr_backup_20251112_183849.sql.gz
+
 # Restaurar banco
-export DATABASE_URL="postgresql://peticoesbr:SUA_SENHA@localhost:5432/peticoesbr"
 gunzip -c peticoesbr_backup_20251112_183849.sql.gz | psql -U peticoesbr -d peticoesbr -h localhost
 
 # Verificar dados
 psql -U peticoesbr -d peticoesbr -h localhost -c "SELECT COUNT(*) FROM control_plane.auth_users;"
 psql -U peticoesbr -d peticoesbr -h localhost -c "SELECT COUNT(*) FROM public.petitions;"
+```
+
+### **Opção 2: Transferir via SCP**
+
+```bash
+# 1. No Replit: Baixar database-backup/peticoesbr_backup_20251112_183849.sql.gz
+
+# 2. No seu computador: Transferir para servidor
+scp peticoesbr_backup_20251112_183849.sql.gz usuario@SEU_SERVIDOR:/opt/peticoesbr/
+
+# 3. No servidor: Restaurar
+cd /opt/peticoesbr
+gunzip -c peticoesbr_backup_20251112_183849.sql.gz | psql -U peticoesbr -d peticoesbr -h localhost
 ```
 
 ---
