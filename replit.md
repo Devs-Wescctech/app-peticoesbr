@@ -100,21 +100,33 @@ This generates optimized static files in the `dist/` directory.
 
 ## Database Schema
 
-The PostgreSQL database includes 7 main tables:
+The PostgreSQL database includes 8 main tables with UUID primary keys:
 
-1. **petitions**: Petition data (title, description, goal, slug, etc.)
-2. **signatures**: Individual petition signatures
-3. **campaigns**: Email and WhatsApp campaigns
-4. **campaign_logs**: Campaign execution logs
-5. **message_templates**: Reusable message templates
-6. **linkbio_pages**: Link bio pages (Instagram-style)
-7. **linktree_pages**: Link tree pages (multi-link pages)
+1. **users**: User accounts for petition creators (UUID primary keys)
+2. **petitions**: Petition data (title, description, goal, slug, etc.)
+3. **signatures**: Individual petition signatures
+4. **campaigns**: Email and WhatsApp campaigns
+5. **campaign_logs**: Campaign execution logs
+6. **message_templates**: Reusable message templates
+7. **linkbio_pages**: Link bio pages (Instagram-style)
+8. **linktree_pages**: Link tree pages (multi-link pages)
 
-Schema initialization is automatic on backend startup via `backend/src/config/schema.sql`.
+**Key Schema Features:**
+- All tables use UUID primary keys with `uuid_generate_v4()` extension
+- All `created_by` fields are UUID foreign keys referencing `users(id)` with `ON DELETE SET NULL`
+- Schema uses `CREATE TABLE IF NOT EXISTS` for data persistence across server restarts
+- Automatic schema initialization on backend startup via `backend/src/config/schema.sql`
 
 ## API Endpoints
 
 All API endpoints are prefixed with `/api`:
+
+### Users
+- `GET /api/users` - List all users
+- `GET /api/users/:id` - Get user by ID
+- `POST /api/users` - Create new user
+- `PUT /api/users/:id` - Update user
+- `DELETE /api/users/:id` - Delete user
 
 ### Petitions
 - `GET /api/petitions` - List all petitions
@@ -204,10 +216,22 @@ The application uses `BrowserRouter` with a dynamic basename read from `import.m
 
 ## Recent Changes
 
+### 2025-11-12: Final UUID Schema Migration & Data Persistence Fix
+- **Fixed critical data persistence issue**: Removed DROP TABLE CASCADE statements that were deleting all data on server restart
+- **Implemented idempotent schema**: All tables now use CREATE TABLE IF NOT EXISTS for data persistence
+- **UUID foreign keys**: All created_by fields now properly reference users(id) with ON DELETE SET NULL
+- **Users route added**: Full CRUD operations for user management
+- **Database recreated**: Fresh tables with correct UUID schema and foreign key constraints
+- **Zero Supabase references**: Confirmed complete removal via codebase search
+- **Removed Supabase proxy**: Cleaned up vite.config.js proxy configuration
+- **Updated PetitionsList.jsx**: Now uses base44 API wrapper instead of Supabase
+- **Both workflows running**: Backend (port 3001) and Frontend (port 5000) operational
+- **Dashboard loading**: Verified application loads correctly with empty database
+
 ### 2025-11-12: Complete Supabase → Node.js/Express Migration
 - **Removed all Supabase dependencies** from frontend and backend
 - **Created custom Node.js/Express backend** with full REST API
-- **Implemented PostgreSQL schema** with 7 tables and relationships
+- **Implemented PostgreSQL schema** with 8 tables (users, petitions, signatures, campaigns, campaign_logs, message_templates, linkbio_pages, linktree_pages)
 - **Added file upload functionality** using Multer (local storage)
 - **Updated frontend API client** to use new backend
 - **Fixed critical routing bug**: Slug routes now registered before /:id routes
