@@ -1,0 +1,416 @@
+📊 Schema Completo para Supabase - PetiçõesBR
+Aqui está a documentação completa de TODAS as tabelas e campos para criar no Supabase:
+
+📋 Resumo das Tabelas
+#	Tabela	Descrição	Campos
+1	users	Usuários do sistema	11 campos
+2	petitions	Petições criadas	18 campos
+3	signatures	Assinaturas das petições	12 campos
+4	campaigns	Campanhas WhatsApp/Email	21 campos
+5	campaign_logs	Logs de envio de campanhas	10 campos
+6	linkbio_pages	Páginas LinkBio	11 campos
+7	message_templates	Templates de mensagens	9 campos
+1️⃣ Tabela: users
+Descrição: Usuários do sistema (administradores e criadores de petições)
+
+Campo	Tipo	Obrigatório	Default	Constraints	Descrição
+id	uuid	✅	uuid_generate_v4()	PRIMARY KEY	ID único do usuário
+email	varchar(255)	✅	-	UNIQUE	Email do usuário
+password	varchar(255)	✅	-	-	Senha hasheada (bcrypt)
+full_name	varchar(255)	✅	-	-	Nome completo
+role	varchar(50)	✅	'user'	CHECK IN ('user', 'admin')	Papel do usuário
+phone	varchar(50)	❌	NULL	-	Telefone (opcional)
+avatar_url	text	❌	NULL	-	URL do avatar
+preferences	jsonb	❌	'{}'	-	Preferências do usuário
+email_verified	boolean	❌	false	-	Email verificado?
+created_date	timestamp	✅	NOW()	-	Data de criação
+updated_date	timestamp	✅	NOW()	-	Data de atualização
+Índices:
+
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_role ON users(role);
+2️⃣ Tabela: petitions
+Descrição: Petições criadas pelos usuários
+
+Campo	Tipo	Obrigatório	Default	Constraints	Descrição
+id	uuid	✅	uuid_generate_v4()	PRIMARY KEY	ID único da petição
+title	varchar(500)	✅	-	-	Título da petição
+description	text	✅	-	-	Descrição completa
+banner_url	text	❌	NULL	-	URL do banner (fundo)
+logo_url	text	❌	NULL	-	URL da logo (quadrada)
+primary_color	varchar(7)	❌	'#6366f1'	-	Cor primária (hex)
+share_text	text	❌	NULL	-	Texto de compartilhamento
+goal	integer	✅	-	CHECK (goal > 0)	Meta de assinaturas
+status	varchar(50)	✅	'rascunho'	CHECK IN ('rascunho', 'publicada', 'pausada', 'concluida')	Status da petição
+slug	varchar(255)	❌	NULL	UNIQUE	URL amigável
+collect_phone	boolean	❌	false	-	Coletar telefone?
+collect_city	boolean	❌	true	-	Coletar cidade?
+collect_state	boolean	❌	false	-	Coletar estado?
+collect_cpf	boolean	❌	false	-	Coletar CPF?
+collect_comment	boolean	❌	true	-	Permitir comentário?
+views_count	integer	❌	0	-	Contador de visualizações
+created_by	varchar(255)	❌	NULL	-	Email do criador
+created_date	timestamp	✅	NOW()	-	Data de criação
+updated_date	timestamp	✅	NOW()	-	Data de atualização
+Índices:
+
+CREATE INDEX idx_petitions_status ON petitions(status);
+CREATE INDEX idx_petitions_slug ON petitions(slug);
+CREATE INDEX idx_petitions_created_by ON petitions(created_by);
+3️⃣ Tabela: signatures
+Descrição: Assinaturas das petições
+
+Campo	Tipo	Obrigatório	Default	Constraints	Descrição
+id	uuid	✅	uuid_generate_v4()	PRIMARY KEY	ID único da assinatura
+petition_id	uuid	✅	-	FOREIGN KEY → petitions(id) ON DELETE CASCADE	ID da petição
+name	varchar(255)	✅	-	-	Nome do assinante
+email	varchar(255)	✅	-	-	Email do assinante
+phone	varchar(50)	❌	NULL	-	Telefone
+city	varchar(255)	❌	NULL	-	Cidade
+state	varchar(50)	❌	NULL	-	Estado (UF)
+cpf	varchar(14)	❌	NULL	-	CPF
+comment	text	❌	NULL	-	Comentário do assinante
+created_by	varchar(255)	❌	NULL	-	Email (se logado)
+created_date	timestamp	✅	NOW()	-	Data da assinatura
+updated_date	timestamp	✅	NOW()	-	Data de atualização
+Constraint UNIQUE:
+
+UNIQUE(petition_id, email) -- Uma pessoa só pode assinar uma vez
+Índices:
+
+CREATE INDEX idx_signatures_petition_id ON signatures(petition_id);
+CREATE INDEX idx_signatures_email ON signatures(email);
+CREATE INDEX idx_signatures_city ON signatures(city);
+CREATE INDEX idx_signatures_state ON signatures(state);
+CREATE INDEX idx_signatures_created_date ON signatures(created_date DESC);
+Relacionamento:
+
+petition_id → petitions.id (CASCADE DELETE)
+4️⃣ Tabela: campaigns
+Descrição: Campanhas de marketing (WhatsApp/Email)
+
+Campo	Tipo	Obrigatório	Default	Constraints	Descrição
+id	uuid	✅	uuid_generate_v4()	PRIMARY KEY	ID único da campanha
+name	varchar(255)	✅	-	-	Nome da campanha
+type	varchar(50)	✅	-	CHECK IN ('whatsapp', 'email')	Tipo da campanha
+status	varchar(50)	✅	'rascunho'	CHECK IN ('rascunho', 'agendada', 'enviando', 'concluida', 'pausada')	Status
+petition_id	uuid	❌	NULL	FOREIGN KEY → petitions(id) ON DELETE SET NULL	Petição principal (deprecated)
+target_petitions	text[]	❌	NULL	-	Array de IDs de petições
+target_filters	jsonb	❌	'{}'	-	Filtros (cidade, estado, data)
+message	text	✅	-	-	Mensagem (com placeholders)
+subject	varchar(500)	❌	NULL	-	Assunto (apenas email)
+sender_email	varchar(255)	❌	NULL	-	Email remetente
+sender_name	varchar(255)	❌	NULL	-	Nome do remetente
+scheduled_date	timestamp	❌	NULL	-	Data agendada
+sent_count	integer	❌	0	-	Quantidade enviada
+success_count	integer	❌	0	-	Quantidade com sucesso
+failed_count	integer	❌	0	-	Quantidade com falha
+total_recipients	integer	❌	0	-	Total de destinatários
+api_token	text	❌	NULL	-	Token API (criptografado)
+delay_seconds	integer	❌	3	CHECK (delay_seconds >= 1)	Delay entre envios
+messages_per_hour	integer	❌	20	CHECK (messages_per_hour > 0)	Limite por hora
+avoid_night_hours	boolean	❌	true	-	Evitar horário noturno?
+created_by	varchar(255)	❌	NULL	-	Email do criador
+created_date	timestamp	✅	NOW()	-	Data de criação
+updated_date	timestamp	✅	NOW()	-	Data de atualização
+Índices:
+
+CREATE INDEX idx_campaigns_type ON campaigns(type);
+CREATE INDEX idx_campaigns_status ON campaigns(status);
+CREATE INDEX idx_campaigns_petition_id ON campaigns(petition_id);
+Relacionamento:
+
+petition_id → petitions.id (SET NULL ON DELETE)
+5️⃣ Tabela: campaign_logs
+Descrição: Logs detalhados de envio de campanhas
+
+Campo	Tipo	Obrigatório	Default	Constraints	Descrição
+id	uuid	✅	uuid_generate_v4()	PRIMARY KEY	ID único do log
+campaign_id	uuid	✅	-	FOREIGN KEY → campaigns(id) ON DELETE CASCADE	ID da campanha
+recipient_name	varchar(255)	✅	-	-	Nome do destinatário
+recipient_contact	varchar(255)	✅	-	-	Email ou telefone
+status	varchar(50)	✅	-	CHECK IN ('success', 'error')	Status do envio
+response_status	varchar(10)	❌	NULL	-	Código HTTP ou status
+response_body	text	❌	NULL	-	Resposta completa da API
+error_message	text	❌	NULL	-	Mensagem de erro
+created_by	varchar(255)	❌	NULL	-	Email (sistema)
+created_date	timestamp	✅	NOW()	-	Data do envio
+updated_date	timestamp	✅	NOW()	-	Data de atualização
+Índices:
+
+CREATE INDEX idx_campaign_logs_campaign_id ON campaign_logs(campaign_id);
+CREATE INDEX idx_campaign_logs_status ON campaign_logs(status);
+CREATE INDEX idx_campaign_logs_created_date ON campaign_logs(created_date DESC);
+Relacionamento:
+
+campaign_id → campaigns.id (CASCADE DELETE)
+6️⃣ Tabela: linkbio_pages
+Descrição: Páginas LinkBio (agrupamento de petições)
+
+Campo	Tipo	Obrigatório	Default	Constraints	Descrição
+id	uuid	✅	uuid_generate_v4()	PRIMARY KEY	ID único da página
+title	varchar(255)	✅	-	-	Título da página
+slug	varchar(255)	✅	-	UNIQUE	URL amigável
+description	text	❌	NULL	-	Descrição da página
+avatar_url	text	❌	NULL	-	URL do avatar/logo
+background_color	varchar(7)	❌	'#6366f1'	-	Cor de fundo (hex)
+status	varchar(50)	✅	'rascunho'	CHECK IN ('rascunho', 'publicada')	Status da página
+petition_ids	text[]	❌	NULL	-	Array de IDs de petições
+views_count	integer	❌	0	-	Contador de visualizações
+created_by	varchar(255)	❌	NULL	-	Email do criador
+created_date	timestamp	✅	NOW()	-	Data de criação
+updated_date	timestamp	✅	NOW()	-	Data de atualização
+Índices:
+
+CREATE INDEX idx_linkbio_pages_slug ON linkbio_pages(slug);
+CREATE INDEX idx_linkbio_pages_status ON linkbio_pages(status);
+7️⃣ Tabela: message_templates
+Descrição: Templates de mensagens para campanhas
+
+Campo	Tipo	Obrigatório	Default	Constraints	Descrição
+id	uuid	✅	uuid_generate_v4()	PRIMARY KEY	ID único do template
+name	varchar(255)	✅	-	-	Nome do template
+type	varchar(50)	✅	-	CHECK IN ('whatsapp', 'email')	Tipo do template
+subject	varchar(500)	❌	NULL	-	Assunto (apenas email)
+content	text	✅	-	-	Conteúdo do template
+is_default	boolean	❌	false	-	É template padrão?
+thumbnail_url	text	❌	NULL	-	URL da thumbnail
+created_by	varchar(255)	❌	NULL	-	Email do criador
+created_date	timestamp	✅	NOW()	-	Data de criação
+updated_date	timestamp	✅	NOW()	-	Data de atualização
+Índices:
+
+CREATE INDEX idx_message_templates_type ON message_templates(type);
+CREATE INDEX idx_message_templates_is_default ON message_templates(is_default);
+🔄 Relacionamentos (Foreign Keys)
+signatures.petition_id → petitions.id (CASCADE DELETE)
+campaigns.petition_id → petitions.id (SET NULL ON DELETE)
+campaign_logs.campaign_id → campaigns.id (CASCADE DELETE)
+🎯 Triggers (Auto-Update de updated_date)
+Para TODAS as tabelas, crie este trigger:
+
+CREATE OR REPLACE FUNCTION update_updated_date()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_date = NOW();
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Aplique em cada tabela:
+CREATE TRIGGER update_users_updated_date 
+    BEFORE UPDATE ON users
+    FOR EACH ROW EXECUTE FUNCTION update_updated_date();
+
+CREATE TRIGGER update_petitions_updated_date 
+    BEFORE UPDATE ON petitions
+    FOR EACH ROW EXECUTE FUNCTION update_updated_date();
+
+CREATE TRIGGER update_signatures_updated_date 
+    BEFORE UPDATE ON signatures
+    FOR EACH ROW EXECUTE FUNCTION update_updated_date();
+
+CREATE TRIGGER update_campaigns_updated_date 
+    BEFORE UPDATE ON campaigns
+    FOR EACH ROW EXECUTE FUNCTION update_updated_date();
+
+CREATE TRIGGER update_campaign_logs_updated_date 
+    BEFORE UPDATE ON campaign_logs
+    FOR EACH ROW EXECUTE FUNCTION update_updated_date();
+
+CREATE TRIGGER update_linkbio_pages_updated_date 
+    BEFORE UPDATE ON linkbio_pages
+    FOR EACH ROW EXECUTE FUNCTION update_updated_date();
+
+CREATE TRIGGER update_message_templates_updated_date 
+    BEFORE UPDATE ON message_templates
+    FOR EACH ROW EXECUTE FUNCTION update_updated_date();
+📊 SQL Completo para Supabase
+Copie e cole este SQL no SQL Editor do Supabase:
+
+-- Habilitar extensão UUID
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- TABELA 1: users
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    full_name VARCHAR(255) NOT NULL,
+    role VARCHAR(50) DEFAULT 'user' CHECK (role IN ('user', 'admin')),
+    phone VARCHAR(50),
+    avatar_url TEXT,
+    preferences JSONB DEFAULT '{}',
+    email_verified BOOLEAN DEFAULT false,
+    created_date TIMESTAMP DEFAULT NOW(),
+    updated_date TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_role ON users(role);
+
+-- TABELA 2: petitions
+CREATE TABLE petitions (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title VARCHAR(500) NOT NULL,
+    description TEXT NOT NULL,
+    banner_url TEXT,
+    logo_url TEXT,
+    primary_color VARCHAR(7) DEFAULT '#6366f1',
+    share_text TEXT,
+    goal INTEGER NOT NULL CHECK (goal > 0),
+    status VARCHAR(50) DEFAULT 'rascunho' CHECK (status IN ('rascunho', 'publicada', 'pausada', 'concluida')),
+    slug VARCHAR(255) UNIQUE,
+    collect_phone BOOLEAN DEFAULT false,
+    collect_city BOOLEAN DEFAULT true,
+    collect_state BOOLEAN DEFAULT false,
+    collect_cpf BOOLEAN DEFAULT false,
+    collect_comment BOOLEAN DEFAULT true,
+    views_count INTEGER DEFAULT 0,
+    created_by VARCHAR(255),
+    created_date TIMESTAMP DEFAULT NOW(),
+    updated_date TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_petitions_status ON petitions(status);
+CREATE INDEX idx_petitions_slug ON petitions(slug);
+CREATE INDEX idx_petitions_created_by ON petitions(created_by);
+
+-- TABELA 3: signatures
+CREATE TABLE signatures (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    petition_id UUID REFERENCES petitions(id) ON DELETE CASCADE NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(50),
+    city VARCHAR(255),
+    state VARCHAR(50),
+    cpf VARCHAR(14),
+    comment TEXT,
+    created_by VARCHAR(255),
+    created_date TIMESTAMP DEFAULT NOW(),
+    updated_date TIMESTAMP DEFAULT NOW(),
+    UNIQUE(petition_id, email)
+);
+
+CREATE INDEX idx_signatures_petition_id ON signatures(petition_id);
+CREATE INDEX idx_signatures_email ON signatures(email);
+CREATE INDEX idx_signatures_city ON signatures(city);
+CREATE INDEX idx_signatures_state ON signatures(state);
+CREATE INDEX idx_signatures_created_date ON signatures(created_date DESC);
+
+-- TABELA 4: campaigns
+CREATE TABLE campaigns (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255) NOT NULL,
+    type VARCHAR(50) NOT NULL CHECK (type IN ('whatsapp', 'email')),
+    status VARCHAR(50) DEFAULT 'rascunho' CHECK (status IN ('rascunho', 'agendada', 'enviando', 'concluida', 'pausada')),
+    petition_id UUID REFERENCES petitions(id) ON DELETE SET NULL,
+    target_petitions TEXT[],
+    target_filters JSONB DEFAULT '{}',
+    message TEXT NOT NULL,
+    subject VARCHAR(500),
+    sender_email VARCHAR(255),
+    sender_name VARCHAR(255),
+    scheduled_date TIMESTAMP,
+    sent_count INTEGER DEFAULT 0,
+    success_count INTEGER DEFAULT 0,
+    failed_count INTEGER DEFAULT 0,
+    total_recipients INTEGER DEFAULT 0,
+    api_token TEXT,
+    delay_seconds INTEGER DEFAULT 3 CHECK (delay_seconds >= 1),
+    messages_per_hour INTEGER DEFAULT 20 CHECK (messages_per_hour > 0),
+    avoid_night_hours BOOLEAN DEFAULT true,
+    created_by VARCHAR(255),
+    created_date TIMESTAMP DEFAULT NOW(),
+    updated_date TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_campaigns_type ON campaigns(type);
+CREATE INDEX idx_campaigns_status ON campaigns(status);
+CREATE INDEX idx_campaigns_petition_id ON campaigns(petition_id);
+
+-- TABELA 5: campaign_logs
+CREATE TABLE campaign_logs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    campaign_id UUID REFERENCES campaigns(id) ON DELETE CASCADE NOT NULL,
+    recipient_name VARCHAR(255) NOT NULL,
+    recipient_contact VARCHAR(255) NOT NULL,
+    status VARCHAR(50) NOT NULL CHECK (status IN ('success', 'error')),
+    response_status VARCHAR(10),
+    response_body TEXT,
+    error_message TEXT,
+    created_by VARCHAR(255),
+    created_date TIMESTAMP DEFAULT NOW(),
+    updated_date TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_campaign_logs_campaign_id ON campaign_logs(campaign_id);
+CREATE INDEX idx_campaign_logs_status ON campaign_logs(status);
+CREATE INDEX idx_campaign_logs_created_date ON campaign_logs(created_date DESC);
+
+-- TABELA 6: linkbio_pages
+CREATE TABLE linkbio_pages (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    description TEXT,
+    avatar_url TEXT,
+    background_color VARCHAR(7) DEFAULT '#6366f1',
+    status VARCHAR(50) DEFAULT 'rascunho' CHECK (status IN ('rascunho', 'publicada')),
+    petition_ids TEXT[],
+    views_count INTEGER DEFAULT 0,
+    created_by VARCHAR(255),
+    created_date TIMESTAMP DEFAULT NOW(),
+    updated_date TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_linkbio_pages_slug ON linkbio_pages(slug);
+CREATE INDEX idx_linkbio_pages_status ON linkbio_pages(status);
+
+-- TABELA 7: message_templates
+CREATE TABLE message_templates (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255) NOT NULL,
+    type VARCHAR(50) NOT NULL CHECK (type IN ('whatsapp', 'email')),
+    subject VARCHAR(500),
+    content TEXT NOT NULL,
+    is_default BOOLEAN DEFAULT false,
+    thumbnail_url TEXT,
+    created_by VARCHAR(255),
+    created_date TIMESTAMP DEFAULT NOW(),
+    updated_date TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_message_templates_type ON message_templates(type);
+CREATE INDEX idx_message_templates_is_default ON message_templates(is_default);
+
+-- TRIGGERS para updated_date
+CREATE OR REPLACE FUNCTION update_updated_date()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_date = NOW();
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_users_updated_date BEFORE UPDATE ON users
+    FOR EACH ROW EXECUTE FUNCTION update_updated_date();
+
+CREATE TRIGGER update_petitions_updated_date BEFORE UPDATE ON petitions
+    FOR EACH ROW EXECUTE FUNCTION update_updated_date();
+
+CREATE TRIGGER update_signatures_updated_date BEFORE UPDATE ON signatures
+    FOR EACH ROW EXECUTE FUNCTION update_updated_date();
+
+CREATE TRIGGER update_campaigns_updated_date BEFORE UPDATE ON campaigns
+    FOR EACH ROW EXECUTE FUNCTION update_updated_date();
+
+CREATE TRIGGER update_campaign_logs_updated_date BEFORE UPDATE ON campaign_logs
+    FOR EACH ROW EXECUTE FUNCTION update_updated_date();
+
+CREATE TRIGGER update_linkbio_pages_updated_date BEFORE UPDATE ON linkbio_pages
+    FOR EACH ROW EXECUTE FUNCTION update_updated_date();
+
+CREATE TRIGGER update_message_templates_updated_date BEFORE UPDATE ON message_templates
+    FOR EACH ROW EXECUTE FUNCTION update_updated_date();

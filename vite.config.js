@@ -26,10 +26,9 @@ export default defineConfig({
     strictPort: true,
     allowedHosts: true,
     proxy: {
-      '/supabase': {
-        target: process.env.VITE_SUPABASE_URL || 'https://supabase.wescctech.com.br',
+      '/api': {
+        target: 'http://localhost:3001',
         changeOrigin: true,
-        rewrite: (p) => p.replace(/^\/supabase/, ''),
       },
     },
   },

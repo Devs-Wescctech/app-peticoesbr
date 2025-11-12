@@ -13,6 +13,7 @@ import messageTemplatesRouter from './routes/message-templates.js';
 import linktreePagesRouter from './routes/linktree-pages.js';
 import linkbioPagesRouter from './routes/linkbio-pages.js';
 import uploadRouter from './routes/upload.js';
+import usersRouter from './routes/users.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+app.use('/api/users', usersRouter);
 app.use('/api/petitions', petitionsRouter);
 app.use('/api/signatures', signaturesRouter);
 app.use('/api/campaigns', campaignsRouter);

@@ -19,31 +19,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { motion } from "framer-motion";
-
-/* ============================
-   Supabase REST (self-hosted)
-   ============================ */
-const API_BASE = import.meta.env.VITE_SUPABASE_URL;      // ex.: https://supabase.wescctech.com.br
-const ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY; // Anon key
-
-async function getJson(urlPath, extraHeaders = {}) {
-  const r = await fetch(urlPath, {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      "content-type": "application/json",
-      apikey: ANON_KEY,
-      authorization: `Bearer ${ANON_KEY}`,
-      ...extraHeaders,
-    },
-    credentials: "omit",
-  });
-  if (!r.ok) {
-    const text = await r.text();
-    throw new Error(text || `Erro HTTP ${r.status}`);
-  }
-  return r.json();
-}
+import { base44 } from "@/api";
 
 export default function PetitionsList() {
   const navigate = useNavigate();
@@ -52,30 +28,23 @@ export default function PetitionsList() {
   const [statusFilter, setStatusFilter] = useState("todas");
   const itemsPerPage = 9;
 
-  // Petições diretamente na tabela, filtrando publicadas (RLS precisa permitir SELECT quando status='publicada')
   const {
     data: petitions = [],
     isLoading: isLoadingPetitions,
     error: petitionsError,
   } = useQuery({
     queryKey: ["petitions-publicadas"],
-    queryFn: () =>
-      getJson(
-        `${API_BASE}/rest/v1/petitions` +
-          `?select=id,slug,title,description,banner_url,status,goal,created_date` +
-          `&status=eq.publicada&order=created_date.desc`
-      ),
+    queryFn: () => base44.entities.Petition.list(),
     initialData: [],
   });
 
-  // Assinaturas mínimas para contagem por petition_id
   const {
     data: signatures = [],
     isLoading: isLoadingSignatures,
     error: signaturesError,
   } = useQuery({
     queryKey: ["signatures-minimal"],
-    queryFn: () => getJson(`${API_BASE}/rest/v1/signatures?select=petition_id`),
+    queryFn: () => base44.entities.Signature.list(),
     initialData: [],
   });
 
@@ -154,17 +123,7 @@ export default function PetitionsList() {
             {(petitionsError || signaturesError)?.message || "desconhecido"}
           </div>
           <div className="mt-4 text-xs opacity-70">
-            Verifique se:
-            <ul className="list-disc text-left mt-2 pl-5">
-              <li>
-                <code>VITE_SUPABASE_URL</code> e{" "}
-                <code>VITE_SUPABASE_ANON_KEY</code> estão corretos no build.
-              </li>
-              <li>
-                A policy de <code>SELECT</code> em <code>public.petitions</code>{" "}
-                permite anon quando <code>status='publicada'</code>.
-              </li>
-            </ul>
+            Verifique se o backend está rodando corretamente na porta 3001.
           </div>
         </div>
       </div>
