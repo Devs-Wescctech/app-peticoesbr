@@ -16,11 +16,18 @@ class APIClient {
       }
     }
     
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+    
+    const token = localStorage.getItem('token');
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    
     const options = {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers,
     };
     
     if (body) {
@@ -83,8 +90,15 @@ export async function uploadFile(file) {
   const formData = new FormData();
   formData.append('file', file);
   
+  const headers = {};
+  const token = localStorage.getItem('token');
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  
   const response = await fetch(`${API_BASE_URL}/upload`, {
     method: 'POST',
+    headers,
     body: formData,
   });
   

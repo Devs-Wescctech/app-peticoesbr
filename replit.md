@@ -44,6 +44,14 @@ The frontend utilizes Radix UI for accessible and customizable components, style
 
 ## Recent Changes
 
+### November 12, 2025 - JWT Authentication Fix in Frontend API Client
+- **Critical Bug Fix**: Updated `src/api/client.js` to include JWT token in all API requests
+- **Issue**: APIClient was not sending Authorization header, causing 403 errors for all protected endpoints
+- **Solution**: Modified APIClient.request() to automatically read token from localStorage and include in Authorization header
+- **Impact**: All petition/campaign/signature endpoints now work correctly with authentication
+- **Updated**: uploadFile() function also includes Authorization header for file uploads
+- **Password Reset**: Updated all test user passwords to documented values (admin123, demo123, teste123)
+
 ### November 12, 2025 - Complete Super Admin Management Panel Implementation
 - **Backend APIs Expansion** - Complete CRUD functionality for system management:
   - User Management: `POST /api/admin/users` (create), `PUT /api/admin/users/:id` (update), `DELETE /api/admin/users/:id` (delete)
