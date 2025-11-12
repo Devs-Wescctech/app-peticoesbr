@@ -55,6 +55,10 @@ export default function WhatsAppCampaigns() {
       const allCampaigns = await base44.entities.Campaign.list('-created_date');
       return allCampaigns.filter(c => c.type === 'whatsapp');
     },
+    refetchInterval: (data) => {
+      const hasActiveCampaigns = data?.some(c => c.status === 'enviando');
+      return hasActiveCampaigns ? 3000 : false;
+    },
   });
 
   const { data: petitions = [] } = useQuery({

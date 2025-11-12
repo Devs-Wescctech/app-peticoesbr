@@ -675,6 +675,15 @@ export default function CreateEmailCampaign() {
       setSendProgress(((i + 1) / filteredSignatures.length) * 100);
       setSendResults({ success, failed, total: filteredSignatures.length });
 
+      // Atualiza a campanha no banco a cada 5 mensagens para exibir progresso em tempo real
+      if ((i + 1) % 5 === 0 || (i + 1) === filteredSignatures.length) {
+        await base44.entities.Campaign.update(currentCampaignId, {
+          sent_count: success + failed,
+          success_count: success,
+          failed_count: failed,
+        });
+      }
+
       // Delay entre envios (1 segundo)
       await new Promise(resolve => setTimeout(resolve, 1000));
     }

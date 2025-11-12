@@ -401,6 +401,15 @@ export default function CreateWhatsAppCampaign() {
       setSendProgress(((i + 1) / filteredSignatures.length) * 100);
       setSendResults({ success, failed, total: filteredSignatures.length });
 
+      // Atualiza a campanha no banco a cada 5 mensagens para exibir progresso em tempo real
+      if ((i + 1) % 5 === 0 || (i + 1) === filteredSignatures.length) {
+        await base44.entities.Campaign.update(currentCampaignId, {
+          sent_count: success + failed,
+          success_count: success,
+          failed_count: failed,
+        });
+      }
+
       // Delay configurável entre envios
       const delayMs = (formData.delay_seconds || 3) * 1000;
       await new Promise(resolve => setTimeout(resolve, delayMs));

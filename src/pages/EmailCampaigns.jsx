@@ -41,6 +41,10 @@ export default function EmailCampaigns() {
       const allCampaigns = await base44.entities.Campaign.list('-created_date');
       return allCampaigns.filter(c => c.type === 'email');
     },
+    refetchInterval: (data) => {
+      const hasActiveCampaigns = data?.some(c => c.status === 'enviando');
+      return hasActiveCampaigns ? 3000 : false;
+    },
   });
 
   const { data: petitions = [] } = useQuery({

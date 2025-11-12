@@ -216,6 +216,13 @@ The application uses `BrowserRouter` with a dynamic basename read from `import.m
 
 ## Recent Changes
 
+### 2025-11-12: Real-Time Campaign Progress Updates
+- **Added auto-refresh polling**: Campaign pages now poll every 3 seconds when campaigns are "enviando" (sending)
+- **Database updates during send**: Campaigns update counters every 5 messages for real-time visibility
+- **Smart polling**: Only polls when active campaigns exist, stops when all campaigns are idle
+- **Files modified**: WhatsAppCampaigns.jsx, EmailCampaigns.jsx, CreateWhatsAppCampaign.jsx, CreateEmailCampaign.jsx
+- **Result**: Campaign cards now show live progress (sent_count, success_count, failed_count) without manual refresh
+
 ### 2025-11-12: React Query Cache Fixes - Auto-Refresh Lists & Campaign Logs
 - **Fixed list auto-refresh**: Changed PetitionsList.jsx queryKey from ["petitions-publicadas"] to ["petitions"] to match mutation invalidations
 - **Removed all initialData**: Eliminated 12+ instances of `initialData: []` that prevented immediate data fetching
