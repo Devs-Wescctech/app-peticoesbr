@@ -50,6 +50,7 @@ export default function PetitionLanding() {
       const petitions = await base44.entities.Petition.list();
       return petitions.find(p => p.slug === slug);
     },
+    enabled: !!slug,
   });
 
   const { data: signatures = [] } = useQuery({
@@ -58,7 +59,6 @@ export default function PetitionLanding() {
       const allSignatures = await base44.entities.Signature.list();
       return allSignatures.filter(s => s.petition_id === petition.id);
     },
-    initialData: [],
     enabled: !!petition,
   });
 

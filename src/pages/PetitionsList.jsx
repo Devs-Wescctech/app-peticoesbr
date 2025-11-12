@@ -35,7 +35,6 @@ export default function PetitionsList() {
   } = useQuery({
     queryKey: ["petitions-publicadas"],
     queryFn: () => base44.entities.Petition.list(),
-    initialData: [],
   });
 
   const {
@@ -45,7 +44,6 @@ export default function PetitionsList() {
   } = useQuery({
     queryKey: ["signatures-minimal"],
     queryFn: () => base44.entities.Signature.list(),
-    initialData: [],
   });
 
   const getSignaturesForPetition = (petitionId) =>

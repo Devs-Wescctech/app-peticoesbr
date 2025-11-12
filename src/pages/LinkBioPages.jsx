@@ -64,19 +64,16 @@ export default function LinkBioPages() {
   const { data: pages = [] } = useQuery({
     queryKey: ['linkbio-pages'],
     queryFn: () => base44.entities.LinkBioPage.list('-created_date'),
-    initialData: [],
   });
 
   const { data: petitions = [] } = useQuery({
     queryKey: ['petitions'],
     queryFn: () => base44.entities.Petition.list(),
-    initialData: [],
   });
 
   const { data: signatures = [] } = useQuery({
     queryKey: ['signatures'],
     queryFn: () => base44.entities.Signature.list(),
-    initialData: [],
   });
 
   const createMutation = useMutation({
@@ -247,10 +244,11 @@ export default function LinkBioPages() {
               </p>
             </div>
 
-            <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
+            <Dialog open={isDialogOpen} onOpenChange={(open) => { if (!open) handleCloseDialog(); else setIsDialogOpen(true); }}>
               <DialogTrigger asChild>
                 <Button
                   size="lg"
+                  onClick={() => setIsDialogOpen(true)}
                   className="bg-white text-indigo-600 hover:bg-white/90 shadow-2xl hover:shadow-white/20 transition-all duration-300 hover:scale-105 font-semibold"
                 >
                   <Plus className="w-5 h-5 mr-2" />

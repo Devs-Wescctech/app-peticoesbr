@@ -12,13 +12,11 @@ export default function Dashboard() {
   const { data: petitions = [], isLoading: loadingPetitions } = useQuery({
     queryKey: ['petitions'],
     queryFn: () => base44.entities.Petition.list('-created_date'),
-    initialData: [],
   });
 
   const { data: signatures = [], isLoading: loadingSignatures } = useQuery({
     queryKey: ['signatures'],
     queryFn: () => base44.entities.Signature.list(),
-    initialData: [],
   });
 
   const activePetitions = petitions.filter(p => p.status === 'publicada');

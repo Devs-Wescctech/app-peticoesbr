@@ -42,6 +42,7 @@ export default function PetitionDetails() {
       const petitions = await base44.entities.Petition.list();
       return petitions.find(p => p.id === petitionId);
     },
+    enabled: !!petitionId,
   });
 
   const { data: signatures = [] } = useQuery({
@@ -50,7 +51,7 @@ export default function PetitionDetails() {
       const allSignatures = await base44.entities.Signature.list('-created_date');
       return allSignatures.filter(s => s.petition_id === petitionId);
     },
-    initialData: [],
+    enabled: !!petitionId,
   });
 
   const deleteMutation = useMutation({
