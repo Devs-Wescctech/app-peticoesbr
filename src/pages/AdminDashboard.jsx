@@ -297,12 +297,15 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleDeleteTenant = async (tenantId, tenantName) => {
-    if (!confirm(`Tem certeza que deseja deletar o tenant "${tenantName}"? Esta ação é irreversível!`)) return;
+  const handleDeleteTenant = (tenantId, tenantName) => {
+    setDeleteTenantDialog({ open: true, target: { id: tenantId, name: tenantName }, loading: false });
+  };
 
+  const confirmDeleteTenant = async () => {
     try {
+      setDeleteTenantDialog(prev => ({ ...prev, loading: true }));
       const token = localStorage.getItem('token');
-      const res = await fetch(`/api/admin/tenants/${tenantId}`, {
+      const res = await fetch(`/api/admin/tenants/${deleteTenantDialog.target.id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -310,9 +313,11 @@ export default function AdminDashboard() {
       if (!res.ok) throw new Error('Erro ao deletar tenant');
 
       toast.success('Tenant deletado com sucesso!');
+      setDeleteTenantDialog({ open: false, target: null, loading: false });
       await loadAdminData(true);
     } catch (err) {
       toast.error(err.message);
+      setDeleteTenantDialog(prev => ({ ...prev, loading: false }));
     }
   };
 
@@ -351,12 +356,19 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleRemoveAssignment = async (assignmentId) => {
-    if (!confirm('Tem certeza que deseja remover esta atribuição?')) return;
+  const handleRemoveAssignment = (assignmentId, userName, tenantName) => {
+    setRemoveAssignmentDialog({ 
+      open: true, 
+      target: { id: assignmentId, userName, tenantName }, 
+      loading: false 
+    });
+  };
 
+  const confirmRemoveAssignment = async () => {
     try {
+      setRemoveAssignmentDialog(prev => ({ ...prev, loading: true }));
       const token = localStorage.getItem('token');
-      const res = await fetch(`/api/admin/tenant-users/${assignmentId}`, {
+      const res = await fetch(`/api/admin/tenant-users/${removeAssignmentDialog.target.id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -364,9 +376,11 @@ export default function AdminDashboard() {
       if (!res.ok) throw new Error('Erro ao remover atribuição');
 
       toast.success('Atribuição removida com sucesso!');
+      setRemoveAssignmentDialog({ open: false, target: null, loading: false });
       await loadAdminData(true);
     } catch (err) {
       toast.error(err.message);
+      setRemoveAssignmentDialog(prev => ({ ...prev, loading: false }));
     }
   };
 
@@ -811,7 +825,7 @@ export default function AdminDashboard() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleRemoveAssignment(assignment.id)}
+                          onClick={() => handleRemoveAssignment(assignment.id, assignment.full_name, assignment.tenant_name)}
                           className="hover:bg-rose-50 hover:border-rose-300 hover:text-rose-600 transition-all"
                         >
                           <Trash2 className="w-4 h-4 mr-1" />
@@ -1181,6 +1195,43 @@ export default function AdminDashboard() {
           </form>
         </DialogContent>
       </Dialog>
+
+      {/* Confirmation Dialogs */}
+      <ConfirmDialog
+        isOpen={deleteUserDialog.open}
+        onClose={() => setDeleteUserDialog({ open: false, target: null, loading: false })}
+        onConfirm={confirmDeleteUser}
+        title="Excluir Usuário"
+        description={`Tem certeza que deseja excluir o usuário "${deleteUserDialog.target?.name}"? Esta ação não pode ser desfeita.`}
+        confirmText="Excluir"
+        cancelText="Cancelar"
+        variant="destructive"
+        loading={deleteUserDialog.loading}
+      />
+
+      <ConfirmDialog
+        isOpen={deleteTenantDialog.open}
+        onClose={() => setDeleteTenantDialog({ open: false, target: null, loading: false })}
+        onConfirm={confirmDeleteTenant}
+        title="Excluir Tenant"
+        description={`Tem certeza que deseja excluir o tenant "${deleteTenantDialog.target?.name}"? Todos os dados associados serão permanentemente removidos.`}
+        confirmText="Excluir"
+        cancelText="Cancelar"
+        variant="destructive"
+        loading={deleteTenantDialog.loading}
+      />
+
+      <ConfirmDialog
+        isOpen={removeAssignmentDialog.open}
+        onClose={() => setRemoveAssignmentDialog({ open: false, target: null, loading: false })}
+        onConfirm={confirmRemoveAssignment}
+        title="Remover Atribuição"
+        description={`Tem certeza que deseja remover a atribuição de "${removeAssignmentDialog.target?.userName}" do tenant "${removeAssignmentDialog.target?.tenantName}"?`}
+        confirmText="Remover"
+        cancelText="Cancelar"
+        variant="destructive"
+        loading={removeAssignmentDialog.loading}
+      />
     </div>
   );
 }
