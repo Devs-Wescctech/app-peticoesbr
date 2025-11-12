@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import {
   LayoutDashboard,
@@ -14,6 +14,7 @@ import {
   Mail,
   ChevronLeft,
   ChevronRight,
+  LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -52,6 +53,7 @@ const navigationItems = [
 
 export default function Layout({ children, currentPageName }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
 
@@ -60,7 +62,14 @@ export default function Layout({ children, currentPageName }) {
 
   const isPublicPage = currentPageName === 'PetitionLanding' || 
                        currentPageName === 'p' || 
-                       currentPageName === 'bio';
+                       currentPageName === 'bio' ||
+                       currentPageName === 'Login';
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/Login');
+  };
 
   if (isPublicPage) {
     return <>{children}</>;
@@ -143,6 +152,20 @@ export default function Layout({ children, currentPageName }) {
             );
           })}
         </nav>
+
+        {/* Logout Button */}
+        <div className="border-t border-gray-100 p-3">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200"
+            title="Sair"
+          >
+            <LogOut className="w-5 h-5 shrink-0" />
+            {!sidebarCollapsed && (
+              <span className="font-medium text-sm">Sair</span>
+            )}
+          </button>
+        </div>
 
         {/* Toggle Button */}
         <div className="border-t border-gray-100">

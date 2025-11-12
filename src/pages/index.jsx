@@ -1,5 +1,7 @@
 import Layout from "./Layout.jsx";
+import PrivateRoute from "../components/PrivateRoute";
 
+import Login from "./Login";
 import Dashboard from "./Dashboard";
 import AdminDashboard from "./AdminDashboard";
 import CreatePetition from "./CreatePetition";
@@ -22,7 +24,7 @@ import LinkBioPages from "./LinkBioPages";
 import PPage from "./p";
 import BioPage from "./bio";
 
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from "react-router-dom";
 
 const PAGES = {
   Dashboard,
@@ -55,6 +57,11 @@ function _getCurrentPage(pathname) {
   return pageName || Object.keys(PAGES)[0];
 }
 
+function RootRedirect() {
+  const token = localStorage.getItem('token');
+  return token ? <Navigate to="/Dashboard" replace /> : <Navigate to="/Login" replace />;
+}
+
 // Conteúdo que depende da localização (já com basename aplicado pelo Router)
 function PagesContent() {
   const location = useLocation();
@@ -63,24 +70,27 @@ function PagesContent() {
   return (
     <Layout currentPageName={currentPage}>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/Dashboard" element={<Dashboard />} />
-        <Route path="/AdminDashboard" element={<AdminDashboard />} />
-        <Route path="/CreatePetition" element={<CreatePetition />} />
-        <Route path="/PetitionsList" element={<PetitionsList />} />
-        <Route path="/PetitionDetails" element={<PetitionDetails />} />
+        <Route path="/" element={<RootRedirect />} />
+        <Route path="/Login" element={<Login />} />
+        
+        <Route path="/Dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="/AdminDashboard" element={<PrivateRoute><AdminDashboard /></PrivateRoute>} />
+        <Route path="/CreatePetition" element={<PrivateRoute><CreatePetition /></PrivateRoute>} />
+        <Route path="/PetitionsList" element={<PrivateRoute><PetitionsList /></PrivateRoute>} />
+        <Route path="/PetitionDetails" element={<PrivateRoute><PetitionDetails /></PrivateRoute>} />
+        <Route path="/LinkTreePages" element={<PrivateRoute><LinkTreePages /></PrivateRoute>} />
+        <Route path="/LinkTreeView" element={<PrivateRoute><LinkTreeView /></PrivateRoute>} />
+        <Route path="/WhatsAppSender" element={<PrivateRoute><WhatsAppSender /></PrivateRoute>} />
+        <Route path="/EmailSender" element={<PrivateRoute><EmailSender /></PrivateRoute>} />
+        <Route path="/WhatsAppCampaigns" element={<PrivateRoute><WhatsAppCampaigns /></PrivateRoute>} />
+        <Route path="/CreateWhatsAppCampaign" element={<PrivateRoute><CreateWhatsAppCampaign /></PrivateRoute>} />
+        <Route path="/EmailCampaigns" element={<PrivateRoute><EmailCampaigns /></PrivateRoute>} />
+        <Route path="/CreateEmailCampaign" element={<PrivateRoute><CreateEmailCampaign /></PrivateRoute>} />
+        <Route path="/MessageTemplates" element={<PrivateRoute><MessageTemplates /></PrivateRoute>} />
+        <Route path="/ImportSignatures" element={<PrivateRoute><ImportSignatures /></PrivateRoute>} />
+        <Route path="/LinkBioPages" element={<PrivateRoute><LinkBioPages /></PrivateRoute>} />
+        
         <Route path="/PetitionLanding" element={<PetitionLanding />} />
-        <Route path="/LinkTreePages" element={<LinkTreePages />} />
-        <Route path="/LinkTreeView" element={<LinkTreeView />} />
-        <Route path="/WhatsAppSender" element={<WhatsAppSender />} />
-        <Route path="/EmailSender" element={<EmailSender />} />
-        <Route path="/WhatsAppCampaigns" element={<WhatsAppCampaigns />} />
-        <Route path="/CreateWhatsAppCampaign" element={<CreateWhatsAppCampaign />} />
-        <Route path="/EmailCampaigns" element={<EmailCampaigns />} />
-        <Route path="/CreateEmailCampaign" element={<CreateEmailCampaign />} />
-        <Route path="/MessageTemplates" element={<MessageTemplates />} />
-        <Route path="/ImportSignatures" element={<ImportSignatures />} />
-        <Route path="/LinkBioPages" element={<LinkBioPages />} />
         <Route path="/p" element={<PPage />} />
         <Route path="/bio" element={<BioPage />} />
       </Routes>

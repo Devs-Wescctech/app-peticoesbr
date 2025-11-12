@@ -24,7 +24,7 @@ The frontend utilizes Radix UI for accessible and customizable components, style
 - **Multi-Tenancy**: Central `control-plane` schema manages tenants and authentication. All data tables include `tenant_id` column for row-level tenant isolation.
 - **Tenant Data Isolation** (Implemented Nov 12, 2025): All API routes enforce tenant scoping via `authenticate` and `requireTenant` middleware. Every CRUD operation filters data by `tenant_id` from JWT token. Signatures validate tenant ownership via JOIN with petitions table. Cross-tenant access returns 404.
 - **Super Admin System** (Implemented Nov 12, 2025): Dedicated super administrator with system-wide privileges via `is_super_admin` boolean field in `auth_users` table. Super admin account (tecnologia@wescctech.com.br) has elevated access to manage all tenants and users. JWT includes `isSuperAdmin` flag for authorization. Protected routes use `requireSuperAdmin` middleware. Admin panel at `/AdminDashboard` with real-time statistics, tenant management (activate/suspend/delete), and user overview.
-- **Authentication**: JWT-based authentication with refresh token rotation, supporting email/password and ready for Google OAuth. JWT tokens include `tenantId` claim extracted from `tenant_users` table. Includes role-based access control (owner, admin, member) per tenant. Environment variables `JWT_SECRET` and `JWT_REFRESH_SECRET` are required at startup (fail-fast validation).
+- **Authentication & Route Protection** (Implemented Nov 12, 2025): JWT-based authentication with refresh token rotation, supporting email/password and ready for Google OAuth. JWT tokens include `tenantId` claim extracted from `tenant_users` table. Includes role-based access control (owner, admin, member) per tenant. All private routes protected with `PrivateRoute` component that redirects unauthenticated users to `/Login`. Public routes (PetitionLanding, p, bio, Login) remain accessible without authentication. Logout functionality available in sidebar. Environment variables `JWT_SECRET` and `JWT_REFRESH_SECRET` are required at startup (fail-fast validation).
 - **Petition Management**: CRUD operations for petitions with tenant scoping, including goal tracking, slug generation, and signature collection. All petitions are isolated by tenant_id.
 - **Campaign Tools**: Creation and management of Email and WhatsApp campaigns with tenant scoping, real-time progress updates and message templates. All campaigns isolated by tenant_id.
 - **Link Pages**: Dedicated builders for "Link Bio" (e.g., Instagram-style) and "Link Tree" (multi-link) pages with custom slugs. All link pages isolated by tenant_id.
@@ -43,6 +43,16 @@ The frontend utilizes Radix UI for accessible and customizable components, style
 - **Replit-Optimized Deployment**: Configured for dual workflows (backend on 3001, frontend on 5000) and uses `0.0.0.0` host and `allowedHosts: true` for Replit's dynamic proxy.
 
 ## Recent Changes
+
+### November 12, 2025 - Login System & Route Protection Implementation
+- Created Login page (`/Login`) with email/password authentication
+- Implemented `PrivateRoute` component to protect all authenticated routes
+- Added automatic redirection: unauthenticated users → Login, authenticated users → Dashboard
+- Added Logout button in sidebar with token cleanup
+- Updated Layout to exclude Login from sidebar/navigation
+- All private routes now require authentication before access
+- Public routes (PetitionLanding, /p, /bio, Login) remain accessible without authentication
+- Login page includes demo credentials for testing
 
 ### November 12, 2025 - Super Admin System Implementation
 - Added `is_super_admin` boolean field to `auth_users` table
