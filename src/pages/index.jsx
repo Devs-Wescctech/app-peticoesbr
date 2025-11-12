@@ -1,6 +1,7 @@
 import Layout from "./Layout.jsx";
 
 import Dashboard from "./Dashboard";
+import AdminDashboard from "./AdminDashboard";
 import CreatePetition from "./CreatePetition";
 import PetitionsList from "./PetitionsList";
 import PetitionDetails from "./PetitionDetails";
@@ -25,6 +26,7 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from "react-route
 
 const PAGES = {
   Dashboard,
+  AdminDashboard,
   CreatePetition,
   PetitionsList,
   PetitionDetails,
@@ -63,6 +65,7 @@ function PagesContent() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/AdminDashboard" element={<AdminDashboard />} />
         <Route path="/CreatePetition" element={<CreatePetition />} />
         <Route path="/PetitionsList" element={<PetitionsList />} />
         <Route path="/PetitionDetails" element={<PetitionDetails />} />
