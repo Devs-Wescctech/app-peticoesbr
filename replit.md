@@ -44,6 +44,22 @@ The frontend utilizes Radix UI for accessible and customizable components, style
 
 ## Recent Changes
 
+### November 12, 2025 - Complete Super Admin Management Panel Implementation
+- **Backend APIs Expansion** - Complete CRUD functionality for system management:
+  - User Management: `POST /api/admin/users` (create), `PUT /api/admin/users/:id` (update), `DELETE /api/admin/users/:id` (delete)
+  - Tenant Management: `POST /api/admin/tenants` (create), `PUT /api/admin/tenants/:id` (update with limits)
+  - Tenant-User Assignment: `GET/POST/PUT/DELETE /api/admin/tenant-users` for linking users to tenants with roles
+  - Protection: Super admin can delete any user except tecnologia@wescctech.com.br (self-protection)
+  - Security: All routes protected with `requireSuperAdmin` middleware, bcrypt password hashing, input validation
+- **AdminDashboard Complete Rewrite** - Modern tabbed interface with full CRUD operations:
+  - 4 tabs: Dashboard (statistics), Usuários (user management), Tenants (organization management), Atribuições (user-tenant assignments)
+  - User Management: Create/edit/delete users, toggle super admin status, manage verification
+  - Tenant Management: Create/edit/delete tenants, configure plans (free/pro/enterprise), set limits (petitions/signatures/campaigns), status control
+  - Assignment Management: Link users to tenants with roles (owner/admin/member), view all assignments, remove assignments
+  - Modal-based workflows using Radix UI Dialog components
+  - Enhanced error handling: detects 403 from all endpoints, not just stats
+- **System Architecture**: Super admin (tecnologia@wescctech.com.br) has exclusive control over tenant creation, user creation, and all system assignments. Regular tenant admins can only manage their own tenant data.
+
 ### November 12, 2025 - Modern Login UI & Route Protection Implementation
 - Created modern split-screen Login page (`/Login`) with:
   - Responsive design: split-screen on desktop, stacked on mobile
