@@ -1,0 +1,78 @@
+eticoesbr-backend  |   throw err;
+peticoesbr-backend  |   ^
+peticoesbr-backend  | 
+peticoesbr-backend  | Error: Cannot find module '/app/src/index.js'
+peticoesbr-backend  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+peticoesbr-backend  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+peticoesbr-backend  |     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
+peticoesbr-backend  |     at node:internal/main/run_main_module:28:49 {
+peticoesbr-backend  |   code: 'MODULE_NOT_FOUND',
+peticoesbr-backend  |   requireStack: []
+peticoesbr-backend  | }
+peticoesbr-backend  | 
+peticoesbr-backend  | Node.js v20.19.5
+peticoesbr-backend  | node:internal/modules/cjs/loader:1210
+peticoesbr-backend  |   throw err;
+peticoesbr-backend  |   ^
+peticoesbr-backend  | 
+peticoesbr-backend  | Error: Cannot find module '/app/src/index.js'
+peticoesbr-backend  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+peticoesbr-backend  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+peticoesbr-backend  |     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
+peticoesbr-backend  |     at node:internal/main/run_main_module:28:49 {
+peticoesbr-backend  |   code: 'MODULE_NOT_FOUND',
+peticoesbr-backend  |   requireStack: []
+peticoesbr-backend  | }
+peticoesbr-backend  | 
+peticoesbr-backend  | Node.js v20.19.5
+peticoesbr-backend  | node:internal/modules/cjs/loader:1210
+peticoesbr-backend  |   throw err;
+peticoesbr-backend  |   ^
+peticoesbr-backend  | 
+peticoesbr-backend  | Error: Cannot find module '/app/src/index.js'
+peticoesbr-backend  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+peticoesbr-backend  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+peticoesbr-backend  |     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
+peticoesbr-backend  |     at node:internal/main/run_main_module:28:49 {
+peticoesbr-backend  |   code: 'MODULE_NOT_FOUND',
+peticoesbr-backend  |   requireStack: []
+peticoesbr-backend  | }
+peticoesbr-backend  | 
+peticoesbr-backend  | Node.js v20.19.5
+peticoesbr-backend  | node:internal/modules/cjs/loader:1210
+peticoesbr-backend  |   throw err;
+peticoesbr-backend  |   ^
+peticoesbr-backend  | 
+peticoesbr-backend  | Error: Cannot find module '/app/src/index.js'
+peticoesbr-backend  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+peticoesbr-backend  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+peticoesbr-backend  |     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
+peticoesbr-backend  |     at node:internal/main/run_main_module:28:49 {
+peticoesbr-backend  |   code: 'MODULE_NOT_FOUND',
+peticoesbr-backend  |   requireStack: []
+peticoesbr-backend  | }
+peticoesbr-backend  | 
+peticoesbr-backend  | Node.js v20.19.5
+peticoesbr-backend  | node:internal/modules/cjs/loader:1210
+peticoesbr-backend  |   throw err;
+peticoesbr-backend  |   ^
+peticoesbr-backend  | 
+peticoesbr-backend  | Error: Cannot find module '/app/src/index.js'
+peticoesbr-backend  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+peticoesbr-backend  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+peticoesbr-backend  |     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
+peticoesbr-backend  |     at node:internal/main/run_main_module:28:49 {
+peticoesbr-backend  |   code: 'MODULE_NOT_FOUND',
+peticoesbr-backend  |   requireStack: []
+peticoesbr-backend  | }
+peticoesbr-backend  | 
+peticoesbr-backend  | Node.js v20.19.5
+^C
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ docker ps
+CONTAINER ID   IMAGE                                                   COMMAND                  CREATED          STATUS                             PORTS                                                                                NAMES
+de7beea3298f   ghcr.io/devs-wescctech/app-peticoesbr-frontend:latest   "/docker-entrypoint.…"   26 seconds ago   Up 25 seconds (health: starting)   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp, 0.0.0.0:8443->443/tcp, [::]:8443->443/tcp   peticoesbr-frontend
+8e2978032e4d   ghcr.io/devs-wescctech/app-peticoesbr-backend:latest    "docker-entrypoint.s…"   26 seconds ago   Restarting (1) 10 seconds ago                                                                                           peticoesbr-backend
+93ccedea30c5   app-helpdesk_helpdesk                                   "docker-entrypoint.s…"   21 hours ago     Up 21 hours (healthy)              0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp                                          helpdesk-app
+7fd89d40cd3b   ghcr.io/devs-wescctech/app-exportar-whu:main            "python app.py"          7 days ago       Up 7 days (unhealthy)              127.0.0.1:5001->5000/tcp                                                             exportar_whu-web-1
+51b4d3f3eb32   base_clientes_amed_amed                                 "python -m uvicorn m…"   3 weeks ago      Up 11 days                         0.0.0.0:5010->5000/tcp, [::]:5010->5000/tcp                                          base_clientes_amed
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ 
