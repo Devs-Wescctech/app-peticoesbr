@@ -40,27 +40,35 @@ export default function LinkBioView() {
     );
   }
 
-  const parsePetitionIds = (ids) => {
+  // Normalize petition_ids to always be an array
+  const normalizePetitionIds = (ids) => {
     if (!ids) return [];
     if (Array.isArray(ids)) return ids;
+    
     if (typeof ids === 'string') {
+      // Handle PostgreSQL TEXT[] format: {uuid1,uuid2}
       if (ids.startsWith('{') && ids.endsWith('}')) {
         return ids
           .slice(1, -1)
           .split(',')
-          .map(id => id.trim().replace(/^"|"$/g, ''))
-          .filter(id => id);
+          .map(id => id.trim().replace(/^["']|["']$/g, ''))
+          .filter(id => id.length > 0);
       }
+      
+      // Handle JSON string: ["uuid1","uuid2"]
       try {
-        return JSON.parse(ids);
+        const parsed = JSON.parse(ids);
+        return Array.isArray(parsed) ? parsed : [];
       } catch {
-        return [];
+        // Single ID as string
+        return ids.trim() ? [ids.trim()] : [];
       }
     }
+    
     return [];
   };
 
-  const petitionIds = parsePetitionIds(page.petition_ids);
+  const petitionIds = normalizePetitionIds(page?.petition_ids);
   const pagePetitions = petitions.filter(p => petitionIds.includes(p.id));
 
   const getSignaturesForPetition = (petitionId) => {

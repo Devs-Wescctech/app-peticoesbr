@@ -59,10 +59,12 @@ export default function CreatePetition() {
   const { data: existingPetition, isLoading: loadingPetition } = useQuery({
     queryKey: ['petition', editingId],
     queryFn: async () => {
+      if (!editingId) return null;
       const petitions = await base44.entities.Petition.list();
       return petitions.find(p => p.id === editingId);
     },
     enabled: !!editingId,
+    refetchOnMount: 'always',
   });
 
   useEffect(() => {

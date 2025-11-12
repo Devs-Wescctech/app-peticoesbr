@@ -104,12 +104,25 @@ export default function WhatsAppSender() {
     }
 
     setIsSending(true);
-    setErrors([]); // Clear previous errors
+    setErrors([]);
     setSendResults({ success: 0, failed: 0, total: filteredSignatures.length });
     setSendProgress(0);
 
     let success = 0;
     let failed = 0;
+
+    // Create campaign in database
+    const campaign = await base44.entities.Campaign.create({
+      name: `Envio WhatsApp - ${new Date().toLocaleString()}`,
+      type: 'whatsapp',
+      petition_id: selectedPetition,
+      message: message,
+      status: 'enviando',
+      total_recipients: filteredSignatures.length,
+      sent_count: 0,
+      success_count: 0,
+      failed_count: 0,
+    });
 
     for (let i = 0; i < filteredSignatures.length; i++) {
       const signature = filteredSignatures[i];
@@ -126,6 +139,14 @@ export default function WhatsAppSender() {
       // Delay entre envios
       await new Promise(resolve => setTimeout(resolve, 3000));
     }
+
+    // Update campaign with final results
+    await base44.entities.Campaign.update(campaign.id, {
+      status: 'concluida',
+      sent_count: success + failed,
+      success_count: success,
+      failed_count: failed,
+    });
 
     setIsSending(false);
     setShowSuccessDialog(true);
