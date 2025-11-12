@@ -1,18 +1,20 @@
 import express from 'express';
 import pool from '../config/database.js';
+import { authenticate, requireTenant } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', authenticate, requireTenant, async (req, res) => {
   try {
+    const { tenantId } = req.user;
     const { type } = req.query;
     
-    let query = 'SELECT * FROM campaigns ORDER BY created_date DESC';
-    let params = [];
+    let query = 'SELECT * FROM campaigns WHERE tenant_id = $1 ORDER BY created_date DESC';
+    let params = [tenantId];
     
     if (type) {
-      query = 'SELECT * FROM campaigns WHERE type = $1 ORDER BY created_date DESC';
-      params = [type];
+      query = 'SELECT * FROM campaigns WHERE tenant_id = $1 AND type = $2 ORDER BY created_date DESC';
+      params = [tenantId, type];
     }
     
     const result = await pool.query(query, params);
@@ -22,12 +24,14 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
+    const { tenantId } = req.user;
+    
     const result = await pool.query(
-      'SELECT * FROM campaigns WHERE id = $1',
-      [id]
+      'SELECT * FROM campaigns WHERE id = $1 AND tenant_id = $2',
+      [id, tenantId]
     );
     
     if (result.rows.length === 0) {
@@ -40,8 +44,9 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', authenticate, requireTenant, async (req, res) => {
   try {
+    const { tenantId } = req.user;
     const {
       name, type, petition_id, message, subject, status
     } = req.body;
@@ -52,10 +57,10 @@ router.post('/', async (req, res) => {
     
     const result = await pool.query(
       `INSERT INTO campaigns (
-        name, type, petition_id, message, subject, status
-      ) VALUES ($1, $2, $3, $4, $5, $6)
+        name, type, petition_id, message, subject, status, tenant_id
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *`,
-      [name, type, petition_id, message, subject, status || 'rascunho']
+      [name, type, petition_id, message, subject, status || 'rascunho', tenantId]
     );
     
     res.status(201).json(result.rows[0]);
@@ -64,9 +69,10 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
+    const { tenantId } = req.user;
     const {
       name, type, petition_id, message, subject, status, 
       sent_count, success_count, failed_count,
@@ -95,12 +101,12 @@ router.put('/:id', async (req, res) => {
         messages_per_hour = COALESCE($17, messages_per_hour),
         avoid_night_hours = COALESCE($18, avoid_night_hours),
         updated_date = CURRENT_TIMESTAMP
-      WHERE id = $19
+      WHERE id = $19 AND tenant_id = $20
       RETURNING *`,
       [name, type, petition_id, message, subject, status, 
        sent_count, success_count, failed_count, total_recipients,
        api_token, sender_email, sender_name, target_petitions, target_filters,
-       delay_seconds, messages_per_hour, avoid_night_hours, id]
+       delay_seconds, messages_per_hour, avoid_night_hours, id, tenantId]
     );
     
     if (result.rows.length === 0) {

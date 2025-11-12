@@ -1,12 +1,17 @@
 import express from 'express';
 import pool from '../config/database.js';
+import { authenticate, requireTenant, optionalAuthenticate } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+// GET /api/petitions - List all petitions for the authenticated tenant
+router.get('/', authenticate, requireTenant, async (req, res) => {
   try {
+    const { tenantId } = req.user;
+    
     const result = await pool.query(
-      'SELECT * FROM petitions ORDER BY created_date DESC'
+      'SELECT * FROM petitions WHERE tenant_id = $1 ORDER BY created_date DESC',
+      [tenantId]
     );
     res.json(result.rows);
   } catch (error) {
@@ -14,6 +19,8 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/petitions/slug/:slug - Public endpoint (no auth required)
+// Used for public petition pages
 router.get('/slug/:slug', async (req, res) => {
   try {
     const { slug } = req.params;
@@ -32,12 +39,15 @@ router.get('/slug/:slug', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+// GET /api/petitions/:id - Get petition by ID (tenant scoped)
+router.get('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
+    const { tenantId } = req.user;
+    
     const result = await pool.query(
-      'SELECT * FROM petitions WHERE id = $1',
-      [id]
+      'SELECT * FROM petitions WHERE id = $1 AND tenant_id = $2',
+      [id, tenantId]
     );
     
     if (result.rows.length === 0) {
@@ -50,8 +60,10 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+// POST /api/petitions - Create new petition (tenant scoped)
+router.post('/', authenticate, requireTenant, async (req, res) => {
   try {
+    const { tenantId } = req.user;
     const {
       title, description, banner_url, logo_url, primary_color,
       share_text, goal, status, slug, collect_phone, collect_city,
@@ -62,14 +74,14 @@ router.post('/', async (req, res) => {
       `INSERT INTO petitions (
         title, description, banner_url, logo_url, primary_color,
         share_text, goal, status, slug, collect_phone, collect_city,
-        collect_state, collect_cpf, collect_comment
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+        collect_state, collect_cpf, collect_comment, tenant_id
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
       RETURNING *`,
       [
         title, description, banner_url, logo_url, primary_color || '#6366f1',
         share_text, goal || 1, status || 'rascunho', slug,
         collect_phone || false, collect_city || false, collect_state || false,
-        collect_cpf || false, collect_comment || false
+        collect_cpf || false, collect_comment || false, tenantId
       ]
     );
     
@@ -82,9 +94,11 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+// PUT /api/petitions/:id - Update petition (tenant scoped)
+router.put('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
+    const { tenantId } = req.user;
     const {
       title, description, banner_url, logo_url, primary_color,
       share_text, goal, status, slug, collect_phone, collect_city,
@@ -108,12 +122,12 @@ router.put('/:id', async (req, res) => {
         collect_cpf = COALESCE($13, collect_cpf),
         collect_comment = COALESCE($14, collect_comment),
         updated_date = CURRENT_TIMESTAMP
-      WHERE id = $15
+      WHERE id = $15 AND tenant_id = $16
       RETURNING *`,
       [
         title, description, banner_url, logo_url, primary_color,
         share_text, goal, status, slug, collect_phone, collect_city,
-        collect_state, collect_cpf, collect_comment, id
+        collect_state, collect_cpf, collect_comment, id, tenantId
       ]
     );
     
@@ -127,12 +141,15 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+// DELETE /api/petitions/:id - Delete petition (tenant scoped)
+router.delete('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
+    const { tenantId } = req.user;
+    
     const result = await pool.query(
-      'DELETE FROM petitions WHERE id = $1 RETURNING *',
-      [id]
+      'DELETE FROM petitions WHERE id = $1 AND tenant_id = $2 RETURNING *',
+      [id, tenantId]
     );
     
     if (result.rows.length === 0) {
