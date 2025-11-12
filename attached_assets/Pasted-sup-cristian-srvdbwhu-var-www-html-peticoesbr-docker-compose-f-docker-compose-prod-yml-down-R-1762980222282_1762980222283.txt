@@ -1,0 +1,19 @@
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ docker compose -f docker-compose.prod.yml down
+[+] Running 3/3
+ ✔ Container peticoesbr-frontend          Removed                                                                                                                                                                                       0.0s 
+ ✔ Container peticoesbr-backend           Removed                                                                                                                                                                                       0.0s 
+ ✔ Network peticoesbr_peticoesbr-network  Removed                                                                                                                                                                                       0.3s 
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ docker compose -f docker-compose.prod.yml up -d
+[+] Running 2/3
+ ✔ Network peticoesbr_peticoesbr-network  Created                                                                                                                                                                                       0.0s 
+ ✔ Container peticoesbr-backend           Started                                                                                                                                                                                       0.2s 
+ ⠴ Container peticoesbr-frontend          Starting                                                                                                                                                                                      0.6s 
+Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint peticoesbr-frontend (7f872d56f137437ed114495d348621afb2a706723db8557b3e3231f6514116ab): failed to bind host port for 0.0.0.0:80:172.23.0.3:80/tcp: address already in use
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ docker ps
+
+CONTAINER ID   IMAGE                                                  COMMAND                  CREATED          STATUS                                  PORTS                                         NAMES
+52a2a5571fc4   ghcr.io/devs-wescctech/app-peticoesbr-backend:latest   "docker-entrypoint.s…"   16 seconds ago   Restarting (1) Less than a second ago                                                 peticoesbr-backend
+93ccedea30c5   app-helpdesk_helpdesk                                  "docker-entrypoint.s…"   21 hours ago     Up 21 hours (healthy)                   0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp   helpdesk-app
+7fd89d40cd3b   ghcr.io/devs-wescctech/app-exportar-whu:main           "python app.py"          7 days ago       Up 7 days (unhealthy)                   127.0.0.1:5001->5000/tcp                      exportar_whu-web-1
+51b4d3f3eb32   base_clientes_amed_amed                                "python -m uvicorn m…"   3 weeks ago      Up 11 days                              0.0.0.0:5010->5000/tcp, [::]:5010->5000/tcp   base_clientes_amed
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ 
