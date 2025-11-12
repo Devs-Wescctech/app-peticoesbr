@@ -74,6 +74,10 @@ src/
 ### Vite Configuration
 - Development uses base path `/`
 - Production deployment can use `/peticoes/` via `VITE_BASE_URL` environment variable
+- Server configured for Replit:
+  - Host: `0.0.0.0` on port `5000`
+  - `allowedHosts: true` to accept Replit's dynamic proxy domains
+  - HMR (Hot Module Replacement) working correctly
 - Proxy configured for `/supabase` endpoints to avoid CORS issues
 - Path aliases configured for clean imports (`@`, `@components`, `@pages`, etc.)
 
@@ -84,12 +88,12 @@ The application uses `BrowserRouter` with a dynamic basename read from `import.m
 - **2025-11-12**: Configured for Replit environment
   - Updated Vite config to use port 5000 and host 0.0.0.0
   - Made base path configurable via environment variable (defaults to `/` in dev, can be set to `/peticoes/` for production)
-  - Added HMR configuration for proper hot reload
+  - **Added `allowedHosts: true`** to accept requests from Replit's dynamic proxy domains
   - Fixed router basename to use environment-based configuration
   - Installed all dependencies (559 packages)
   - Configured deployment as autoscale with build and preview commands
   - Created .gitignore and documentation
-  - Verified application runs successfully on Replit
+  - Verified application runs successfully on Replit with working HMR
 
 ## User Preferences
 - None recorded yet

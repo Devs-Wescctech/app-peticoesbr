@@ -24,9 +24,7 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5000,
     strictPort: true,
-    hmr: {
-      clientPort: 5000,
-    },
+    allowedHosts: true,
     proxy: {
       '/supabase': {
         target: process.env.VITE_SUPABASE_URL || 'https://supabase.wescctech.com.br',
