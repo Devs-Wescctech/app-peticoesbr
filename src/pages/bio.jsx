@@ -73,15 +73,6 @@ export default function LinkBioView() {
   const petitionIds = normalizePetitionIds(page.petition_ids);
   const pagePetitions = petitions.filter(p => petitionIds.includes(p.id));
   
-  // Debug
-  console.log('🔍 Bio Debug:', {
-    'page.petition_ids': page.petition_ids,
-    'type': typeof page.petition_ids,
-    'isArray': Array.isArray(page.petition_ids),
-    'normalized': petitionIds,
-    'total petitions': petitions.length,
-    'matched': pagePetitions.length
-  });
 
   const getSignaturesForPetition = (petitionId) => {
     return signatures.filter(s => s.petition_id === petitionId).length;
@@ -163,7 +154,7 @@ export default function LinkBioView() {
             const landingUrl = createPageUrl(`p?s=${petition.slug}`);
 
             return (
-              <Link key={petition.id} to={landingUrl}>
+              <Link key={petition.id} to={landingUrl} className="block">
                 <Card className="bg-white/95 backdrop-blur-sm border-none shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
                   {petition.banner_url && (
                     <div className="relative h-32 overflow-hidden">
