@@ -13,7 +13,7 @@ import {
   Users, Building2, FileText, PenLine, Mail, 
   AlertCircle, CheckCircle, XCircle, Shield,
   Plus, Edit, Trash2, UserPlus, Link2, Loader2,
-  TrendingUp, Activity
+  TrendingUp, Activity, LayoutDashboard
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -438,17 +438,21 @@ export default function AdminDashboard() {
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-4 mb-8 bg-gradient-to-r from-indigo-50 to-purple-50 shadow-lg rounded-xl p-1.5 h-14 border border-indigo-100">
-            <TabsTrigger value="dashboard" className="rounded-lg font-semibold transition-all">
-              📊 Dashboard
+            <TabsTrigger value="dashboard" className="rounded-lg font-semibold transition-all flex items-center gap-2">
+              <LayoutDashboard className="w-4 h-4" />
+              <span>Dashboard</span>
             </TabsTrigger>
-            <TabsTrigger value="users" className="rounded-lg font-semibold transition-all">
-              👥 Usuários
+            <TabsTrigger value="users" className="rounded-lg font-semibold transition-all flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              <span>Usuários</span>
             </TabsTrigger>
-            <TabsTrigger value="tenants" className="rounded-lg font-semibold transition-all">
-              🏢 Tenants
+            <TabsTrigger value="tenants" className="rounded-lg font-semibold transition-all flex items-center gap-2">
+              <Building2 className="w-4 h-4" />
+              <span>Tenants</span>
             </TabsTrigger>
-            <TabsTrigger value="assignments" className="rounded-lg font-semibold transition-all">
-              🔗 Atribuições
+            <TabsTrigger value="assignments" className="rounded-lg font-semibold transition-all flex items-center gap-2">
+              <Link2 className="w-4 h-4" />
+              <span>Atribuições</span>
             </TabsTrigger>
           </TabsList>
 

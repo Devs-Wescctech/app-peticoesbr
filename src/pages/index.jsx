@@ -60,7 +60,7 @@ function _getCurrentPage(pathname) {
 
 function RootRedirect() {
   const token = localStorage.getItem('token');
-  return token ? <Navigate to="/Dashboard" replace /> : <Navigate to="/Login" replace />;
+  return token ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />;
 }
 
 // Conteúdo que depende da localização (já com basename aplicado pelo Router)
@@ -72,28 +72,48 @@ function PagesContent() {
     <Layout currentPageName={currentPage}>
       <Routes>
         <Route path="/" element={<RootRedirect />} />
-        <Route path="/Login" element={<Login />} />
         
-        <Route path="/Dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-        <Route path="/AdminDashboard" element={<PrivateRoute><AdminDashboard /></PrivateRoute>} />
-        <Route path="/CreatePetition" element={<PrivateRoute><CreatePetition /></PrivateRoute>} />
-        <Route path="/PetitionsList" element={<PrivateRoute><PetitionsList /></PrivateRoute>} />
-        <Route path="/PetitionDetails" element={<PrivateRoute><PetitionDetails /></PrivateRoute>} />
-        <Route path="/LinkTreePages" element={<PrivateRoute><LinkTreePages /></PrivateRoute>} />
-        <Route path="/LinkTreeView" element={<PrivateRoute><LinkTreeView /></PrivateRoute>} />
-        <Route path="/WhatsAppSender" element={<PrivateRoute><WhatsAppSender /></PrivateRoute>} />
-        <Route path="/EmailSender" element={<PrivateRoute><EmailSender /></PrivateRoute>} />
-        <Route path="/WhatsAppCampaigns" element={<PrivateRoute><WhatsAppCampaigns /></PrivateRoute>} />
-        <Route path="/CreateWhatsAppCampaign" element={<PrivateRoute><CreateWhatsAppCampaign /></PrivateRoute>} />
-        <Route path="/EmailCampaigns" element={<PrivateRoute><EmailCampaigns /></PrivateRoute>} />
-        <Route path="/CreateEmailCampaign" element={<PrivateRoute><CreateEmailCampaign /></PrivateRoute>} />
-        <Route path="/MessageTemplates" element={<PrivateRoute><MessageTemplates /></PrivateRoute>} />
-        <Route path="/ImportSignatures" element={<PrivateRoute><ImportSignatures /></PrivateRoute>} />
-        <Route path="/LinkBioPages" element={<PrivateRoute><LinkBioPages /></PrivateRoute>} />
-        
-        <Route path="/PetitionLanding" element={<PetitionLanding />} />
+        {/* Rotas principais em lowercase */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="/admindashboard" element={<PrivateRoute><AdminDashboard /></PrivateRoute>} />
+        <Route path="/createpetition" element={<PrivateRoute><CreatePetition /></PrivateRoute>} />
+        <Route path="/petitionslist" element={<PrivateRoute><PetitionsList /></PrivateRoute>} />
+        <Route path="/petitiondetails" element={<PrivateRoute><PetitionDetails /></PrivateRoute>} />
+        <Route path="/linktreepages" element={<PrivateRoute><LinkTreePages /></PrivateRoute>} />
+        <Route path="/linktreeview" element={<PrivateRoute><LinkTreeView /></PrivateRoute>} />
+        <Route path="/whatsappsender" element={<PrivateRoute><WhatsAppSender /></PrivateRoute>} />
+        <Route path="/emailsender" element={<PrivateRoute><EmailSender /></PrivateRoute>} />
+        <Route path="/whatsappcampaigns" element={<PrivateRoute><WhatsAppCampaigns /></PrivateRoute>} />
+        <Route path="/createwhatsappcampaign" element={<PrivateRoute><CreateWhatsAppCampaign /></PrivateRoute>} />
+        <Route path="/emailcampaigns" element={<PrivateRoute><EmailCampaigns /></PrivateRoute>} />
+        <Route path="/createemailcampaign" element={<PrivateRoute><CreateEmailCampaign /></PrivateRoute>} />
+        <Route path="/messagetemplates" element={<PrivateRoute><MessageTemplates /></PrivateRoute>} />
+        <Route path="/importsignatures" element={<PrivateRoute><ImportSignatures /></PrivateRoute>} />
+        <Route path="/linkbiopages" element={<PrivateRoute><LinkBioPages /></PrivateRoute>} />
+        <Route path="/petitionlanding" element={<PetitionLanding />} />
         <Route path="/p" element={<PPage />} />
         <Route path="/bio" element={<BioPage />} />
+        
+        {/* Redirects para compatibilidade - rotas antigas PascalCase → lowercase */}
+        <Route path="/Login" element={<Navigate to="/login" replace />} />
+        <Route path="/Dashboard" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/AdminDashboard" element={<Navigate to="/admindashboard" replace />} />
+        <Route path="/CreatePetition" element={<Navigate to="/createpetition" replace />} />
+        <Route path="/PetitionsList" element={<Navigate to="/petitionslist" replace />} />
+        <Route path="/PetitionDetails" element={<Navigate to="/petitiondetails" replace />} />
+        <Route path="/LinkTreePages" element={<Navigate to="/linktreepages" replace />} />
+        <Route path="/LinkTreeView" element={<Navigate to="/linktreeview" replace />} />
+        <Route path="/WhatsAppSender" element={<Navigate to="/whatsappsender" replace />} />
+        <Route path="/EmailSender" element={<Navigate to="/emailsender" replace />} />
+        <Route path="/WhatsAppCampaigns" element={<Navigate to="/whatsappcampaigns" replace />} />
+        <Route path="/CreateWhatsAppCampaign" element={<Navigate to="/createwhatsappcampaign" replace />} />
+        <Route path="/EmailCampaigns" element={<Navigate to="/emailcampaigns" replace />} />
+        <Route path="/CreateEmailCampaign" element={<Navigate to="/createemailcampaign" replace />} />
+        <Route path="/MessageTemplates" element={<Navigate to="/messagetemplates" replace />} />
+        <Route path="/ImportSignatures" element={<Navigate to="/importsignatures" replace />} />
+        <Route path="/LinkBioPages" element={<Navigate to="/linkbiopages" replace />} />
+        <Route path="/PetitionLanding" element={<Navigate to="/petitionlanding" replace />} />
       </Routes>
     </Layout>
   );
