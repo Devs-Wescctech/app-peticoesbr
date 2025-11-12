@@ -45,7 +45,11 @@ export default function LinkBioView() {
     if (Array.isArray(ids)) return ids;
     if (typeof ids === 'string') {
       if (ids.startsWith('{') && ids.endsWith('}')) {
-        return ids.slice(1, -1).split(',').filter(id => id.trim());
+        return ids
+          .slice(1, -1)
+          .split(',')
+          .map(id => id.trim().replace(/^"|"$/g, ''))
+          .filter(id => id);
       }
       try {
         return JSON.parse(ids);
