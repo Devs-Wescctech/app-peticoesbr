@@ -37,7 +37,7 @@ export default function CreatePetition() {
   const [uploadingLogo, setUploadingLogo] = useState(false);
   
   const urlParams = new URLSearchParams(window.location.search);
-  const editingId = urlParams.get('id');
+  const editingId = urlParams.get('edit') || urlParams.get('id');
 
   const [formData, setFormData] = useState({
     title: "",
