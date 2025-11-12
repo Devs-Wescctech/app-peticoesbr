@@ -5,6 +5,8 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { initDatabase } from './utils/initDatabase.js';
 
+import authRouter from './routes/auth.js';
+import tenantsRouter from './routes/tenants.js';
 import petitionsRouter from './routes/petitions.js';
 import signaturesRouter from './routes/signatures.js';
 import campaignsRouter from './routes/campaigns.js';
@@ -27,6 +29,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+app.use('/api/auth', authRouter);
+app.use('/api/tenants', tenantsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/petitions', petitionsRouter);
 app.use('/api/signatures', signaturesRouter);
