@@ -1,0 +1,54 @@
+#13 [linux/amd64 4/7] COPY package*.json ./
+#13 DONE 0.0s
+
+#14 [linux/amd64 5/7] RUN npm ci &&     npm cache clean --force
+#14 0.573 npm error code EUSAGE
+#14 0.574 npm error
+#14 0.574 npm error The `npm ci` command can only install with an existing package-lock.json or
+#14 0.574 npm error npm-shrinkwrap.json with lockfileVersion >= 1. Run an install with npm@5 or
+#14 0.574 npm error later to generate a package-lock.json file, then try again.
+#14 0.574 npm error
+#14 0.574 npm error Clean install a project
+#14 0.574 npm error
+#14 0.574 npm error Usage:
+#14 0.574 npm error npm ci
+#14 0.574 npm error
+#14 0.574 npm error Options:
+#14 0.574 npm error [--install-strategy <hoisted|nested|shallow|linked>] [--legacy-bundling]
+#14 0.574 npm error [--global-style] [--omit <dev|optional|peer> [--omit <dev|optional|peer> ...]]
+#14 0.574 npm error [--include <prod|dev|optional|peer> [--include <prod|dev|optional|peer> ...]]
+#14 0.574 npm error [--strict-peer-deps] [--foreground-scripts] [--ignore-scripts] [--no-audit]
+#14 0.574 npm error [--no-bin-links] [--no-fund] [--dry-run]
+#14 0.574 npm error [-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]
+#14 0.574 npm error [-ws|--workspaces] [--include-workspace-root] [--install-links]
+#14 0.574 npm error
+#14 0.574 npm error aliases: clean-install, ic, install-clean, isntall-clean
+#14 0.574 npm error
+#14 0.574 npm error Run "npm help ci" for more info
+#14 0.576 npm error A complete log of this run can be found in: /root/.npm/_logs/2025-11-12T19_24_13_151Z-debug-0.log
+#14 ERROR: process "/bin/sh -c npm ci &&     npm cache clean --force" did not complete successfully: exit code: 1
+
+#10 [linux/arm64 2/7] RUN apk add --no-cache     postgresql-client     curl
+#10 CANCELED
+------
+ > [linux/amd64 5/7] RUN npm ci &&     npm cache clean --force:
+0.574 npm error [--include <prod|dev|optional|peer> [--include <prod|dev|optional|peer> ...]]
+0.574 npm error [--strict-peer-deps] [--foreground-scripts] [--ignore-scripts] [--no-audit]
+0.574 npm error [--no-bin-links] [--no-fund] [--dry-run]
+0.574 npm error [-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]
+0.574 npm error [-ws|--workspaces] [--include-workspace-root] [--install-links]
+0.574 npm error
+0.574 npm error aliases: clean-install, ic, install-clean, isntall-clean
+0.574 npm error
+0.574 npm error Run "npm help ci" for more info
+0.576 npm error A complete log of this run can be found in: /root/.npm/_logs/2025-11-12T19_24_13_151Z-debug-0.log
+------
+Dockerfile:15
+--------------------
+  14 |     # Instalar dependências
+  15 | >>> RUN npm ci && \
+  16 | >>>     npm cache clean --force
+  17 |     
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c npm ci &&     npm cache clean --force" did not complete successfully: exit code: 1
+Error: buildx failed with: ERROR: failed to build: failed to solve: process "/bin/sh -c npm ci &&     npm cache clean --force" did not complete successfully: exit code: 1
