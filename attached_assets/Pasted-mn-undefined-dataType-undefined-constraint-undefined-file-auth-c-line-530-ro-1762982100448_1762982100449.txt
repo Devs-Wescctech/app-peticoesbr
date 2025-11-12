@@ -1,0 +1,47 @@
+mn: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'auth.c',
+  line: '530',
+  routine: 'ClientAuthentication'
+}
+🔄 Initializing database...
+🔄 Creating control-plane schema...
+✅ Control-plane schema created
+🔄 Creating tenant schema...
+✅ Tenant schema created
+✅ Database schema initialized successfully
+✅ Server running on port 3001
+📡 API available at http://localhost:3001/api
+📁 Uploads available at http://localhost:3001/uploads
+🔄 Initializing database...
+🔄 Creating control-plane schema...
+✅ Control-plane schema created
+🔄 Creating tenant schema...
+✅ Tenant schema created
+✅ Database schema initialized successfully
+✅ Server running on port 3001
+📡 API available at http://localhost:3001/api
+📁 Uploads available at http://localhost:3001/uploads
+Error: EACCES: permission denied, open '/app/uploads/whatsapp-image-2025-05-22-at-14-56-05-1762981794125-33765.jpg'
+🔄 Initializing database...
+🔄 Creating control-plane schema...
+✅ Control-plane schema created
+🔄 Creating tenant schema...
+✅ Tenant schema created
+✅ Database schema initialized successfully
+✅ Server running on port 3001
+📡 API available at http://localhost:3001/api
+📁 Uploads available at http://localhost:3001/uploads
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ ls -la /var/peticoesbr/uploads
+total 48
+drwxrwxrwx 2 root         root          4096 Nov 12 21:11 .
+drwxr-xr-x 3 root         root          4096 Nov 12 20:37 ..
+-rw-r--r-- 1 sup_cristian sup_cristian 37331 Nov 12 21:11 whatsapp-image-2025-05-22-at-14-56-05-1762981902887-97677593.jpg
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ sudo chmod -R 777 /var/peticoesbr/uploads
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ ls -la /var/peticoesbr/uploads
+total 48
+drwxrwxrwx 2 root         root          4096 Nov 12 21:11 .
+drwxr-xr-x 3 root         root          4096 Nov 12 20:37 ..
+-rwxrwxrwx 1 sup_cristian sup_cristian 37331 Nov 12 21:11 whatsapp-image-2025-05-22-at-14-56-05-1762981902887-97677593.jpg
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ 
