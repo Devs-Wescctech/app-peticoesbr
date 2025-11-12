@@ -216,6 +216,14 @@ The application uses `BrowserRouter` with a dynamic basename read from `import.m
 
 ## Recent Changes
 
+### 2025-11-12: React Query Cache Fixes - Auto-Refresh Lists & Campaign Logs
+- **Fixed list auto-refresh**: Changed PetitionsList.jsx queryKey from ["petitions-publicadas"] to ["petitions"] to match mutation invalidations
+- **Removed all initialData**: Eliminated 12+ instances of `initialData: []` that prevented immediate data fetching
+- **Fixed campaign logs display**: Removed initialData from CampaignLogsModal.jsx to enable log loading
+- **Result**: Lists now update automatically after create/delete operations without requiring F5 refresh
+- **Files affected**: PetitionsList.jsx, CampaignLogsModal.jsx, WhatsAppCampaigns.jsx, EmailCampaigns.jsx, CreateWhatsAppCampaign.jsx, CreateEmailCampaign.jsx, MessageTemplates.jsx, LinkTreePages.jsx, ImportSignatures.jsx, WhatsAppSender.jsx, EmailSender.jsx, LinkTreeView.jsx
+- **Best practice**: Never use `initialData` with React Query as it blocks fresh fetches and causes stale data
+
 ### 2025-11-12: Final UUID Schema Migration & Data Persistence Fix
 - **Fixed critical data persistence issue**: Removed DROP TABLE CASCADE statements that were deleting all data on server restart
 - **Implemented idempotent schema**: All tables now use CREATE TABLE IF NOT EXISTS for data persistence
