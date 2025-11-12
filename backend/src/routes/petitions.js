@@ -70,6 +70,8 @@ router.post('/', authenticate, requireTenant, async (req, res) => {
       collect_state, collect_cpf, collect_comment
     } = req.body;
     
+    console.log('📝 Creating petition:', { title, slug, tenantId });
+    
     const result = await pool.query(
       `INSERT INTO petitions (
         title, description, banner_url, logo_url, primary_color,
@@ -85,8 +87,10 @@ router.post('/', authenticate, requireTenant, async (req, res) => {
       ]
     );
     
+    console.log('✅ Petition created:', result.rows[0].id);
     res.status(201).json(result.rows[0]);
   } catch (error) {
+    console.error('❌ Error creating petition:', error.message, error.code);
     if (error.code === '23505') {
       return res.status(400).json({ error: 'Slug já existe' });
     }
