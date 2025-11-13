@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import { TrendingUp, Mail, Lock, AlertCircle, Sparkles, Shield, Zap, Users } from 'lucide-react';
+import { TrendingUp, Mail, Lock, AlertCircle, Sparkles, Shield, Zap, Users, FileText, BarChart3, Link2 } from 'lucide-react';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -79,6 +79,10 @@ export default function Login() {
             <div className="space-y-5 pt-8">
               {[
                 { icon: Zap, title: 'Campanhas Automatizadas', desc: 'Email e WhatsApp integrados' },
+                { icon: FileText, title: 'Coleta de Assinaturas', desc: 'Sistema digital completo e seguro' },
+                { icon: Link2, title: 'Páginas Bio Personalizadas', desc: 'Link tree profissional para suas causas' },
+                { icon: BarChart3, title: 'Análise em Tempo Real', desc: 'Dashboards e relatórios detalhados' },
+                { icon: Users, title: 'Multi-Petições', desc: 'Gerencie múltiplas campanhas em um só lugar' },
               ].map((feature, idx) => (
                 <div key={idx} className="flex items-start gap-5 animate-fade-in" style={{ animationDelay: `${idx * 0.1}s` }}>
                   <div className="w-12 h-12 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 flex-shrink-0">
