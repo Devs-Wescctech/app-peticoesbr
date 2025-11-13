@@ -1,0 +1,59 @@
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ # Testar e recarregar
+sudo nginx -t
+sudo systemctl reload nginx
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ sudo nano /etc/nginx/snippets/peticoesbr.conf
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ # 1. Verificar se Nginx foi recarregado
+sudo systemctl status nginx | grep -i "active\|loaded"
+# 2. Ver logs do backend durante o upload
+docker logs peticoesbr-backend --tail 20
+# 3. Verificar se arquivos estão sendo salvos
+ls -la /var/www/html/peticoesbr/uploads/
+# 4. Testar upload diretamente no backend
+curl -I http://localhost:3001/uploads/
+     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sat 2025-11-01 19:46:33 UTC; 1 week 5 days ago
+Nov 13 21:50:47 srvdbwhu systemd[1]: Reloaded A high performance web server and a reverse proxy server.
+Nov 13 21:50:58 srvdbwhu systemd[1]: Reloaded A high performance web server and a reverse proxy server.
+Nov 13 22:19:25 srvdbwhu systemd[1]: Reloaded A high performance web server and a reverse proxy server.
+Nov 13 22:49:21 srvdbwhu systemd[1]: Reloaded A high performance web server and a reverse proxy server.
+📡 API available at http://localhost:3001/api
+📁 Uploads available at http://localhost:3001/uploads
+📝 Creating petition: {
+  title: 'Teste',
+  slug: 'teste',
+  tenantId: '28dd3d91-9a2b-4203-8e31-1d92ea43460a'
+}
+❌ Error creating petition: duplicate key value violates unique constraint "petitions_slug_key" 23505
+📝 Creating petition: {
+  title: 'Teste',
+  slug: 'teste',
+  tenantId: '28dd3d91-9a2b-4203-8e31-1d92ea43460a'
+}
+❌ Error creating petition: duplicate key value violates unique constraint "petitions_slug_key" 23505
+📝 Creating petition: {
+  title: 'assda',
+  slug: 'assda',
+  tenantId: '28dd3d91-9a2b-4203-8e31-1d92ea43460a'
+}
+✅ Petition created: bf899097-5d51-4469-8666-b85466c5df3c
+total 1608
+drwxr-sr-x+ 2 sup_cristian sup_cristian    4096 Nov 13 22:52 .
+drwxr-sr-x+ 3 www-data     www-data        4096 Nov 13 22:34 ..
+-rw-rw-r--+ 1 sup_cristian sup_cristian 1504953 Nov 13 22:50 post-instagram-dia-internacional-das-mulheres-delicado-rosa-1763074229976-429641711.png
+-rw-rw-r--+ 1 sup_cristian sup_cristian   37331 Nov 13 22:25 whatsapp-image-2025-05-22-at-14-56-05-1763072732083-773970210.jpg
+-rw-rw-r--+ 1 sup_cristian sup_cristian   37331 Nov 13 22:50 whatsapp-image-2025-05-22-at-14-56-05-1763074224248-211586184.jpg
+-rw-rw-r--+ 1 sup_cristian sup_cristian   37331 Nov 13 22:52 whatsapp-image-2025-05-22-at-14-56-05-1763074330745-227447555.jpg
+HTTP/1.1 404 Not Found
+X-Powered-By: Express
+Access-Control-Allow-Origin: *
+Content-Security-Policy: default-src 'none'
+X-Content-Type-Options: nosniff
+Content-Type: text/html; charset=utf-8
+Content-Length: 148
+Date: Thu, 13 Nov 2025 22:54:45 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ 
