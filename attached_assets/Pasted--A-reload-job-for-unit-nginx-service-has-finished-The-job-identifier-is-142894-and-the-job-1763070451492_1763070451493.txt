@@ -1,0 +1,45 @@
+░░ A reload job for unit nginx.service has finished.
+░░ 
+░░ The job identifier is 142894 and the job result is done.
+Nov 13 21:08:02 srvdbwhu systemd[1]: Reloading A high performance web server and a reverse proxy server...
+░░ Subject: A reload job for unit nginx.service has begun execution
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A reload job for unit nginx.service has begun execution.
+░░ 
+░░ The job identifier is 143332.
+Nov 13 21:08:02 srvdbwhu systemd[1]: Reloaded A high performance web server and a reverse proxy server.
+░░ Subject: A reload job for unit nginx.service has finished
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A reload job for unit nginx.service has finished.
+░░ 
+░░ The job identifier is 143332 and the job result is done.
+Nov 13 21:10:29 srvdbwhu systemd[1]: Reloading A high performance web server and a reverse proxy server...
+░░ Subject: A reload job for unit nginx.service has begun execution
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A reload job for unit nginx.service has begun execution.
+░░ 
+░░ The job identifier is 143333.
+Nov 13 21:10:29 srvdbwhu nginx[3248529]: nginx: [crit] pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+Nov 13 21:10:29 srvdbwhu systemd[1]: nginx.service: Control process exited, code=exited, status=1/FAILURE
+░░ Subject: Unit process exited
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ An ExecReload= process belonging to unit nginx.service has exited.
+░░ 
+░░ The process' exit code is 'exited' and its exit status is 1.
+Nov 13 21:10:29 srvdbwhu systemd[1]: Reload failed for A high performance web server and a reverse proxy server.
+░░ Subject: A reload job for unit nginx.service has finished
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A reload job for unit nginx.service has finished.
+░░ 
+░░ The job identifier is 143333 and the job result is failed.
+lines 1725-1776/1776 (END)
