@@ -1,0 +1,29 @@
+latest: Pulling from devs-wescctech/app-peticoesbr-frontend
+Digest: sha256:7251a188bf011e198094177af71117f02f885744ebae0dbf058c11afd047c954
+Status: Image is up to date for ghcr.io/devs-wescctech/app-peticoesbr-frontend:latest
+ghcr.io/devs-wescctech/app-peticoesbr-frontend:latest
+no configuration file provided: not found
+no configuration file provided: not found
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ docker ps
+CONTAINER ID   IMAGE                                          COMMAND                  CREATED        STATUS                  PORTS                                         NAMES
+93ccedea30c5   app-helpdesk_helpdesk                          "docker-entrypoint.s…"   47 hours ago   Up 47 hours (healthy)   0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp   helpdesk-app
+7fd89d40cd3b   ghcr.io/devs-wescctech/app-exportar-whu:main   "python app.py"          8 days ago     Up 8 days (unhealthy)   127.0.0.1:5001->5000/tcp                      exportar_whu-web-1
+51b4d3f3eb32   base_clientes_amed_amed                        "python -m uvicorn m…"   3 weeks ago    Up 12 days              0.0.0.0:5010->5000/tcp, [::]:5010->5000/tcp   base_clientes_amed
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ nano /var/www/html/peticoesbr/docker-compose.ym
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ sudo nano /var/www/html/peticoesbr/docker-compose.ym
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ # 3. Subir containers
+cd /var/www/html/peticoesbr
+docker compose up -d
+
+# 4. Verificar
+docker ps
+docker logs peticoesbr-frontend
+docker logs peticoesbr-backend
+no configuration file provided: not found
+CONTAINER ID   IMAGE                                          COMMAND                  CREATED        STATUS                  PORTS                                         NAMES
+93ccedea30c5   app-helpdesk_helpdesk                          "docker-entrypoint.s…"   47 hours ago   Up 47 hours (healthy)   0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp   helpdesk-app
+7fd89d40cd3b   ghcr.io/devs-wescctech/app-exportar-whu:main   "python app.py"          8 days ago     Up 8 days (unhealthy)   127.0.0.1:5001->5000/tcp                      exportar_whu-web-1
+51b4d3f3eb32   base_clientes_amed_amed                        "python -m uvicorn m…"   3 weeks ago    Up 12 days              0.0.0.0:5010->5000/tcp, [::]:5010->5000/tcp   base_clientes_amed
+Error response from daemon: No such container: peticoesbr-frontend
+Error response from daemon: No such container: peticoesbr-backend
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ 
