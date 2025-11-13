@@ -1,6 +1,6 @@
 import { base44 } from "@/api";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { 
   Users, 
   TrendingUp, 
@@ -23,12 +30,45 @@ import {
   Linkedin,
   Send,
   Link as LinkIcon,
-  Sparkles
+  Sparkles,
+  ChevronDown
 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
 } from "@/components/ui/dialog";
+
+const BRAZILIAN_STATES = [
+  { value: "AC", label: "Acre" },
+  { value: "AL", label: "Alagoas" },
+  { value: "AP", label: "Amapá" },
+  { value: "AM", label: "Amazonas" },
+  { value: "BA", label: "Bahia" },
+  { value: "CE", label: "Ceará" },
+  { value: "DF", label: "Distrito Federal" },
+  { value: "ES", label: "Espírito Santo" },
+  { value: "GO", label: "Goiás" },
+  { value: "MA", label: "Maranhão" },
+  { value: "MT", label: "Mato Grosso" },
+  { value: "MS", label: "Mato Grosso do Sul" },
+  { value: "MG", label: "Minas Gerais" },
+  { value: "PA", label: "Pará" },
+  { value: "PB", label: "Paraíba" },
+  { value: "PR", label: "Paraná" },
+  { value: "PE", label: "Pernambuco" },
+  { value: "PI", label: "Piauí" },
+  { value: "RJ", label: "Rio de Janeiro" },
+  { value: "RN", label: "Rio Grande do Norte" },
+  { value: "RS", label: "Rio Grande do Sul" },
+  { value: "RO", label: "Rondônia" },
+  { value: "RR", label: "Roraima" },
+  { value: "SC", label: "Santa Catarina" },
+  { value: "SP", label: "São Paulo" },
+  { value: "SE", label: "Sergipe" },
+  { value: "TO", label: "Tocantins" },
+];
+
+const citiesCache = {};
 
 export default function PetitionLanding() {
   const queryClient = useQueryClient();
@@ -44,6 +84,8 @@ export default function PetitionLanding() {
     cpf: "",
     comment: "",
   });
+  const [cities, setCities] = useState([]);
+  const [loadingCities, setLoadingCities] = useState(false);
 
   const { data: petition, isLoading } = useQuery({
     queryKey: ['petition', slug],
@@ -72,6 +114,46 @@ export default function PetitionLanding() {
       // Removed setTimeout for scrolling as it's handled by modal UX
     },
   });
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      if (!formData.state) {
+        setCities([]);
+        return;
+      }
+
+      if (citiesCache[formData.state]) {
+        setCities(citiesCache[formData.state]);
+        return;
+      }
+
+      setLoadingCities(true);
+      try {
+        const response = await fetch(
+          `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${formData.state}/municipios`
+        );
+        const data = await response.json();
+        const cityList = data.map(city => ({ value: city.nome, label: city.nome })).sort((a, b) => a.label.localeCompare(b.label));
+        citiesCache[formData.state] = cityList;
+        setCities(cityList);
+      } catch (error) {
+        console.error('Erro ao buscar cidades:', error);
+        setCities([]);
+      } finally {
+        setLoadingCities(false);
+      }
+    };
+
+    fetchCities();
+  }, [formData.state]);
+
+  const handleStateChange = (value) => {
+    setFormData(prev => ({
+      ...prev,
+      state: value,
+      city: ""
+    }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -339,34 +421,47 @@ export default function PetitionLanding() {
                     )}
 
                     <div className="grid grid-cols-2 gap-3">
-                      {petition.collect_city && (
-                        <div>
-                          <Label htmlFor="city" className="text-sm font-bold text-gray-900">
-                            Cidade
-                          </Label>
-                          <Input
-                            id="city"
-                            value={formData.city}
-                            onChange={(e) => setFormData({...formData, city: e.target.value})}
-                            placeholder="Cidade"
-                            className="mt-1.5 h-11 border-2"
-                          />
-                        </div>
-                      )}
-
                       {petition.collect_state && (
                         <div>
                           <Label htmlFor="state" className="text-sm font-bold text-gray-900">
                             Estado
                           </Label>
-                          <Input
-                            id="state"
-                            value={formData.state}
-                            onChange={(e) => setFormData({...formData, state: e.target.value})}
-                            placeholder="UF"
-                            maxLength={2}
-                            className="mt-1.5 h-11 border-2"
-                          />
+                          <Select value={formData.state} onValueChange={handleStateChange}>
+                            <SelectTrigger className="mt-1.5 h-11 border-2">
+                              <SelectValue placeholder="Selecione" />
+                            </SelectTrigger>
+                            <SelectContent className="max-h-60">
+                              {BRAZILIAN_STATES.map((state) => (
+                                <SelectItem key={state.value} value={state.value}>
+                                  {state.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+
+                      {petition.collect_city && (
+                        <div>
+                          <Label htmlFor="city" className="text-sm font-bold text-gray-900">
+                            Cidade
+                          </Label>
+                          <Select 
+                            value={formData.city} 
+                            onValueChange={(value) => setFormData({...formData, city: value})}
+                            disabled={!formData.state || loadingCities}
+                          >
+                            <SelectTrigger className="mt-1.5 h-11 border-2">
+                              <SelectValue placeholder={loadingCities ? "Carregando..." : formData.state ? "Selecione" : "Escolha um estado primeiro"} />
+                            </SelectTrigger>
+                            <SelectContent className="max-h-60">
+                              {cities.map((city) => (
+                                <SelectItem key={city.value} value={city.value}>
+                                  {city.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                         </div>
                       )}
                     </div>

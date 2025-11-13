@@ -78,10 +78,7 @@ export default function Login() {
 
             <div className="space-y-5 pt-8">
               {[
-                { icon: Sparkles, title: 'Petições Ilimitadas', desc: 'Crie e gerencie quantas petições precisar' },
-                { icon: Users, title: 'Multi-Tenancy', desc: 'Sistema isolado para cada organização' },
                 { icon: Zap, title: 'Campanhas Automatizadas', desc: 'Email e WhatsApp integrados' },
-                { icon: Shield, title: 'Seguro e Confiável', desc: 'Autenticação JWT e dados protegidos' },
               ].map((feature, idx) => (
                 <div key={idx} className="flex items-start gap-5 animate-fade-in" style={{ animationDelay: `${idx * 0.1}s` }}>
                   <div className="w-12 h-12 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 flex-shrink-0">

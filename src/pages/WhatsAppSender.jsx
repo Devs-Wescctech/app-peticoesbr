@@ -46,7 +46,7 @@ export default function WhatsAppSender() {
     const personalizedMessage = message
       .replace('{nome}', personName)
       .replace('{peticao}', petition?.title || '')
-      .replace('{link}', `${window.location.origin}/PetitionLanding?id=${selectedPetition}`);
+      .replace('{link}', `${window.location.origin}/p?s=${petition?.slug || selectedPetition}`);
 
     const myHeaders = new Headers();
     myHeaders.append("access-token", accessToken);

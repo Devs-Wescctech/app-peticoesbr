@@ -49,7 +49,7 @@ export default function EmailSender() {
     const personalizedHtml = htmlContent
       .replace(/{nome}/g, toName)
       .replace(/{peticao}/g, petition?.title || '')
-      .replace(/{link}/g, `${window.location.origin}/PetitionLanding?id=${selectedPetition}`);
+      .replace(/{link}/g, `${window.location.origin}/p?s=${petition?.slug || selectedPetition}`);
 
     const personalizedSubject = subject
       .replace(/{nome}/g, toName)
