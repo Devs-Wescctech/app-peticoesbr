@@ -1,0 +1,135 @@
+up_cristian@srvdbwhu:/var/www/html/peticoesbr$ # 1. Logs do backend
+docker logs peticoesbr-backend --tail 50
+# 2. Logs do frontend
+docker logs peticoesbr-frontend --tail 50
+# 3. Ver configuração do Nginx dentro do container frontend
+docker exec peticoesbr-frontend cat /etc/nginx/conf.d/default.conf
+# 4. Ver arquivos servidos pelo frontend
+docker exec peticoesbr-frontend ls -la /usr/share/nginx/html/
+🔄 Initializing database...
+🔄 Creating control-plane schema...
+✅ Control-plane schema created
+🔄 Creating tenant schema...
+✅ Tenant schema created
+✅ Database schema initialized successfully
+✅ Server running on port 3001
+📡 API available at http://localhost:3001/api
+📁 Uploads available at http://localhost:3001/uploads
+2025/11/13 22:43:08 [error] 29#29: *19 open() "/usr/share/nginx/html/peticoesbr/assets/index-BmQ_HIsV.js" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:08 +0000] "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:43:08 [error] 29#29: *20 open() "/usr/share/nginx/html/peticoesbr/assets/index-5zpZtJ8k.css" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:08 +0000] "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/ HTTP/1.1" 200 674 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:43:09 [error] 29#29: *22 open() "/usr/share/nginx/html/peticoesbr/assets/index-BmQ_HIsV.js" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:43:09 [error] 29#29: *23 open() "/usr/share/nginx/html/peticoesbr/assets/index-5zpZtJ8k.css" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/ HTTP/1.1" 200 674 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:43:09 [error] 29#29: *25 open() "/usr/share/nginx/html/peticoesbr/assets/index-BmQ_HIsV.js" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:43:09 [error] 30#30: *26 open() "/usr/share/nginx/html/peticoesbr/assets/index-5zpZtJ8k.css" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/ HTTP/1.1" 200 674 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:43:09 [error] 29#29: *28 open() "/usr/share/nginx/html/peticoesbr/assets/index-BmQ_HIsV.js" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:43:09 [error] 29#29: *29 open() "/usr/share/nginx/html/peticoesbr/assets/index-5zpZtJ8k.css" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/ HTTP/1.1" 200 674 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:43:09 [error] 30#30: *31 open() "/usr/share/nginx/html/peticoesbr/assets/index-BmQ_HIsV.js" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:43:09 [error] 30#30: *32 open() "/usr/share/nginx/html/peticoesbr/assets/index-5zpZtJ8k.css" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/ HTTP/1.1" 200 674 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:43:09 [error] 30#30: *34 open() "/usr/share/nginx/html/peticoesbr/assets/index-BmQ_HIsV.js" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:43:09 [error] 30#30: *35 open() "/usr/share/nginx/html/peticoesbr/assets/index-5zpZtJ8k.css" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/ HTTP/1.1" 200 674 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:43:09 [error] 30#30: *37 open() "/usr/share/nginx/html/peticoesbr/assets/index-BmQ_HIsV.js" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:43:09 [error] 30#30: *38 open() "/usr/share/nginx/html/peticoesbr/assets/index-5zpZtJ8k.css" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:09 +0000] "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:43:11 [error] 30#30: *39 open() "/usr/share/nginx/html/peticoesbr/assets/index-5zpZtJ8k.css" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:43:11 +0000] "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+127.0.0.1 - - [13/Nov/2025:22:43:38 +0000] "GET / HTTP/1.1" 200 674 "-" "Wget" "-"
+172.23.0.1 - - [13/Nov/2025:22:44:02 +0000] "GET /peticoesbr/ HTTP/1.1" 200 674 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:44:02 [error] 30#30: *42 open() "/usr/share/nginx/html/peticoesbr/assets/index-BmQ_HIsV.js" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:44:02 +0000] "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:44:02 [error] 31#31: *43 open() "/usr/share/nginx/html/peticoesbr/assets/index-5zpZtJ8k.css" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:44:02 +0000] "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+172.23.0.1 - - [13/Nov/2025:22:44:03 +0000] "GET /peticoesbr/ HTTP/1.1" 200 674 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+2025/11/13 22:44:03 [error] 30#30: *45 open() "/usr/share/nginx/html/peticoesbr/assets/index-BmQ_HIsV.js" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+2025/11/13 22:44:03 [error] 31#31: *46 open() "/usr/share/nginx/html/peticoesbr/assets/index-5zpZtJ8k.css" failed (2: No such file or directory), client: 172.23.0.1, server: _, request: "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/peticoesbr/"
+172.23.0.1 - - [13/Nov/2025:22:44:03 +0000] "GET /peticoesbr/assets/index-BmQ_HIsV.js HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+172.23.0.1 - - [13/Nov/2025:22:44:03 +0000] "GET /peticoesbr/assets/index-5zpZtJ8k.css HTTP/1.1" 404 555 "https://dev.wescctech.com.br/peticoesbr/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" "172.16.4.37"
+127.0.0.1 - - [13/Nov/2025:22:44:08 +0000] "GET / HTTP/1.1" 200 674 "-" "Wget" "-"
+127.0.0.1 - - [13/Nov/2025:22:44:38 +0000] "GET / HTTP/1.1" 200 674 "-" "Wget" "-"
+127.0.0.1 - - [13/Nov/2025:22:45:08 +0000] "GET / HTTP/1.1" 200 674 "-" "Wget" "-"
+server {
+    listen 80;
+    server_name _;
+    
+    root /usr/share/nginx/html;
+    index index.html;
+    
+    # Increase upload size limit to 50MB
+    client_max_body_size 50M;
+    
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml+rss application/javascript application/json;
+    
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    
+    # API proxy (PRIORITY 1)
+    location /api {
+        proxy_pass http://backend:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    
+    # Uploads proxy (PRIORITY 2 - must come before regex)
+    location ^~ /uploads {
+        proxy_pass http://backend:3001/uploads;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+    
+    # Cache static assets (regex - lower priority)
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+    
+    # Disable caching for HTML (SPA)
+    location / {
+        try_files $uri $uri/ /index.html;
+        add_header Cache-Control "no-cache, no-store, must-revalidate";
+        add_header Pragma "no-cache";
+        add_header Expires "0";
+    }
+}
+total 24
+drwxr-xr-x    1 root     root          4096 Nov 13 22:01 .
+drwxr-xr-x    1 root     root          4096 Apr 16  2025 ..
+-rw-r--r--    1 root     root           497 Apr 16  2025 50x.html
+drwxr-xr-x    2 root     root          4096 Nov 13 22:01 assets
+-rw-r--r--    1 root     root           607 Nov 13 22:01 favicon.svg
+-rw-r--r--    1 root     root           674 Nov 13 22:01 index.html
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ 
