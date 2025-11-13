@@ -1,0 +1,30 @@
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ docker ps
+CONTAINER ID   IMAGE                                                  COMMAND                  CREATED          STATUS                      PORTS                                                                                NAMES
+e5d349a7cb10   0bd2400de678                                           "/docker-entrypoint.…"   18 minutes ago   Up 18 minutes (unhealthy)   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp, 0.0.0.0:8443->443/tcp, [::]:8443->443/tcp   peticoesbr-frontend
+e7e788678cb4   ghcr.io/devs-wescctech/app-peticoesbr-backend:latest   "docker-entrypoint.s…"   18 minutes ago   Up 18 minutes (healthy)     0.0.0.0:3001->3001/tcp, [::]:3001->3001/tcp                                          peticoesbr-backend
+93ccedea30c5   app-helpdesk_helpdesk                                  "docker-entrypoint.s…"   46 hours ago     Up 46 hours (healthy)       0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp                                          helpdesk-app7fd89d40cd3b   ghcr.io/devs-wescctech/app-exportar-whu:main           "python app.py"          8 days ago       Up 8 days (unhealthy)       127.0.0.1:5001->5000/tcp                                                             exportar_whu-web-1
+51b4d3f3eb32   base_clientes_amed_amed                                "python -m uvicorn m…"   3 weeks ago      Up 12 days                  0.0.0.0:5010->5000/tcp, [::]:5010->5000/tcp                                          base_clientes_amed
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ sudo rm -rf /var/www/html/peticoesbr/*
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ docker ps
+CONTAINER ID   IMAGE                                                  COMMAND                  CREATED          STATUS                      PORTS                                                                                NAMES
+e5d349a7cb10   0bd2400de678                                           "/docker-entrypoint.…"   21 minutes ago   Up 21 minutes (unhealthy)   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp, 0.0.0.0:8443->443/tcp, [::]:8443->443/tcp   peticoesbr-frontend
+e7e788678cb4   ghcr.io/devs-wescctech/app-peticoesbr-backend:latest   "docker-entrypoint.s…"   21 minutes ago   Up 21 minutes (healthy)     0.0.0.0:3001->3001/tcp, [::]:3001->3001/tcp                                          peticoesbr-backend
+93ccedea30c5   app-helpdesk_helpdesk                                  "docker-entrypoint.s…"   46 hours ago     Up 46 hours (healthy)       0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp                                          helpdesk-app7fd89d40cd3b   ghcr.io/devs-wescctech/app-exportar-whu:main           "python app.py"          8 days ago       Up 8 days (unhealthy)       127.0.0.1:5001->5000/tcp                                                             exportar_whu-web-1
+51b4d3f3eb32   base_clientes_amed_amed                                "python -m uvicorn m…"   3 weeks ago      Up 12 days                  0.0.0.0:5010->5000/tcp, [::]:5010->5000/tcp                                          base_clientes_amed
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ ls
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ sudo rm -Rf /etc/nginx/snippets/peticoesbr.conf
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ sudo nano /etc/nginx/snippets/peticoesbr.conf
+
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ # Testar e recarregar
+sudo nginx -t
+sudo systemctl reload nginx
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ ls -la /opt/peticoesbr/
+# Verificar uploads do backend
+docker exec peticoesbr-backend ls -la /app/uploads
+ls: cannot access '/opt/peticoesbr/': No such file or directory
+total 0
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ sudo ls -la /opt/peticoesbr/
+ls: cannot access '/opt/peticoesbr/': No such file or directory
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ 
