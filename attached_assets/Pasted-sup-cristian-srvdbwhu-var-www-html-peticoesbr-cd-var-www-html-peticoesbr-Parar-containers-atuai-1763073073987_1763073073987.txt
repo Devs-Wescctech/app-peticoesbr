@@ -1,0 +1,41 @@
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ cd /var/www/html/peticoesbr
+# Parar containers atuais
+docker stop peticoesbr-frontend peticoesbr-backend
+docker rm peticoesbr-frontend peticoesbr-backend
+# Pull das imagens GHCR
+docker pull ghcr.io/devs-wescctech/app-peticoesbr-backend:latest
+docker pull ghcr.io/devs-wescctech/app-peticoesbr-frontend:latest
+# Subir novos containers
+docker compose up -d
+# Ver logs
+docker compose logs -f
+peticoesbr-frontend
+peticoesbr-backend
+peticoesbr-frontend
+peticoesbr-backend
+latest: Pulling from devs-wescctech/app-peticoesbr-backend
+2d35ebdb57d9: Already exists 
+60e45a9660cf: Already exists 
+e74e4ed823e9: Already exists 
+da04d522c98f: Already exists 
+2e27c0048390: Pull complete 
+368f5727c57e: Pull complete 
+6d4188711916: Pull complete 
+d2bd8c99d93f: Pull complete 
+a5b85869cf50: Pull complete 
+4f4fb700ef54: Pull complete 
+Digest: sha256:ea2f56d2718c02620797a20b556ec733220064edbd619be6296f25f23244a1a7
+Status: Downloaded newer image for ghcr.io/devs-wescctech/app-peticoesbr-backend:latest
+ghcr.io/devs-wescctech/app-peticoesbr-backend:latest
+latest: Pulling from devs-wescctech/app-peticoesbr-frontend
+Digest: sha256:7251a188bf011e198094177af71117f02f885744ebae0dbf058c11afd047c954
+Status: Image is up to date for ghcr.io/devs-wescctech/app-peticoesbr-frontend:latest
+ghcr.io/devs-wescctech/app-peticoesbr-frontend:latest
+no configuration file provided: not found
+no configuration file provided: not found
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ docker ps
+CONTAINER ID   IMAGE                                          COMMAND                  CREATED        STATUS                  PORTS                                         NAMES
+93ccedea30c5   app-helpdesk_helpdesk                          "docker-entrypoint.s…"   47 hours ago   Up 47 hours (healthy)   0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp   helpdesk-app
+7fd89d40cd3b   ghcr.io/devs-wescctech/app-exportar-whu:main   "python app.py"          8 days ago     Up 8 days (unhealthy)   127.0.0.1:5001->5000/tcp                      exportar_whu-web-1
+51b4d3f3eb32   base_clientes_amed_amed                        "python -m uvicorn m…"   3 weeks ago    Up 12 days              0.0.0.0:5010->5000/tcp, [::]:5010->5000/tcp   base_clientes_amed
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ 
