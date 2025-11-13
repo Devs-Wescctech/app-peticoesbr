@@ -35,6 +35,41 @@ router.get('/slug/:slug', async (req, res) => {
   }
 });
 
+router.get('/slug/:slug/petitions', async (req, res) => {
+  try {
+    const { slug } = req.params;
+    
+    const pageResult = await pool.query(
+      'SELECT petition_ids FROM linkbio_pages WHERE slug = $1',
+      [slug]
+    );
+    
+    if (pageResult.rows.length === 0) {
+      return res.status(404).json({ error: 'LinkBio page not found' });
+    }
+    
+    const petitionIds = pageResult.rows[0].petition_ids || [];
+    
+    if (!Array.isArray(petitionIds) || petitionIds.length === 0) {
+      return res.json([]);
+    }
+    
+    const petitionsResult = await pool.query(
+      `SELECT 
+        p.*,
+        (SELECT COUNT(*) FROM signatures WHERE petition_id = p.id) as signature_count
+       FROM petitions p
+       WHERE p.id = ANY($1::uuid[])
+       ORDER BY p.created_date DESC`,
+      [petitionIds]
+    );
+    
+    res.json(petitionsResult.rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.get('/:id', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;

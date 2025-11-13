@@ -13,23 +13,22 @@ export default function LinkBioView() {
   const slug = urlParams.get('s');
 
   const { data: page, isLoading: loadingPage } = useQuery({
-    queryKey: ['linkbio-page', slug],
+    queryKey: ['linkbio-page-public', slug],
     queryFn: async () => {
-      const pages = await base44.entities.LinkBioPage.list();
-      return pages.find(p => p.slug === slug);
+      const response = await fetch(`/api/linkbio-pages/slug/${slug}`);
+      if (!response.ok) throw new Error('Page not found');
+      return response.json();
     },
   });
 
   const { data: petitions = [] } = useQuery({
-    queryKey: ['petitions'],
-    queryFn: () => base44.entities.Petition.list(),
-    staleTime: 30000,
-    refetchOnWindowFocus: false,
-  });
-
-  const { data: signatures = [] } = useQuery({
-    queryKey: ['signatures'],
-    queryFn: () => base44.entities.Signature.list(),
+    queryKey: ['linkbio-petitions-public', slug],
+    queryFn: async () => {
+      const response = await fetch(`/api/linkbio-pages/slug/${slug}/petitions`);
+      if (!response.ok) return [];
+      return response.json();
+    },
+    enabled: !!page && !!slug,
     staleTime: 30000,
     refetchOnWindowFocus: false,
   });
@@ -42,41 +41,7 @@ export default function LinkBioView() {
     );
   }
 
-  // Normalize petition_ids to always be an array
-  const normalizePetitionIds = (ids) => {
-    if (!ids) return [];
-    if (Array.isArray(ids)) return ids;
-    
-    if (typeof ids === 'string') {
-      // Handle PostgreSQL TEXT[] format: {uuid1,uuid2}
-      if (ids.startsWith('{') && ids.endsWith('}')) {
-        return ids
-          .slice(1, -1)
-          .split(',')
-          .map(id => id.trim().replace(/^["']|["']$/g, ''))
-          .filter(id => id.length > 0);
-      }
-      
-      // Handle JSON string: ["uuid1","uuid2"]
-      try {
-        const parsed = JSON.parse(ids);
-        return Array.isArray(parsed) ? parsed : [];
-      } catch {
-        // Single ID as string
-        return ids.trim() ? [ids.trim()] : [];
-      }
-    }
-    
-    return [];
-  };
-
-  const petitionIds = normalizePetitionIds(page.petition_ids);
-  const pagePetitions = petitions.filter(p => petitionIds.includes(p.id));
-  
-
-  const getSignaturesForPetition = (petitionId) => {
-    return signatures.filter(s => s.petition_id === petitionId).length;
-  };
+  const pagePetitions = petitions;
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -149,7 +114,7 @@ export default function LinkBioView() {
 
         <div className="space-y-6">
           {pagePetitions.map((petition) => {
-            const signatureCount = getSignaturesForPetition(petition.id);
+            const signatureCount = petition.signature_count || 0;
             const progress = Math.min((signatureCount / petition.goal) * 100, 100);
             const landingUrl = createPageUrl(`p?s=${petition.slug}`);
 

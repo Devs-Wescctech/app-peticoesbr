@@ -45,27 +45,43 @@ export default function PetitionLanding() {
   });
 
   const { data: petition, isLoading } = useQuery({
-    queryKey: ['petition', slug],
+    queryKey: ['petition-public', slug],
     queryFn: async () => {
-      const petitions = await base44.entities.Petition.list();
-      return petitions.find(p => p.slug === slug);
+      const response = await fetch(`/api/petitions/slug/${slug}`);
+      if (!response.ok) throw new Error('Petition not found');
+      return response.json();
     },
     enabled: !!slug,
   });
 
-  const { data: signatures = [] } = useQuery({
-    queryKey: ['signatures', petition?.id],
+  const { data: signatureCount } = useQuery({
+    queryKey: ['signature-count-public', petition?.id],
     queryFn: async () => {
-      const allSignatures = await base44.entities.Signature.list();
-      return allSignatures.filter(s => s.petition_id === petition.id);
+      const response = await fetch(`/api/signatures/petition/${petition.id}/count`);
+      if (!response.ok) return { count: 0 };
+      return response.json();
     },
-    enabled: !!petition,
+    enabled: !!petition?.id,
   });
 
+  const signatures = [];
+  const signatureCountValue = signatureCount?.count || 0;
+
   const signMutation = useMutation({
-    mutationFn: (data) => base44.entities.Signature.create(data),
+    mutationFn: async (data) => {
+      const response = await fetch('/api/signatures/public', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erro ao assinar petição');
+      }
+      return response.json();
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['signatures', petition?.id] });
+      queryClient.invalidateQueries({ queryKey: ['signature-count-public', petition?.id] });
       setShowSuccessModal(true);
       setFormData({ name: "", email: "", phone: "", city: "", state: "", cpf: "", comment: "" });
     },
@@ -87,7 +103,7 @@ export default function PetitionLanding() {
     );
   }
 
-  const progress = Math.min((signatures.length / petition.goal) * 100, 100);
+  const progress = Math.min((signatureCountValue / petition.goal) * 100, 100);
   const primaryColor = petition.primary_color || "#6366f1";
   const landingUrl = window.location.href;
   
@@ -204,7 +220,7 @@ export default function PetitionLanding() {
                   <Users className="w-6 h-6 text-white" />
                 </div>
                 <div className="text-left">
-                  <p className="text-2xl font-black text-white">{signatures.length.toLocaleString('pt-BR')}</p>
+                  <p className="text-2xl font-black text-white">{signatureCountValue.toLocaleString('pt-BR')}</p>
                   <p className="text-xs text-white/70">assinaturas</p>
                 </div>
               </div>
@@ -245,7 +261,7 @@ export default function PetitionLanding() {
               </div>
               {progress < 100 && (
                 <p className="text-white/80 text-sm mt-2 text-center">
-                  Faltam <span className="font-bold text-white">{(petition.goal - signatures.length).toLocaleString('pt-BR')}</span> assinaturas!
+                  Faltam <span className="font-bold text-white">{(petition.goal - signatureCountValue).toLocaleString('pt-BR')}</span> assinaturas!
                 </p>
               )}
             </div>
@@ -268,7 +284,7 @@ export default function PetitionLanding() {
                     </h3>
                     <p className="text-white/90 flex items-center justify-center gap-2 text-sm">
                       <Users className="w-4 h-4" />
-                      Junte-se a {signatures.length.toLocaleString('pt-BR')} pessoas
+                      Junte-se a {signatureCountValue.toLocaleString('pt-BR')} pessoas
                     </p>
                   </div>
                 </div>
@@ -479,7 +495,7 @@ export default function PetitionLanding() {
                 <div className="grid grid-cols-3 gap-4 mb-8">
                   <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
                     <Sparkles className="w-8 h-8 mx-auto mb-2 text-green-600" />
-                    <p className="text-2xl font-black text-gray-900">{(signatures.length + (showSuccessModal ? 1 : 0)).toLocaleString('pt-BR')}</p>
+                    <p className="text-2xl font-black text-gray-900">{(signatureCountValue + (showSuccessModal ? 1 : 0)).toLocaleString('pt-BR')}</p>
                     <p className="text-xs text-gray-600">Assinaturas</p>
                   </div>
                   <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl">
@@ -489,7 +505,7 @@ export default function PetitionLanding() {
                   </div>
                   <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl">
                     <TrendingUp className="w-8 h-8 mx-auto mb-2 text-purple-600" />
-                    <p className="text-2xl font-black text-gray-900">{Math.min(((signatures.length + (showSuccessModal ? 1 : 0)) / petition.goal) * 100, 100).toFixed(0)}%</p>
+                    <p className="text-2xl font-black text-gray-900">{Math.min(((signatureCountValue + (showSuccessModal ? 1 : 0)) / petition.goal) * 100, 100).toFixed(0)}%</p>
                     <p className="text-xs text-gray-600">Progresso</p>
                   </div>
                 </div>

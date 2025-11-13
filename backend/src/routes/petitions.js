@@ -19,6 +19,7 @@ router.get('/', authenticate, requireTenant, async (req, res) => {
   }
 });
 
+
 // GET /api/petitions/slug/:slug - Public endpoint (no auth required)
 // Used for public petition pages
 router.get('/slug/:slug', async (req, res) => {
