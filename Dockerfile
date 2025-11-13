@@ -5,6 +5,9 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Build argument para configurar base URL
+ARG VITE_BASE_URL=/peticoesbr/
+
 # Copiar package files
 COPY package*.json ./
 
@@ -15,7 +18,8 @@ RUN npm ci && \
 # Copiar código fonte
 COPY . .
 
-# Build da aplicação
+# Build da aplicação com base URL configurável
+ENV VITE_BASE_URL=${VITE_BASE_URL}
 RUN npm run build
 
 # Stage 2: Production com Nginx
