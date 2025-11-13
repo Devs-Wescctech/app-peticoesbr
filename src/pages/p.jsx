@@ -85,6 +85,9 @@ export default function PetitionLanding() {
       setShowSuccessModal(true);
       setFormData({ name: "", email: "", phone: "", city: "", state: "", cpf: "", comment: "" });
     },
+    onError: (error) => {
+      alert(`Erro ao assinar: ${error.message}`);
+    },
   });
 
   const handleSubmit = (e) => {
