@@ -1,0 +1,66 @@
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ # 1. Ver informações completas do container frontend
+docker inspect peticoesbr-frontend | grep -A 5 "Labels"
+# 2. Buscar o docker-compose
+sudo find /var /home -name "*docker-compose*" -type f 2>/dev/null
+# 3. Ver o diretório de trabalho do docker-compose
+docker inspect peticoesbr-frontend | grep "com.docker.compose.project.working_dir"
+            "Labels": {
+                "com.docker.compose.config-hash": "aca6b0ce192a1d9a124136ca986f50c13fe89410b564fb819767bbee5db579a9",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "backend:service_started:false",
+                "com.docker.compose.image": "sha256:0bd2400de67817b9a1d455793462fc6d9f71296f9eabb21741bb6e3da0a4898f",
+                "com.docker.compose.oneoff": "False",
+/var/www/html/peticoes/docker-compose.yml
+/var/www/html/base_clientes_amed/docker-compose.override.yml
+/var/www/html/base_clientes_amed/docker-compose.yml
+/var/www/html/eligibilidade/docker-compose.yml
+/var/www/html/app-helpdesk/attached_assets/Pasted-sup-cristian-srvdbwhu-var-www-html-app-helpdesk-Ver-logs-em-tempo-real-docker-compose-logs-f--1762901557037_1762901557038.txt
+/var/www/html/app-helpdesk/attached_assets/Pasted-docker-compose-down-Atualizar-c-digo-git-pull-Rebuild-vai-compilar-o-static-ts-separadamente--1762902018435_1762902018435.txt
+/var/www/html/app-helpdesk/docker-compose.yml
+/var/www/html/exportar_whu/docker-compose.yml
+/var/www/html/exportar_whu/docker-compose.dev.yml
+/var/lib/dpkg/info/docker-compose.md5sums
+/var/lib/dpkg/info/docker-compose.prerm
+/var/lib/dpkg/info/docker-compose.list
+/var/lib/dpkg/info/docker-compose.postinst
+/var/lib/docker/overlay2/42fb58df4c2604e97f544cee7839b882c4b134b832ab5913f8b61e9a386f06f7/diff/app/docker-compose.yml
+/var/lib/docker/overlay2/42fb58df4c2604e97f544cee7839b882c4b134b832ab5913f8b61e9a386f06f7/diff/app/docker-compose.dev.yml
+/var/lib/docker/overlay2/ijr8ntofutl526jiv4hlj8lqg/diff/app/attached_assets/Pasted-sup-cristian-srvdbwhu-var-www-html-app-helpdesk-Ver-logs-em-tempo-real-docker-compose-logs-f--1762901557037_1762901557038.txt
+/var/lib/docker/overlay2/ijr8ntofutl526jiv4hlj8lqg/diff/app/attached_assets/Pasted-docker-compose-down-Atualizar-c-digo-git-pull-Rebuild-vai-compilar-o-static-ts-separadamente--1762902018435_1762902018435.txt
+/var/lib/docker/overlay2/ijr8ntofutl526jiv4hlj8lqg/diff/app/docker-compose.yml
+/var/lib/docker/overlay2/9dw8fnibr1qd8wgojvoyybstg/diff/app/attached_assets/Pasted-sup-cristian-srvdbwhu-var-www-html-app-helpdesk-Ver-logs-em-tempo-real-docker-compose-logs-f--1762901557037_1762901557038.txt
+/var/lib/docker/overlay2/9dw8fnibr1qd8wgojvoyybstg/diff/app/attached_assets/Pasted-docker-compose-down-Atualizar-c-digo-git-pull-Rebuild-vai-compilar-o-static-ts-separadamente--1762902018435_1762902018435.txt
+/var/lib/docker/overlay2/9dw8fnibr1qd8wgojvoyybstg/diff/app/docker-compose.yml
+/var/lib/docker/overlay2/2el0e5tk3h4p7qk8e29gso9ze/diff/app/attached_assets/Pasted-sup-cristian-srvdbwhu-var-www-html-app-helpdesk-Ver-logs-em-tempo-real-docker-compose-logs-f--1762901557037_1762901557038.txt
+/var/lib/docker/overlay2/2el0e5tk3h4p7qk8e29gso9ze/diff/app/attached_assets/Pasted-docker-compose-down-Atualizar-c-digo-git-pull-Rebuild-vai-compilar-o-static-ts-separadamente--1762902018435_1762902018435.txt
+/var/lib/docker/overlay2/2el0e5tk3h4p7qk8e29gso9ze/diff/app/docker-compose.yml
+/var/lib/docker/overlay2/0cce655d915973580b0bc53426a00b8a545ad50009d442d84e123af8c5f08344/merged/app/docker-compose.yml
+/var/lib/docker/overlay2/0cce655d915973580b0bc53426a00b8a545ad50009d442d84e123af8c5f08344/merged/app/docker-compose.dev.yml
+/var/lib/docker/overlay2/uic7jw09dm9tmmtet1p804brp/diff/app/docker-compose.yml
+/var/lib/docker/overlay2/py5owcyuo4g769ig8zx2mfu6h/diff/app/attached_assets/Pasted-sup-cristian-srvdbwhu-var-www-html-app-helpdesk-Ver-logs-em-tempo-real-docker-compose-logs-f--1762901557037_1762901557038.txt
+/var/lib/docker/overlay2/py5owcyuo4g769ig8zx2mfu6h/diff/app/attached_assets/Pasted-docker-compose-down-Atualizar-c-digo-git-pull-Rebuild-vai-compilar-o-static-ts-separadamente--1762902018435_1762902018435.txt
+/var/lib/docker/overlay2/py5owcyuo4g769ig8zx2mfu6h/diff/app/docker-compose.yml
+/var/lib/docker/overlay2/aafc916f8aedbfdd37ba209879d53852b8121521e1b6798d1e2a5c45f01f771d/diff/app/docker-compose.yml
+/var/lib/docker/overlay2/aafc916f8aedbfdd37ba209879d53852b8121521e1b6798d1e2a5c45f01f771d/diff/app/docker-compose.dev.yml
+/var/lib/docker/overlay2/bx5gedg846anuu9i95oibj7rr/diff/app/attached_assets/Pasted-sup-cristian-srvdbwhu-var-www-html-app-helpdesk-Ver-logs-em-tempo-real-docker-compose-logs-f--1762901557037_1762901557038.txt
+/var/lib/docker/overlay2/bx5gedg846anuu9i95oibj7rr/diff/app/docker-compose.yml
+/var/lib/docker/overlay2/0vwbmbg98sj4rwht0hk41ozqf/diff/attached_assets/Pasted-sup-cristian-srvdbwhu-var-www-html-app-helpdesk-Ver-logs-em-tempo-real-docker-compose-logs-f--1762901557037_1762901557038.txt
+/var/lib/docker/overlay2/0vwbmbg98sj4rwht0hk41ozqf/diff/attached_assets/Pasted-docker-compose-down-Atualizar-c-digo-git-pull-Rebuild-vai-compilar-o-static-ts-separadamente--1762902018435_1762902018435.txt
+/var/lib/docker/overlay2/0vwbmbg98sj4rwht0hk41ozqf/diff/docker-compose.yml
+/var/lib/docker/overlay2/u1blg6uh0o8dbiql8xckngent/diff/app/attached_assets/Pasted-sup-cristian-srvdbwhu-var-www-html-app-helpdesk-Ver-logs-em-tempo-real-docker-compose-logs-f--1762901557037_1762901557038.txt
+/var/lib/docker/overlay2/u1blg6uh0o8dbiql8xckngent/diff/app/docker-compose.yml
+/var/lib/docker/overlay2/i185agh3p5o6b47iggi7i9lob/diff/app/attached_assets/Pasted-sup-cristian-srvdbwhu-var-www-html-app-helpdesk-Ver-logs-em-tempo-real-docker-compose-logs-f--1762901557037_1762901557038.txt
+/var/lib/docker/overlay2/i185agh3p5o6b47iggi7i9lob/diff/app/docker-compose.yml
+/var/lib/docker/overlay2/mdjvlvt5j7tfjb3qjb92kiwfa/diff/app/attached_assets/Pasted-sup-cristian-srvdbwhu-var-www-html-app-helpdesk-Ver-logs-em-tempo-real-docker-compose-logs-f--1762901557037_1762901557038.txt
+/var/lib/docker/overlay2/mdjvlvt5j7tfjb3qjb92kiwfa/diff/app/attached_assets/Pasted-docker-compose-down-Atualizar-c-digo-git-pull-Rebuild-vai-compilar-o-static-ts-separadamente--1762902018435_1762902018435.txt
+/var/lib/docker/overlay2/mdjvlvt5j7tfjb3qjb92kiwfa/diff/app/docker-compose.yml
+/var/lib/docker/overlay2/3nu80qy7ewvshqg9p1kllzekq/diff/app/attached_assets/Pasted-sup-cristian-srvdbwhu-var-www-html-app-helpdesk-Ver-logs-em-tempo-real-docker-compose-logs-f--1762901557037_1762901557038.txt
+/var/lib/docker/overlay2/3nu80qy7ewvshqg9p1kllzekq/diff/app/attached_assets/Pasted-docker-compose-down-Atualizar-c-digo-git-pull-Rebuild-vai-compilar-o-static-ts-separadamente--1762902018435_1762902018435.txt
+/var/lib/docker/overlay2/3nu80qy7ewvshqg9p1kllzekq/diff/app/docker-compose.yml
+/var/lib/docker/overlay2/olzieqdptp2fpkml4izxmkjj2/diff/app/docker-compose.yml
+/var/lib/docker/overlay2/olzieqdptp2fpkml4izxmkjj2/diff/app/docker-compose.dev.yml
+/home/sup_cristian/eligibilidade/docker-compose.yml
+/home/sup_cristian/.docker/cli-plugins/docker-compose
+/home/sup_cristian/var/www/ranking-tecnicos/docker-compose.yml
+                "com.docker.compose.project.working_dir": "/var/www/html/peticoesbr",
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ 
