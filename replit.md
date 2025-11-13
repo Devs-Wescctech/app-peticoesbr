@@ -42,6 +42,18 @@ The frontend uses Radix UI for accessible components, styled with TailwindCSS fo
 - **Replit-Optimized Deployment**: Configured for dual workflows (backend on 3001, frontend on 5000) and uses `0.0.0.0` host for Replit's dynamic proxy.
 - **Docker Migration Infrastructure**: Complete containerization setup for production deployment with Dockerfiles for backend and frontend, `docker-compose` for development and production, and automated GitHub Actions CI/CD for building and pushing images to GHCR.
 
+### Production Deployment Architecture
+- **Server**: dev.wescctech.com.br at path `/peticoesbr`
+- **Database**: PostgreSQL user `sup_cristian`, database `sup_cristian`
+- **Nginx Pattern**: Modular snippet architecture at `/etc/nginx/snippets/peticoesbr.conf`
+- **Containers**: 
+  - Frontend: ghcr.io/devs-wescctech/peticoesbr-frontend (port 8080 → Nginx proxy)
+  - Backend: ghcr.io/devs-wescctech/peticoesbr-backend (port 3001)
+- **Public Routes**: `/p` and `/bio` use 301 redirects to `/peticoesbr/p` and `/peticoesbr/bio` for React Router basename compatibility
+- **File Uploads**: Volume mounted at `/var/www/html/peticoesbr/uploads:/app/uploads`, served via Nginx proxy to backend Express static middleware
+- **Deployment Path**: `/var/www/html/peticoesbr` contains `docker-compose.yml`, `.env`, and `uploads/` directory
+- **Update Process**: `docker-compose down && docker-compose pull && docker-compose up -d`
+
 ## External Dependencies
 - **PostgreSQL**: Primary database for all application data, hosted on Replit's Neon integration.
 - **Multer**: Node.js middleware for handling `multipart/form-data` for file uploads.

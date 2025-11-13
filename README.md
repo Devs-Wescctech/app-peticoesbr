@@ -105,7 +105,24 @@ peticoesbr/
 
 ## 🚀 Deploy para Produção
 
-### Opção 1: Deploy Rápido (GitHub → GHCR → Servidor)
+### Estrutura Atual (dev.wescctech.com.br)
+
+```
+Servidor: dev.wescctech.com.br
+Path: /var/www/html/peticoesbr
+URL: https://dev.wescctech.com.br/peticoesbr
+
+Nginx (443) → Frontend Container (8080)
+            → Backend Container (3001)  
+            → PostgreSQL sup_cristian
+
+Rotas Públicas:
+- /p → Redirect 301 para /peticoesbr/p
+- /bio → Redirect 301 para /peticoesbr/bio
+- /uploads → Proxy para backend Express
+```
+
+### Deploy Rápido (GitHub → GHCR → Servidor)
 
 1. **Push para GitHub:**
 ```bash
@@ -113,25 +130,25 @@ git push origin main
 ```
 
 2. **Aguardar GitHub Actions:**
-   - Acesse: https://github.com/SEU-USUARIO/peticoesbr/actions
-   - Aguarde build das imagens Docker
-   - Imagens criadas automaticamente no GHCR
+   - Acesse: https://github.com/Devs-Wescctech/app-peticoesbr/actions
+   - Build automático das imagens Docker
+   - Push para GHCR: ghcr.io/devs-wescctech/peticoesbr-*
 
 3. **No Servidor:**
 ```bash
-# Pull e iniciar
-docker compose -f docker-compose.prod.yml pull
-docker compose -f docker-compose.prod.yml up -d
+cd /var/www/html/peticoesbr
+
+# Parar, baixar novas imagens, e reiniciar
+docker-compose down && \
+docker-compose pull && \
+docker-compose up -d
 ```
 
-### Opção 2: Deploy Completo
+### Guias de Deploy Completos
 
-**Consulte o [DEPLOY.md](DEPLOY.md)** para guia completo passo a passo incluindo:
-- Configuração do servidor
-- Instalação do PostgreSQL 18
-- Migração do banco de dados
-- Configuração de domínio e SSL
-- Troubleshooting
+- **[DEPLOY_NGINX_SNIPPET.md](DEPLOY_NGINX_SNIPPET.md)** - Deploy com Nginx snippet (setup atual)
+- **[QUICK_DEPLOY.md](QUICK_DEPLOY.md)** - Setup rápido passo a passo
+- **[replit.md](replit.md)** - Arquitetura técnica detalhada
 
 ---
 
@@ -251,8 +268,8 @@ npm run db:push --force
 Após push para GitHub, as imagens são automaticamente criadas em:
 
 ```
-ghcr.io/SEU-USUARIO/peticoesbr-backend:latest
-ghcr.io/SEU-USUARIO/peticoesbr-frontend:latest
+ghcr.io/devs-wescctech/peticoesbr-backend:latest
+ghcr.io/devs-wescctech/peticoesbr-frontend:latest
 ```
 
 ### Tags disponíveis:
@@ -260,6 +277,18 @@ ghcr.io/SEU-USUARIO/peticoesbr-frontend:latest
 - `main` - branch main
 - `v1.0.0` - versões específicas (git tags)
 - `sha-abc123` - por commit
+
+### Arquitetura de Containers
+
+**Frontend** (porta 8080):
+- Nginx servindo build React
+- Base path: `/peticoesbr/`
+- Build-time ARG: `VITE_BASE_URL=/peticoesbr/`
+
+**Backend** (porta 3001):
+- Express.js API
+- Volume: `/var/www/html/peticoesbr/uploads:/app/uploads`
+- Express static: `app.use('/uploads', express.static('uploads'))`
 
 ---
 
@@ -308,8 +337,12 @@ Desenvolvido por **Wescctech** - Todos os direitos reservados © 2025
 
 ## 🆘 Suporte
 
-- **Documentação:** [DEPLOY.md](DEPLOY.md)
-- **Issues:** https://github.com/SEU-USUARIO/peticoesbr/issues
+- **Documentação:** 
+  - [DEPLOY_NGINX_SNIPPET.md](DEPLOY_NGINX_SNIPPET.md) - Deploy com Nginx
+  - [QUICK_DEPLOY.md](QUICK_DEPLOY.md) - Setup rápido
+  - [replit.md](replit.md) - Arquitetura técnica
+- **Repositório:** https://github.com/Devs-Wescctech/app-peticoesbr
+- **Produção:** https://dev.wescctech.com.br/peticoesbr
 - **Email:** tecnologia@wescctech.com.br
 
 ---

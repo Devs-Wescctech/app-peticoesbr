@@ -1,15 +1,20 @@
 # 🚀 Deploy do PetiçõesBR com Nginx Snippet
 
-## 📋 Estrutura no Servidor
+## 📋 Estrutura no Servidor (dev.wescctech.com.br)
 
 ```
 /etc/nginx/
 ├── snippets/
-│   └── peticoesbr.conf          # ← Criar este arquivo
+│   └── peticoesbr.conf          # ← Configuração modular do app
 ├── sites-available/
-│   └── dev.wescctech.com.br     # ← Incluir snippet aqui
+│   └── dev.wescctech.com.br     # ← Include snippet aqui
 └── sites-enabled/
     └── dev.wescctech.com.br     # ← Symlink
+
+/var/www/html/peticoesbr/
+├── docker-compose.yml           # ← Orquestração containers
+├── .env                         # ← Variáveis de ambiente
+└── uploads/                     # ← Volume montado para backend
 ```
 
 ---
@@ -89,22 +94,26 @@ sudo systemctl reload nginx
 
 ---
 
-## 🐳 Passo 4: Deploy do Backend (Docker)
+## 🐳 Passo 4: Deploy dos Containers (Docker)
 
 ```bash
 # Criar diretório
-sudo mkdir -p /opt/peticoesbr
-cd /opt/peticoesbr
+sudo mkdir -p /var/www/html/peticoesbr
+cd /var/www/html/peticoesbr
+
+# Criar diretório de uploads
+sudo mkdir -p uploads
+sudo chown -R sup_cristian:sup_cristian uploads
 
 # Criar .env
-sudo nano .env
+nano .env
 ```
 
 **Conteúdo do .env:**
 
 ```bash
 # PostgreSQL
-DATABASE_URL=postgresql://peticoesbr:SUA_SENHA@localhost:5432/peticoesbr
+DATABASE_URL=postgresql://sup_cristian:SENHA@localhost:5432/sup_cristian
 
 # JWT Secrets (gere com: openssl rand -base64 32)
 JWT_SECRET=SEU_JWT_SECRET_AQUI
@@ -113,68 +122,46 @@ JWT_REFRESH_SECRET=SEU_REFRESH_SECRET_AQUI
 # Backend
 NODE_ENV=production
 PORT=3001
+
+# Frontend Build
+VITE_BASE_URL=/peticoesbr/
+
+# GitHub Container Registry
+GITHUB_REPOSITORY_OWNER=devs-wescctech
 ```
 
-**Iniciar backend:**
+**Criar docker-compose.yml:**
 
 ```bash
-# Download do docker-compose
-wget https://raw.githubusercontent.com/SEU-USUARIO/peticoesbr/main/docker-compose.prod.yml
+nano docker-compose.yml
+```
 
-# Pull e start
-docker compose -f docker-compose.prod.yml pull
-docker compose -f docker-compose.prod.yml up -d backend
+**Cole o conteúdo do arquivo `docker-compose.server.yml` deste repositório.**
+
+**Iniciar aplicação:**
+
+```bash
+# Pull das imagens do GHCR
+docker-compose pull
+
+# Subir containers
+docker-compose up -d
 
 # Ver logs
-docker logs peticoesbr-backend -f
+docker-compose logs -f
 ```
 
 ---
 
-## 📦 Passo 5: Deploy do Frontend (Build Estático)
-
-### Opção A: Build Local e Upload
-
-**No Replit/Local:**
+## ✅ Passo 5: Verificar Containers
 
 ```bash
-# Build com base path
-VITE_BASE_URL=/peticoesbr/ npm run build
+# Ver status dos containers
+docker-compose ps
 
-# Compactar dist/
-tar -czf peticoesbr-frontend.tar.gz -C dist .
-```
-
-**No servidor:**
-
-```bash
-# Criar diretório
-sudo mkdir -p /var/www/html/peticoesbr
-
-# Upload do arquivo tar.gz (via scp/sftp)
-# Exemplo: scp peticoesbr-frontend.tar.gz user@server:/tmp/
-
-# Extrair
-sudo tar -xzf /tmp/peticoesbr-frontend.tar.gz -C /var/www/html/peticoesbr
-
-# Ajustar permissões
-sudo chown -R www-data:www-data /var/www/html/peticoesbr
-sudo chmod -R 755 /var/www/html/peticoesbr
-```
-
-### Opção B: Build via Docker (Mais Automático)
-
-```bash
-cd /opt/peticoesbr
-
-# Pull e extract do frontend
-docker compose -f docker-compose.prod.yml pull frontend
-docker create --name temp-frontend ghcr.io/SEU-USUARIO/peticoesbr-frontend:latest
-docker cp temp-frontend:/usr/share/nginx/html /var/www/html/peticoesbr
-docker rm temp-frontend
-
-# Ajustar permissões
-sudo chown -R www-data:www-data /var/www/html/peticoesbr
+# Containers devem estar rodando:
+# - peticoesbr-frontend (porta 8080)
+# - peticoesbr-backend (porta 3001)
 ```
 
 ---
@@ -182,35 +169,50 @@ sudo chown -R www-data:www-data /var/www/html/peticoesbr
 ## 🧪 Passo 6: Testar
 
 ```bash
-# Testar backend
+# Testar backend direto
 curl -i http://localhost:3001/api/health
-# Deve retornar: {"status":"ok","message":"Backend is running"}
 
 # Testar API via Nginx
 curl -i https://dev.wescctech.com.br/api/health
 
-# Testar frontend
+# Testar frontend container
+curl -i http://localhost:8080/
+
+# Testar frontend via Nginx
 curl -i https://dev.wescctech.com.br/peticoesbr/
-# Deve retornar HTML
+
+# Testar uploads
+ls -la /var/www/html/peticoesbr/uploads/
+curl -I https://dev.wescctech.com.br/uploads/ARQUIVO.jpg
 ```
 
 **Acessar no navegador:**
 - Frontend: `https://dev.wescctech.com.br/peticoesbr`
 - Admin: `https://dev.wescctech.com.br/peticoesbr/AdminDashboard`
-- Petições públicas: `https://dev.wescctech.com.br/p?s=teste`
+- Petições públicas: `https://dev.wescctech.com.br/p?s=teste` (redireciona para `/peticoesbr/p?s=teste`)
+- Link Bio: `https://dev.wescctech.com.br/bio?s=teste` (redireciona para `/peticoesbr/bio?s=teste`)
 
 ---
 
-## 🔄 Atualização Futura
+## 🔄 Atualizar Aplicação (Após Push para GitHub)
 
 ```bash
-# Backend
-cd /opt/peticoesbr
-docker compose -f docker-compose.prod.yml pull backend
-docker compose -f docker-compose.prod.yml up -d backend --force-recreate
+cd /var/www/html/peticoesbr
 
-# Frontend (rebuild e upload conforme Opção A ou B acima)
+# Parar, baixar novas imagens do GHCR, e reiniciar
+docker-compose down && \
+docker-compose pull && \
+docker-compose up -d
+
+# Ver logs
+docker-compose logs -f
 ```
+
+**GitHub Actions automaticamente:**
+1. Faz build do frontend e backend
+2. Gera imagens Docker
+3. Faz push para GHCR (ghcr.io/devs-wescctech/peticoesbr-frontend e backend)
+4. No servidor, basta fazer `pull` e `up`
 
 ---
 
@@ -219,19 +221,35 @@ docker compose -f docker-compose.prod.yml up -d backend --force-recreate
 - [ ] Snippet criado em `/etc/nginx/snippets/peticoesbr.conf`
 - [ ] Snippet incluído em `sites-available/dev.wescctech.com.br`
 - [ ] Nginx testado e recarregado (`sudo nginx -t && sudo systemctl reload nginx`)
-- [ ] Backend rodando na porta 3001 (`docker ps`)
-- [ ] Frontend deployado em `/var/www/html/peticoesbr`
+- [ ] Containers rodando: `docker-compose ps`
+  - [ ] Frontend (porta 8080)
+  - [ ] Backend (porta 3001)
+- [ ] Volume de uploads montado: `/var/www/html/peticoesbr/uploads`
 - [ ] API acessível: `https://dev.wescctech.com.br/api/health`
 - [ ] Frontend acessível: `https://dev.wescctech.com.br/peticoesbr`
+- [ ] Rotas públicas redirecionam: `/p` → `/peticoesbr/p`, `/bio` → `/peticoesbr/bio`
+- [ ] Uploads acessíveis: `https://dev.wescctech.com.br/uploads/`
 
 ---
 
 ## 🆘 Troubleshooting
 
+**Containers não sobem:**
+```bash
+# Ver logs
+docker-compose logs
+
+# Verificar .env
+cat .env
+
+# Verificar portas
+sudo netstat -tulpn | grep -E '3001|8080'
+```
+
 **Backend não responde:**
 ```bash
 docker logs peticoesbr-backend --tail 50
-sudo systemctl status postgresql
+docker exec -it peticoesbr-backend sh
 ```
 
 **404 na API:**
@@ -239,13 +257,29 @@ sudo systemctl status postgresql
 # Verificar se snippet está incluído
 grep -r "peticoesbr.conf" /etc/nginx/sites-enabled/
 
-# Verificar sintaxe
+# Testar backend direto
+curl -i http://localhost:3001/api/health
+
+# Verificar sintaxe do Nginx
 sudo nginx -t
 ```
 
-**Frontend não carrega assets:**
+**Uploads não aparecem:**
 ```bash
-# Verificar permissões
-ls -la /var/www/html/peticoesbr
-sudo chown -R www-data:www-data /var/www/html/peticoesbr
+# Verificar volume
+docker inspect peticoesbr-backend | grep -A 10 Mounts
+
+# Verificar arquivos
+ls -la /var/www/html/peticoesbr/uploads/
+
+# Testar acesso direto
+curl -I https://dev.wescctech.com.br/uploads/ARQUIVO.jpg
+```
+
+**Rotas /p e /bio não funcionam:**
+```bash
+# Verificar redirect no snippet
+cat /etc/nginx/snippets/peticoesbr.conf | grep -A 2 "location /p"
+
+# Deve mostrar: return 301 https://$host/peticoesbr/p$is_args$args;
 ```
