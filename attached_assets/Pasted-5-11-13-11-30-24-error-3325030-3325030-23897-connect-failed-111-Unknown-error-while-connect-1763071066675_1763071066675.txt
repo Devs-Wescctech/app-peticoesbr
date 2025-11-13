@@ -1,0 +1,37 @@
+5/11/13 11:30:24 [error] 3325030#3325030: *23897 connect() failed (111: Unknown error) while connecting to upstream, client: 152.32.134.166, server: dev.wescctech.com.br, request: "GET /peticoes/robots.txt HTTP/1.1", upstream: "http://127.0.0.1:3002/robots.txt", host: "187.103.100.98"
+2025/11/13 11:30:24 [error] 3325030#3325030: *23898 connect() failed (111: Unknown error) while connecting to upstream, client: 152.32.134.166, server: dev.wescctech.com.br, request: "GET /peticoes/sitemap.xml HTTP/1.1", upstream: "http://127.0.0.1:3002/sitemap.xml", host: "187.103.100.98"
+2025/11/13 11:30:25 [error] 3325030#3325030: *23901 connect() failed (111: Unknown error) while connecting to upstream, client: 152.32.134.166, server: dev.wescctech.com.br, request: "GET /peticoes/ HTTP/1.1", upstream: "http://127.0.0.1:3002/", host: "187.103.100.98"
+2025/11/13 11:30:27 [error] 3325030#3325030: *23904 connect() failed (111: Unknown error) while connecting to upstream, client: 152.32.134.166, server: dev.wescctech.com.br, request: "GET /peticoes/robots.txt HTTP/1.1", upstream: "http://127.0.0.1:3002/robots.txt", host: "187.103.100.98"
+2025/11/13 11:30:27 [error] 3325031#3325031: *23905 connect() failed (111: Unknown error) while connecting to upstream, client: 152.32.134.166, server: dev.wescctech.com.br, request: "GET /peticoes/sitemap.xml HTTP/1.1", upstream: "http://127.0.0.1:3002/sitemap.xml", host: "187.103.100.98"
+2025/11/13 11:30:36 [error] 3325030#3325030: *23910 connect() failed (111: Unknown error) while connecting to upstream, client: 87.236.176.100, server: dev.wescctech.com.br, request: "GET /peticoes/ HTTP/1.1", upstream: "http://127.0.0.1:3002/", host: "dev.wescctech.com.br", referrer: "https://dev.wescctech.com.br/"
+2025/11/13 11:34:48 [crit] 3325030#3325030: *23921 SSL_do_handshake() failed (SSL: error:0A00006C:SSL routines::bad key share) while SSL handshaking, client: 20.163.32.79, server: 0.0.0.0:443
+2025/11/13 12:44:56 [error] 3325030#3325030: *23951 connect() failed (111: Unknown error) while connecting to upstream, client: 74.7.227.187, server: supabase.wescctech.com.br, request: "GET / HTTP/2.0", upstream: "http://127.0.0.1:8008/", host: "supabase.wescctech.com.br"
+2025/11/13 13:33:14 [error] 3325030#3325030: *23973 connect() failed (111: Unknown error) while connecting to upstream, client: 49.51.245.241, server: dev.wescctech.com.br, request: "GET /peticoes/ HTTP/1.1", upstream: "http://127.0.0.1:3002/", host: "187.103.100.98", referrer: "https://187.103.100.98/"
+2025/11/13 15:40:18 [error] 3325030#3325030: *24014 connect() failed (111: Unknown error) while connecting to upstream, client: 79.124.40.174, server: dev.wescctech.com.br, request: "GET /peticoes/ HTTP/1.1", upstream: "http://127.0.0.1:3002/", host: "187.103.100.98", referrer: "https://187.103.100.98/?XDEBUG_SESSION_START=phpstorm"
+2025/11/13 16:18:48 [notice] 3195391#3195391: signal process started
+2025/11/13 16:24:01 [notice] 3196332#3196332: signal process started
+2025/11/13 16:40:50 [crit] 3196334#3196334: *24096 SSL_do_handshake() failed (SSL: error:0A00006C:SSL routines::bad key share) while SSL handshaking, client: 134.209.183.36, server: 0.0.0.0:443
+2025/11/13 16:58:25 [crit] 3196334#3196334: *24137 SSL_do_handshake() failed (SSL: error:0A00006C:SSL routines::bad key share) while SSL handshaking, client: 185.242.226.124, server: 0.0.0.0:443
+2025/11/13 21:08:02 [notice] 3248025#3248025: signal process started
+2025/11/13 21:08:51 [error] 3248026#3248026: *24487 directory index of "/var/www/html/peticoesbr/" is forbidden, client: 172.16.4.37, server: dev.wescctech.com.br, request: "GET /peticoesbr/ HTTP/2.0", host: "dev.wescctech.com.br"
+2025/11/13 21:10:29 [crit] 3248524#3248524: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2025/11/13 21:10:29 [crit] 3248529#3248529: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2025/11/13 21:47:00 [error] 3248026#3248026: *24505 open() "/var/www/html/peticoesbr/index.html" failed (2: No such file or directory), client: 172.16.4.37, server: dev.wescctech.com.br, request: "GET /peticoes/ HTTP/2.0", host: "dev.wescctech.com.br"
+2025/11/13 21:47:02 [error] 3248026#3248026: *24505 directory index of "/var/www/html/peticoesbr/" is forbidden, client: 172.16.4.37, server: dev.wescctech.com.br, request: "GET /peticoesbr/ HTTP/2.0", host: "dev.wescctech.com.br"
+2025/11/13 21:48:56 [crit] 3255466#3255466: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2025/11/13 21:48:56 [crit] 3255471#3255471: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2025/11/13 21:49:20 [crit] 3255538#3255538: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2025/11/13 21:49:20 [crit] 3255543#3255543: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2025/11/13 21:49:50 [crit] 3248026#3248026: *24556 SSL_do_handshake() failed (SSL: error:0A00006C:SSL routines::bad key share) while SSL handshaking, client: 206.189.142.134, server: 0.0.0.0:443
+2025/11/13 21:50:47 [notice] 3255793#3255793: signal process started
+2025/11/13 21:50:58 [notice] 3255894#3255894: signal process started
+2025/11/13 21:51:36 [error] 3255895#3255895: *24561 directory index of "/var/www/html/peticoesbr/" is forbidden, client: 172.16.4.37, server: dev.wescctech.com.br, request: "GET /peticoesbr/ HTTP/2.0", host: "dev.wescctech.com.br"
+2025/11/13 21:56:08 [error] 3255895#3255895: *24565 directory index of "/var/www/html/peticoesbr/" is forbidden, client: 172.16.4.37, server: dev.wescctech.com.br, request: "GET /peticoesbr/ HTTP/2.0", host: "dev.wescctech.com.br"
+2025/11/13 21:56:09 [error] 3255895#3255895: *24565 directory index of "/var/www/html/peticoesbr/" is forbidden, client: 172.16.4.37, server: dev.wescctech.com.br, request: "GET /peticoesbr/ HTTP/2.0", host: "dev.wescctech.com.br"
+2025/11/13 21:56:09 [error] 3255895#3255895: *24565 directory index of "/var/www/html/peticoesbr/" is forbidden, client: 172.16.4.37, server: dev.wescctech.com.br, request: "GET /peticoesbr/ HTTP/2.0", host: "dev.wescctech.com.br"
+2025/11/13 21:56:09 [error] 3255895#3255895: *24565 directory index of "/var/www/html/peticoesbr/" is forbidden, client: 172.16.4.37, server: dev.wescctech.com.br, request: "GET /peticoesbr/ HTTP/2.0", host: "dev.wescctech.com.br"
+2025/11/13 21:56:10 [error] 3255895#3255895: *24565 directory index of "/var/www/html/peticoesbr/" is forbidden, client: 172.16.4.37, server: dev.wescctech.com.br, request: "GET /peticoesbr/ HTTP/2.0", host: "dev.wescctech.com.br"
+2025/11/13 21:56:10 [error] 3255895#3255895: *24565 directory index of "/var/www/html/peticoesbr/" is forbidden, client: 172.16.4.37, server: dev.wescctech.com.br, request: "GET /peticoesbr/ HTTP/2.0", host: "dev.wescctech.com.br"
+2025/11/13 21:56:22 [error] 3255895#3255895: *24565 directory index of "/var/www/html/peticoesbr/" is forbidden, client: 172.16.4.37, server: dev.wescctech.com.br, request: "GET /peticoesbr/ HTTP/2.0", host: "dev.wescctech.com.br"
+2025/11/13 21:56:24 [error] 3255895#3255895: *24605 directory index of "/var/www/html/peticoesbr/" is forbidden, client: 172.16.4.37, server: dev.wescctech.com.br, request: "GET /peticoesbr/ HTTP/2.0", host: "dev.wescctech.com.br"
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ 
