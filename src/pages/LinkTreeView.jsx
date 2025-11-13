@@ -126,7 +126,7 @@ export default function LinkTreeView() {
           {pagePetitions.map((petition) => {
             const signatureCount = getSignaturesForPetition(petition.id);
             const progress = Math.min((signatureCount / petition.goal) * 100, 100);
-            const landingUrl = createPageUrl(`PetitionLanding?id=${petition.id}`);
+            const landingUrl = petition.slug ? createPageUrl(`p?s=${petition.slug}`) : createPageUrl(`PetitionLanding?id=${petition.id}`);
 
             return (
               <Link key={petition.id} to={landingUrl}>

@@ -240,7 +240,7 @@ export default function CreateWhatsAppCampaign() {
     const personalizedMessage = formData.message
       .replace(/{nome}/g, personName)
       .replace(/{peticao}/g, petition?.title || '')
-      .replace(/{link}/g, `${window.location.origin}/PetitionLanding?id=${formData.petition_id}`);
+      .replace(/{link}/g, `${window.location.origin}/p?s=${petition?.slug || formData.petition_id}`);
 
     const myHeaders = new Headers();
     myHeaders.append("access-token", formData.api_token);

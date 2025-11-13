@@ -541,7 +541,7 @@ export default function CreateEmailCampaign() {
     const personalizedHtml = formData.message
       .replace(/{nome}/g, toName)
       .replace(/{peticao}/g, petition?.title || '')
-      .replace(/{link}/g, `${window.location.origin}/PetitionLanding?id=${formData.petition_id}`);
+      .replace(/{link}/g, `${window.location.origin}/p?s=${petition?.slug || formData.petition_id}`);
 
     const personalizedSubject = formData.subject
       .replace(/{nome}/g, toName)
@@ -1146,7 +1146,7 @@ export default function CreateEmailCampaign() {
                           __html: formData.message
                             .replace(/{nome}/g, 'João Silva')
                             .replace(/{peticao}/g, petitions.find(p => p.id === formData.petition_id)?.title || 'Petição')
-                            .replace(/{link}/g, `${window.location.origin}/PetitionLanding?id=${formData.petition_id}`)
+                            .replace(/{link}/g, `${window.location.origin}/p?s=${petitions.find(p => p.id === formData.petition_id)?.slug || formData.petition_id}`)
                         }}
                       />
                     </div>
