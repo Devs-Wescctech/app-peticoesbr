@@ -69,14 +69,25 @@ export default function PetitionLanding() {
 
   const signMutation = useMutation({
     mutationFn: async (data) => {
+      console.log('Enviando assinatura:', data);
       const response = await fetch('/api/signatures/public', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
+      console.log('Response status:', response.status);
+      const contentType = response.headers.get('content-type');
+      console.log('Content-Type:', contentType);
+      
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Erro ao assinar petição');
+        const text = await response.text();
+        console.error('Error response:', text);
+        try {
+          const error = JSON.parse(text);
+          throw new Error(error.error || 'Erro ao assinar petição');
+        } catch (e) {
+          throw new Error(`Erro ao assinar: ${response.status} - ${text.substring(0, 100)}`);
+        }
       }
       return response.json();
     },
