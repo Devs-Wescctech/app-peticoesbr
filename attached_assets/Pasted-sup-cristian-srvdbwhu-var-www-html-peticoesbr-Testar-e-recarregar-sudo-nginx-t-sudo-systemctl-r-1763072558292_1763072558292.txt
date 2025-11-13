@@ -1,0 +1,64 @@
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ # Testar e recarregar
+sudo nginx -t
+sudo systemctl reload nginx
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ ls -la /opt/peticoesbr/
+# Verificar uploads do backend
+docker exec peticoesbr-backend ls -la /app/uploads
+ls: cannot access '/opt/peticoesbr/': No such file or directory
+total 0
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ sudo ls -la /opt/peticoesbr/
+ls: cannot access '/opt/peticoesbr/': No such file or directory
+sup_cristian@srvdbwhu:/var/www/html/peticoesbr$ docker inspect peticoesbr-backend | grep -A 5 "WorkingDir\|Labels"
+# 2. Ver volumes montados
+docker inspect peticoesbr-backend | grep -A 10 "Mounts"
+# 3. Ver variáveis de ambiente (para encontrar onde está o .env)
+docker inspect peticoesbr-backend | grep -A 20 "Env"
+# 4. Buscar docker-compose no sistema
+sudo find /var /opt /home -name "docker-compose*.yml" 2>/dev/null | grep peticoes
+# 5. Ver processos do Docker Compose
+ps aux | grep docker-compose
+            "WorkingDir": "/app",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "OnBuild": null,
+            "Labels": {
+                "com.docker.compose.config-hash": "51db1a259d387555903c567c24c2e932025b0a31fdb2aaa868aa068d501710ff",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:189a921a989e1cd482e12ae84bf826a42206e0291afe6c8fea3a40bd3fe04dda",
+                "com.docker.compose.oneoff": "False",
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/var/www/html/peticoesbr/uploads",
+                "Destination": "/app/uploads",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Env": [
+                "PORT=3001",
+                "DATABASE_URL=postgresql://sup_cristian:17qysrutiov35W@172.17.0.1:5432/peticoesbr",
+                "JWT_SECRET=2Iz5EHu2ZKRnebbtxV+R/e1JcPxjX/zcF68Xt5q/mXo=",
+                "JWT_REFRESH_SECRET=Rluyhnj/nLYM7C/gr+mCCQguNGP6J4uuzFDDqG+uyoQ=",
+                "NODE_ENV=production",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NODE_VERSION=20.19.5",
+                "YARN_VERSION=1.22.22"
+            ],
+            "Cmd": [
+                "node",
+                "src/server.js"
+            ],
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "curl",
+                    "-f",
+                    "http://localhost:3001/api/health"
+                ],
