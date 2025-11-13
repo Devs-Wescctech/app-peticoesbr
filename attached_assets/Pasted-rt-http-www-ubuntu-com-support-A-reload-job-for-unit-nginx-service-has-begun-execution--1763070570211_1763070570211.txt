@@ -1,0 +1,48 @@
+rt: http://www.ubuntu.com/support
+░░ 
+░░ A reload job for unit nginx.service has begun execution.
+░░ 
+░░ The job identifier is 143334.
+Nov 13 21:48:56 srvdbwhu nginx[3255471]: nginx: [crit] pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+Nov 13 21:48:56 srvdbwhu systemd[1]: nginx.service: Control process exited, code=exited, status=1/FAILURE
+░░ Subject: Unit process exited
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ An ExecReload= process belonging to unit nginx.service has exited.
+░░ 
+░░ The process' exit code is 'exited' and its exit status is 1.
+Nov 13 21:48:56 srvdbwhu systemd[1]: Reload failed for A high performance web server and a reverse proxy server.
+░░ Subject: A reload job for unit nginx.service has finished
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A reload job for unit nginx.service has finished.
+░░ 
+░░ The job identifier is 143334 and the job result is failed.
+Nov 13 21:49:20 srvdbwhu systemd[1]: Reloading A high performance web server and a reverse proxy server...
+░░ Subject: A reload job for unit nginx.service has begun execution
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A reload job for unit nginx.service has begun execution.
+░░ 
+░░ The job identifier is 143335.
+Nov 13 21:49:20 srvdbwhu nginx[3255543]: nginx: [crit] pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+Nov 13 21:49:20 srvdbwhu systemd[1]: nginx.service: Control process exited, code=exited, status=1/FAILURE
+░░ Subject: Unit process exited
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ An ExecReload= process belonging to unit nginx.service has exited.
+░░ 
+░░ The process' exit code is 'exited' and its exit status is 1.
+Nov 13 21:49:20 srvdbwhu systemd[1]: Reload failed for A high performance web server and a reverse proxy server.
+░░ Subject: A reload job for unit nginx.service has finished
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A reload job for unit nginx.service has finished.
+░░ 
+░░ The job identifier is 143335 and the job result is failed.
+lines 1775-1826/1826 (END)
