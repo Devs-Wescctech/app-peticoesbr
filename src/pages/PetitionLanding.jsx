@@ -428,7 +428,7 @@ export default function PetitionLanding() {
                           </Label>
                           <Select value={formData.state} onValueChange={handleStateChange}>
                             <SelectTrigger className="mt-1.5 h-11 border-2">
-                              <SelectValue placeholder="Selecione" />
+                              <SelectValue placeholder="Selecione o estado" />
                             </SelectTrigger>
                             <SelectContent className="max-h-60">
                               {BRAZILIAN_STATES.map((state) => (
