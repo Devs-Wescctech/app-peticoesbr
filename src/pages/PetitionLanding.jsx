@@ -424,11 +424,11 @@ export default function PetitionLanding() {
                       {petition.collect_state && (
                         <div>
                           <Label htmlFor="state" className="text-sm font-bold text-gray-900">
-                            Estado ⚡ NOVO SELECT
+                            Estado
                           </Label>
                           <Select value={formData.state} onValueChange={handleStateChange}>
                             <SelectTrigger className="mt-1.5 h-11 border-2">
-                              <SelectValue placeholder="🔵 CLIQUE AQUI - DROPDOWN" />
+                              <SelectValue placeholder="Selecione o estado" />
                             </SelectTrigger>
                             <SelectContent className="max-h-60">
                               {BRAZILIAN_STATES.map((state) => (
