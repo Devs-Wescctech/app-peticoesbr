@@ -5,74 +5,88 @@ import {
   FileSignature,
   Users,
   MessageCircle,
-  Mail,
   Link2,
   BarChart3,
-  Shield,
-  Zap,
+  Upload,
+  FileText,
   Check,
   ArrowRight,
-  Star,
   Sparkles,
-  Globe,
   ChevronRight,
-  Play,
+  Rocket,
+  Target,
+  Send,
+  TrendingUp,
+  Zap,
+  Clock,
+  Award,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const fadeInLeft = {
+  hidden: { opacity: 0, x: -30 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const fadeInRight = {
+  hidden: { opacity: 0, x: 30 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 }
+    transition: { staggerChildren: 0.15 }
   }
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
 };
 
 function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      <div className="absolute inset-0 bg-white/70 backdrop-blur-xl border-b border-gray-200/50" />
+      <div className="absolute inset-0 bg-white/80 backdrop-blur-xl border-b border-gray-100" />
       <nav className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/25">
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-shadow">
               <FileSignature className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-xl bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              PetiçõesBR
-            </span>
+            <div className="hidden sm:block">
+              <span className="font-bold text-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                PetiçõesBR
+              </span>
+              <span className="block text-xs text-gray-500 -mt-0.5">Mobilização Digital</span>
+            </div>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+            <a href="#recursos" className="text-gray-600 hover:text-indigo-600 font-medium transition-colors">
               Recursos
             </a>
-            <a href="#pricing" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-              Planos
+            <a href="#como-funciona" className="text-gray-600 hover:text-indigo-600 font-medium transition-colors">
+              Como Funciona
             </a>
-            <a href="#testimonials" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-              Depoimentos
+            <a href="#numeros" className="text-gray-600 hover:text-indigo-600 font-medium transition-colors">
+              Resultados
             </a>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Link to="/login">
-              <Button variant="ghost" className="hidden sm:flex font-medium">
-                Entrar
-              </Button>
-            </Link>
-            <Link to="/login">
-              <Button className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/25 font-medium">
-                Acessar Sistema
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
-          </div>
+          <Link to="/login">
+            <Button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 font-semibold px-6 transition-all duration-300">
+              Acessar Plataforma
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </Link>
         </div>
       </nav>
     </header>
@@ -82,125 +96,190 @@ function Header() {
 function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-white to-purple-50" />
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-indigo-50/50 to-purple-50/50" />
       
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-indigo-400/30 to-purple-400/30 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br from-indigo-200/20 to-purple-200/20 rounded-full blur-3xl" />
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-gradient-to-br from-indigo-400/40 to-purple-400/40 rounded-full blur-3xl"
+        />
+        <motion.div 
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute -bottom-40 -left-40 w-[600px] h-[600px] bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-full blur-3xl"
+        />
+        <div className="absolute top-1/3 left-1/4 w-2 h-2 bg-indigo-400 rounded-full animate-ping" />
+        <div className="absolute top-1/2 right-1/4 w-3 h-3 bg-purple-400 rounded-full animate-pulse" />
+        <div className="absolute bottom-1/3 left-1/3 w-2 h-2 bg-pink-400 rounded-full animate-ping delay-1000" />
       </div>
 
-      <div className="absolute inset-0" style={{
-        backgroundImage: `radial-gradient(circle at 1px 1px, rgb(99 102 241 / 0.15) 1px, transparent 0)`,
-        backgroundSize: '40px 40px'
+      <div className="absolute inset-0 opacity-40" style={{
+        backgroundImage: `radial-gradient(circle at 1px 1px, rgb(99 102 241 / 0.2) 1px, transparent 0)`,
+        backgroundSize: '32px 32px'
       }} />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
           className="text-center"
         >
-          <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-200 mb-8">
+          <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 border border-indigo-200/50 backdrop-blur-sm mb-8">
             <Sparkles className="w-4 h-4 text-indigo-600" />
-            <span className="text-sm font-medium text-indigo-700">Plataforma completa para mobilização digital</span>
+            <span className="text-sm font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              Plataforma completa para mobilização digital
+            </span>
           </motion.div>
 
-          <motion.h1 variants={fadeInUp} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight mb-6">
-            Transforme causas em
-            <span className="block bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <motion.h1 variants={fadeInUp} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] mb-8">
+            Transforme suas causas em
+            <span className="block mt-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
               movimentos de impacto
             </span>
           </motion.h1>
 
-          <motion.p variants={fadeInUp} className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-600 mb-10">
-            Crie petições online, colete assinaturas, gerencie campanhas de WhatsApp e Email, 
+          <motion.p variants={fadeInUp} className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-600 mb-12 leading-relaxed">
+            Crie petições, colete assinaturas digitais, envie campanhas de WhatsApp 
             e construa páginas personalizadas para amplificar sua voz.
           </motion.p>
 
-          <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+          <motion.div variants={fadeInUp}>
             <Link to="/login">
-              <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-xl shadow-indigo-500/25 font-semibold text-lg px-8 py-6">
-                Começar Agora Grátis
-                <ArrowRight className="w-5 h-5 ml-2" />
+              <Button size="lg" className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 font-bold text-lg px-10 py-7 rounded-2xl transition-all duration-300 hover:scale-105">
+                Começar Agora
+                <Rocket className="w-5 h-5 ml-3" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto border-2 font-semibold text-lg px-8 py-6 group">
-              <Play className="w-5 h-5 mr-2 group-hover:text-indigo-600 transition-colors" />
-              Ver Demonstração
-            </Button>
           </motion.div>
 
-          <motion.div variants={fadeInUp} className="flex flex-wrap items-center justify-center gap-8 text-sm text-gray-500">
-            <div className="flex items-center gap-2">
-              <Check className="w-5 h-5 text-green-500" />
-              <span>Sem cartão de crédito</span>
+          <motion.div variants={fadeInUp} className="flex flex-wrap items-center justify-center gap-6 mt-12 text-sm text-gray-500">
+            <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-100">
+              <Check className="w-4 h-4 text-emerald-500" />
+              <span>100% Gratuito para começar</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Check className="w-5 h-5 text-green-500" />
+            <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-100">
+              <Check className="w-4 h-4 text-emerald-500" />
               <span>Configuração em minutos</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Check className="w-5 h-5 text-green-500" />
+            <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-100">
+              <Check className="w-4 h-4 text-emerald-500" />
               <span>Suporte humanizado</span>
             </div>
           </motion.div>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 60 }}
+          initial={{ opacity: 0, y: 80 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
           className="mt-20 relative"
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent z-10 pointer-events-none" />
-          <div className="relative mx-auto max-w-5xl">
-            <div className="absolute -inset-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl blur-2xl opacity-20" />
-            <div className="relative bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
-              <div className="bg-gray-100 px-4 py-3 flex items-center gap-2 border-b">
+          <div className="absolute -inset-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur-2xl opacity-20" />
+          
+          <div className="relative bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+            <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 flex items-center gap-3 border-b border-gray-200">
+              <div className="flex gap-2">
                 <div className="w-3 h-3 rounded-full bg-red-400" />
                 <div className="w-3 h-3 rounded-full bg-yellow-400" />
                 <div className="w-3 h-3 rounded-full bg-green-400" />
-                <div className="flex-1 text-center">
-                  <span className="text-sm text-gray-500">peticoesbr.com.br/dashboard</span>
+              </div>
+              <div className="flex-1 flex justify-center">
+                <div className="bg-white rounded-lg px-4 py-1.5 text-sm text-gray-500 border border-gray-200 flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-green-400" />
+                  peticoesbr.com.br/dashboard
                 </div>
               </div>
-              <div className="aspect-[16/9] bg-gradient-to-br from-indigo-50 to-purple-50 flex items-center justify-center">
-                <div className="grid grid-cols-3 gap-6 p-8 w-full max-w-4xl">
-                  <div className="col-span-2 bg-white rounded-xl p-6 shadow-lg border border-gray-100">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-semibold text-gray-900">Petições Ativas</h3>
-                      <span className="text-indigo-600 font-bold">12</span>
+            </div>
+            
+            <div className="flex">
+              <div className="hidden md:flex w-64 bg-gradient-to-b from-gray-50 to-white border-r border-gray-100 flex-col p-4">
+                <div className="flex items-center gap-3 mb-8 p-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center">
+                    <FileSignature className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-gray-900 text-sm">PetiçõesBR</div>
+                    <div className="text-xs text-gray-500">Dashboard</div>
+                  </div>
+                </div>
+                
+                <nav className="space-y-1">
+                  {[
+                    { icon: BarChart3, label: "Dashboard", active: true },
+                    { icon: FileText, label: "Minhas Petições", active: false },
+                    { icon: MessageCircle, label: "Campanhas WhatsApp", active: false },
+                    { icon: Link2, label: "Páginas LinkBio", active: false },
+                    { icon: Upload, label: "Importar Assinaturas", active: false },
+                  ].map((item, i) => (
+                    <div 
+                      key={i}
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                        item.active 
+                          ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md" 
+                          : "text-gray-600 hover:bg-gray-100"
+                      }`}
+                    >
+                      <item.icon className="w-4 h-4" />
+                      {item.label}
                     </div>
-                    <div className="space-y-3">
-                      {[85, 62, 45].map((progress, i) => (
-                        <div key={i} className="space-y-1">
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">Petição {i + 1}</span>
-                            <span className="text-gray-900 font-medium">{progress}%</span>
-                          </div>
-                          <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                            <div 
-                              className="h-full bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full"
-                              style={{ width: `${progress}%` }}
-                            />
-                          </div>
+                  ))}
+                </nav>
+              </div>
+              
+              <div className="flex-1 p-6 bg-gradient-to-br from-gray-50/50 to-white">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  {[
+                    { label: "Assinaturas Coletadas", value: "15.847", icon: Users, color: "from-indigo-500 to-blue-500", change: "+12%" },
+                    { label: "Petições Ativas", value: "8", icon: FileText, color: "from-purple-500 to-pink-500", change: "+3" },
+                    { label: "Mensagens Enviadas", value: "2.340", icon: MessageCircle, color: "from-emerald-500 to-teal-500", change: "+28%" },
+                  ].map((stat, i) => (
+                    <div key={i} className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className={`w-10 h-10 rounded-xl bg-gradient-to-r ${stat.color} flex items-center justify-center`}>
+                          <stat.icon className="w-5 h-5 text-white" />
                         </div>
-                      ))}
+                        <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">{stat.change}</span>
+                      </div>
+                      <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+                      <div className="text-sm text-gray-500">{stat.label}</div>
                     </div>
+                  ))}
+                </div>
+                
+                <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold text-gray-900">Petições em Destaque</h3>
+                    <span className="text-sm text-indigo-600 font-medium">Ver todas</span>
                   </div>
                   <div className="space-y-4">
-                    <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100">
-                      <Users className="w-8 h-8 text-indigo-600 mb-2" />
-                      <div className="text-2xl font-bold text-gray-900">15.4K</div>
-                      <div className="text-sm text-gray-500">Assinaturas</div>
-                    </div>
-                    <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100">
-                      <MessageCircle className="w-8 h-8 text-purple-600 mb-2" />
-                      <div className="text-2xl font-bold text-gray-900">2.8K</div>
-                      <div className="text-sm text-gray-500">Mensagens</div>
-                    </div>
+                    {[
+                      { name: "Mais áreas verdes na cidade", progress: 87, goal: "10.000", current: "8.700" },
+                      { name: "Proteção aos animais de rua", progress: 65, goal: "5.000", current: "3.250" },
+                      { name: "Melhoria no transporte público", progress: 42, goal: "15.000", current: "6.300" },
+                    ].map((petition, i) => (
+                      <div key={i} className="group">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm font-medium text-gray-700 group-hover:text-indigo-600 transition-colors">{petition.name}</span>
+                          <span className="text-sm text-gray-500">{petition.current}/{petition.goal}</span>
+                        </div>
+                        <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                          <motion.div 
+                            initial={{ width: 0 }}
+                            animate={{ width: `${petition.progress}%` }}
+                            transition={{ duration: 1.5, delay: 0.5 + (i * 0.2), ease: "easeOut" }}
+                            className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full"
+                          />
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -216,45 +295,48 @@ const features = [
   {
     icon: FileSignature,
     title: "Petições Digitais",
-    description: "Crie petições profissionais com páginas personalizadas, metas de assinaturas e formulários inteligentes.",
+    description: "Crie petições profissionais com páginas personalizadas, metas de assinaturas e formulários inteligentes para coleta de apoiadores.",
     color: "from-indigo-500 to-blue-500"
   },
   {
     icon: MessageCircle,
     title: "Campanhas WhatsApp",
-    description: "Envie mensagens em massa para sua base de apoiadores com templates personalizados e rastreamento.",
+    description: "Envie mensagens em massa para sua base de apoiadores com links diretos para suas petições e acompanhe o engajamento.",
     color: "from-green-500 to-emerald-500"
-  },
-  {
-    icon: Mail,
-    title: "Email Marketing",
-    description: "Campanhas de email automatizadas com editor visual e métricas de engajamento em tempo real.",
-    color: "from-purple-500 to-pink-500"
   },
   {
     icon: Link2,
     title: "Páginas LinkBio",
-    description: "Construa sua presença online com páginas personalizadas estilo Linktree para suas causas.",
+    description: "Construa sua presença online com páginas personalizadas estilo Linktree para centralizar todas suas causas e campanhas.",
+    color: "from-purple-500 to-pink-500"
+  },
+  {
+    icon: Upload,
+    title: "Importação de Assinaturas",
+    description: "Importe assinaturas de planilhas e outras fontes para consolidar seus apoiadores em uma única plataforma organizada.",
     color: "from-orange-500 to-red-500"
   },
   {
-    icon: BarChart3,
-    title: "Analytics Avançado",
-    description: "Dashboard completo com métricas de conversão, origem de tráfego e desempenho de campanhas.",
+    icon: FileText,
+    title: "Templates de Mensagens",
+    description: "Crie e gerencie templates de mensagens personalizados para suas campanhas de mobilização e comunicação.",
     color: "from-cyan-500 to-blue-500"
   },
   {
-    icon: Shield,
-    title: "Multi-Tenancy",
-    description: "Gerencie múltiplas organizações com isolamento completo de dados e controle de acesso.",
+    icon: BarChart3,
+    title: "Dashboard Completo",
+    description: "Acompanhe métricas de suas petições, campanhas e engajamento em tempo real com relatórios visuais e intuitivos.",
     color: "from-violet-500 to-purple-500"
   }
 ];
 
 function FeaturesSection() {
   return (
-    <section id="features" className="py-24 bg-white relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-50/50 to-white" />
+    <section id="recursos" className="py-24 md:py-32 bg-white relative overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-gray-50 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-gray-50 to-transparent" />
+      </div>
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -262,20 +344,22 @@ function FeaturesSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="text-center mb-16"
+          className="text-center mb-16 md:mb-20"
         >
           <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100 mb-6">
             <Zap className="w-4 h-4 text-indigo-600" />
-            <span className="text-sm font-medium text-indigo-700">Recursos Poderosos</span>
+            <span className="text-sm font-semibold text-indigo-700">Recursos Poderosos</span>
           </motion.div>
           
-          <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Tudo que você precisa para
-            <span className="block text-indigo-600">mobilizar sua causa</span>
+          <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
+            Tudo para sua
+            <span className="block bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              mobilização digital
+            </span>
           </motion.h2>
           
           <motion.p variants={fadeInUp} className="max-w-2xl mx-auto text-lg text-gray-600">
-            Uma plataforma completa para criar, gerenciar e amplificar movimentos sociais com ferramentas profissionais.
+            Ferramentas profissionais para criar, gerenciar e amplificar movimentos sociais de forma simples e eficiente.
           </motion.p>
         </motion.div>
 
@@ -284,7 +368,7 @@ function FeaturesSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
           variants={staggerContainer}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
         >
           {features.map((feature, index) => (
             <motion.div
@@ -292,14 +376,14 @@ function FeaturesSection() {
               variants={fadeInUp}
               className="group relative"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 rounded-2xl transform group-hover:scale-105 transition-transform duration-300" />
-              <div className="relative bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center mb-6 shadow-lg`}>
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-indigo-100 transition-all duration-500 h-full">
+                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-r ${feature.color} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                   <feature.icon className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
                 <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-                <div className="mt-6 flex items-center text-indigo-600 font-medium group-hover:translate-x-2 transition-transform">
+                <div className="mt-6 flex items-center text-indigo-600 font-semibold opacity-0 group-hover:opacity-100 translate-x-0 group-hover:translate-x-2 transition-all duration-300">
                   Saiba mais <ChevronRight className="w-4 h-4 ml-1" />
                 </div>
               </div>
@@ -311,58 +395,32 @@ function FeaturesSection() {
   );
 }
 
-const plans = [
+const steps = [
   {
-    name: "Starter",
-    price: "Grátis",
-    description: "Ideal para começar sua mobilização",
-    features: [
-      "Até 3 petições ativas",
-      "500 assinaturas/mês",
-      "1 página LinkBio",
-      "Campanhas básicas",
-      "Suporte por email"
-    ],
-    popular: false,
-    cta: "Começar Grátis"
+    number: "01",
+    icon: FileSignature,
+    title: "Crie sua Petição",
+    description: "Configure sua petição em minutos com título, descrição, meta de assinaturas e uma página personalizada para compartilhar."
   },
   {
-    name: "Pro",
-    price: "R$ 97",
-    period: "/mês",
-    description: "Para organizações em crescimento",
-    features: [
-      "Petições ilimitadas",
-      "10.000 assinaturas/mês",
-      "5 páginas LinkBio",
-      "WhatsApp + Email",
-      "Analytics avançado",
-      "Suporte prioritário"
-    ],
-    popular: true,
-    cta: "Assinar Pro"
+    number: "02",
+    icon: Send,
+    title: "Mobilize Apoiadores",
+    description: "Use campanhas de WhatsApp e páginas LinkBio para alcançar e engajar sua audiência de forma eficiente e organizada."
   },
   {
-    name: "Enterprise",
-    price: "Sob consulta",
-    description: "Soluções personalizadas",
-    features: [
-      "Tudo do Pro",
-      "Assinaturas ilimitadas",
-      "Multi-tenancy",
-      "API dedicada",
-      "SLA garantido",
-      "Gerente de sucesso"
-    ],
-    popular: false,
-    cta: "Falar com Vendas"
+    number: "03",
+    icon: Target,
+    title: "Alcance seus Objetivos",
+    description: "Acompanhe o progresso em tempo real, colete assinaturas e transforme sua causa em um movimento de impacto real."
   }
 ];
 
-function PricingSection() {
+function HowItWorksSection() {
   return (
-    <section id="pricing" className="py-24 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-r from-indigo-200/30 to-purple-200/30 rounded-full blur-3xl" />
+    <section id="como-funciona" className="py-24 md:py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-gradient-to-r from-indigo-200/30 to-purple-200/30 rounded-full blur-3xl -translate-y-1/2" />
+      <div className="absolute top-1/2 right-0 w-96 h-96 bg-gradient-to-r from-purple-200/30 to-pink-200/30 rounded-full blur-3xl -translate-y-1/2" />
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -370,20 +428,22 @@ function PricingSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="text-center mb-16"
+          className="text-center mb-16 md:mb-20"
         >
           <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 border border-purple-100 mb-6">
-            <Globe className="w-4 h-4 text-purple-600" />
-            <span className="text-sm font-medium text-purple-700">Planos Flexíveis</span>
+            <Rocket className="w-4 h-4 text-purple-600" />
+            <span className="text-sm font-semibold text-purple-700">Simples e Rápido</span>
           </motion.div>
           
-          <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Escolha o plano ideal
-            <span className="block text-purple-600">para sua organização</span>
+          <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
+            Como funciona
+            <span className="block bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              em 3 passos
+            </span>
           </motion.h2>
           
           <motion.p variants={fadeInUp} className="max-w-2xl mx-auto text-lg text-gray-600">
-            Comece grátis e escale conforme sua necessidade. Sem surpresas, sem taxas ocultas.
+            Comece sua mobilização digital em poucos minutos, sem complicações técnicas.
           </motion.p>
         </motion.div>
 
@@ -392,98 +452,86 @@ function PricingSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
           variants={staggerContainer}
-          className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto"
+          className="grid md:grid-cols-3 gap-8 md:gap-12"
         >
-          {plans.map((plan, index) => (
+          {steps.map((step, index) => (
             <motion.div
               key={index}
               variants={fadeInUp}
-              className={`relative rounded-2xl ${plan.popular ? 'ring-2 ring-indigo-500 scale-105' : ''}`}
+              className="relative"
             >
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full text-white text-sm font-medium shadow-lg">
-                  Mais Popular
-                </div>
+              {index < steps.length - 1 && (
+                <div className="hidden md:block absolute top-16 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-indigo-200 to-purple-200" />
               )}
-              <div className={`h-full bg-white rounded-2xl p-8 border ${plan.popular ? 'border-indigo-200' : 'border-gray-100'} shadow-lg`}>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{plan.name}</h3>
-                <p className="text-gray-500 text-sm mb-6">{plan.description}</p>
-                
-                <div className="mb-6">
-                  <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
-                  {plan.period && <span className="text-gray-500">{plan.period}</span>}
+              
+              <div className="relative bg-white rounded-3xl p-8 border border-gray-100 shadow-lg hover:shadow-xl transition-shadow text-center group">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full text-white text-sm font-bold shadow-lg">
+                  Passo {step.number}
                 </div>
                 
-                <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-3 text-gray-600">
-                      <Check className="w-5 h-5 text-green-500 shrink-0" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="w-20 h-20 rounded-3xl bg-gradient-to-r from-indigo-500/10 to-purple-500/10 flex items-center justify-center mx-auto mt-4 mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <step.icon className="w-10 h-10 text-indigo-600" />
+                </div>
                 
-                <Link to="/login">
-                  <Button 
-                    className={`w-full font-semibold ${plan.popular 
-                      ? 'bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/25' 
-                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                    }`}
-                    size="lg"
-                  >
-                    {plan.cta}
-                  </Button>
-                </Link>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">{step.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{step.description}</p>
               </div>
             </motion.div>
           ))}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-center mt-16"
+        >
+          <Link to="/login">
+            <Button size="lg" className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-xl shadow-purple-500/25 font-bold text-lg px-10 py-7 rounded-2xl transition-all duration-300 hover:scale-105">
+              Começar Agora
+              <ArrowRight className="w-5 h-5 ml-3" />
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>
   );
 }
 
-const testimonials = [
-  {
-    name: "Maria Silva",
-    role: "Coordenadora ONG Verde Vida",
-    content: "O PetiçõesBR transformou nossa capacidade de mobilização. Conseguimos 50 mil assinaturas em apenas 2 semanas!",
-    rating: 5
-  },
-  {
-    name: "João Santos",
-    role: "Ativista Social",
-    content: "A integração com WhatsApp é incrível. Nunca foi tão fácil engajar nossa comunidade e acompanhar os resultados.",
-    rating: 5
-  },
-  {
-    name: "Ana Oliveira",
-    role: "Diretora Instituto Cidadão",
-    content: "O melhor investimento que fizemos. A plataforma é intuitiva e o suporte é excepcional.",
-    rating: 5
-  }
+const metrics = [
+  { value: "50K+", label: "Assinaturas Coletadas", icon: Users, description: "Por organizações na plataforma" },
+  { value: "500+", label: "Petições Criadas", icon: FileText, description: "Causas importantes mobilizadas" },
+  { value: "10K+", label: "Mensagens Enviadas", icon: MessageCircle, description: "Campanhas de WhatsApp" },
+  { value: "98%", label: "Satisfação", icon: Award, description: "Dos usuários recomendam" },
 ];
 
-function TestimonialsSection() {
+function MetricsSection() {
   return (
-    <section id="testimonials" className="py-24 bg-white relative overflow-hidden">
+    <section id="numeros" className="py-24 md:py-32 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="text-center mb-16"
+          className="text-center mb-16 md:mb-20"
         >
-          <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-100 mb-6">
-            <Star className="w-4 h-4 text-green-600" />
-            <span className="text-sm font-medium text-green-700">Histórias de Sucesso</span>
+          <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-100 mb-6">
+            <TrendingUp className="w-4 h-4 text-emerald-600" />
+            <span className="text-sm font-semibold text-emerald-700">Resultados Comprovados</span>
           </motion.div>
           
-          <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Organizações que confiam
-            <span className="block text-green-600">no PetiçõesBR</span>
+          <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
+            Números que
+            <span className="block bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              inspiram confiança
+            </span>
           </motion.h2>
+          
+          <motion.p variants={fadeInUp} className="max-w-2xl mx-auto text-lg text-gray-600">
+            Organizações e ativistas já estão transformando suas causas em movimentos de impacto real.
+          </motion.p>
         </motion.div>
 
         <motion.div
@@ -491,27 +539,27 @@ function TestimonialsSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
           variants={staggerContainer}
-          className="grid md:grid-cols-3 gap-8"
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
         >
-          {testimonials.map((testimonial, index) => (
+          {metrics.map((metric, index) => (
             <motion.div
               key={index}
-              variants={fadeInUp}
-              className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-lg transition-shadow"
+              variants={scaleIn}
+              className="relative group"
             >
-              <div className="flex gap-1 mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                ))}
-              </div>
-              <p className="text-gray-600 mb-6 leading-relaxed">"{testimonial.content}"</p>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold">
-                  {testimonial.name.charAt(0)}
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative bg-gradient-to-br from-gray-50 to-white rounded-3xl p-8 border border-gray-100 shadow-sm group-hover:bg-transparent group-hover:border-transparent transition-all duration-500 text-center h-full">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-indigo-500/10 to-purple-500/10 group-hover:bg-white/20 flex items-center justify-center mx-auto mb-4 transition-colors duration-500">
+                  <metric.icon className="w-7 h-7 text-indigo-600 group-hover:text-white transition-colors duration-500" />
                 </div>
-                <div>
-                  <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                  <div className="text-sm text-gray-500">{testimonial.role}</div>
+                <div className="text-4xl md:text-5xl font-extrabold text-gray-900 group-hover:text-white mb-2 transition-colors duration-500">
+                  {metric.value}
+                </div>
+                <div className="text-lg font-semibold text-gray-700 group-hover:text-white/90 mb-1 transition-colors duration-500">
+                  {metric.label}
+                </div>
+                <div className="text-sm text-gray-500 group-hover:text-white/70 transition-colors duration-500">
+                  {metric.description}
                 </div>
               </div>
             </motion.div>
@@ -524,9 +572,23 @@ function TestimonialsSection() {
 
 function CTASection() {
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-24 md:py-32 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600" />
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M0 0h60v60H0z%22 fill=%22none%22/%3E%3Cpath d=%22M30 30m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0%22 fill=%22rgba(255,255,255,0.1)%22/%3E%3C/svg%3E')]" />
+      
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div 
+          animate={{ rotate: 360 }}
+          transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-1/2 -left-1/4 w-[800px] h-[800px] border border-white/10 rounded-full"
+        />
+        <motion.div 
+          animate={{ rotate: -360 }}
+          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+          className="absolute -bottom-1/2 -right-1/4 w-[600px] h-[600px] border border-white/10 rounded-full"
+        />
+        <div className="absolute top-1/4 left-1/4 w-3 h-3 bg-white/30 rounded-full animate-pulse" />
+        <div className="absolute bottom-1/3 right-1/3 w-2 h-2 bg-white/20 rounded-full animate-ping" />
+      </div>
       
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div
@@ -535,25 +597,27 @@ function CTASection() {
           viewport={{ once: true }}
           variants={staggerContainer}
         >
-          <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
+          <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm mb-8">
+            <Clock className="w-4 h-4 text-white" />
+            <span className="text-sm font-semibold text-white">Comece em menos de 5 minutos</span>
+          </motion.div>
+          
+          <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight">
             Pronto para transformar
             <span className="block">sua mobilização digital?</span>
           </motion.h2>
           
-          <motion.p variants={fadeInUp} className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-            Junte-se a centenas de organizações que já amplificam sua voz com o PetiçõesBR.
+          <motion.p variants={fadeInUp} className="text-xl text-white/80 mb-12 max-w-2xl mx-auto">
+            Junte-se a organizações e ativistas que já amplificam sua voz com o PetiçõesBR.
           </motion.p>
           
-          <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <motion.div variants={fadeInUp}>
             <Link to="/login">
-              <Button size="lg" className="w-full sm:w-auto bg-white text-indigo-600 hover:bg-gray-100 font-semibold text-lg px-8 py-6 shadow-xl">
-                Criar Conta Grátis
-                <ArrowRight className="w-5 h-5 ml-2" />
+              <Button size="lg" className="bg-white text-indigo-600 hover:bg-gray-100 font-bold text-lg px-12 py-7 rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300">
+                Acessar Plataforma
+                <ArrowRight className="w-5 h-5 ml-3" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto border-2 border-white/30 text-white hover:bg-white/10 font-semibold text-lg px-8 py-6">
-              Agendar Demo
-            </Button>
           </motion.div>
         </motion.div>
       </div>
@@ -563,39 +627,43 @@ function CTASection() {
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-400 py-16">
+    <footer className="bg-gray-900 text-gray-400 py-16 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-12 mb-12">
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                <FileSignature className="w-5 h-5 text-white" />
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+          <div className="lg:col-span-2">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg">
+                <FileSignature className="w-6 h-6 text-white" />
               </div>
-              <span className="font-bold text-xl text-white">PetiçõesBR</span>
+              <div>
+                <span className="font-bold text-2xl text-white">PetiçõesBR</span>
+                <span className="block text-sm text-gray-500">Mobilização Digital</span>
+              </div>
             </div>
-            <p className="text-gray-400 max-w-md mb-6">
-              A plataforma mais completa para criar petições, gerenciar campanhas e mobilizar apoiadores no Brasil.
+            <p className="text-gray-400 max-w-md mb-8 leading-relaxed">
+              A plataforma mais completa para criar petições, gerenciar campanhas e mobilizar apoiadores no Brasil. Transforme sua causa em movimento.
             </p>
-            <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors">
-                <Globe className="w-5 h-5" />
-              </a>
-            </div>
+            <Link to="/login">
+              <Button className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-semibold">
+                Acessar Plataforma
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
           </div>
           
           <div>
-            <h4 className="font-semibold text-white mb-4">Produto</h4>
-            <ul className="space-y-3">
-              <li><a href="#features" className="hover:text-white transition-colors">Recursos</a></li>
-              <li><a href="#pricing" className="hover:text-white transition-colors">Planos</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Integrações</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">API</a></li>
+            <h4 className="font-bold text-white mb-6">Plataforma</h4>
+            <ul className="space-y-4">
+              <li><a href="#recursos" className="hover:text-white transition-colors">Recursos</a></li>
+              <li><a href="#como-funciona" className="hover:text-white transition-colors">Como Funciona</a></li>
+              <li><a href="#numeros" className="hover:text-white transition-colors">Resultados</a></li>
+              <li><Link to="/login" className="hover:text-white transition-colors">Acessar</Link></li>
             </ul>
           </div>
           
           <div>
-            <h4 className="font-semibold text-white mb-4">Suporte</h4>
-            <ul className="space-y-3">
+            <h4 className="font-bold text-white mb-6">Suporte</h4>
+            <ul className="space-y-4">
               <li><a href="#" className="hover:text-white transition-colors">Central de Ajuda</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Documentação</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Contato</a></li>
@@ -623,8 +691,8 @@ export default function LandingPage() {
       <Header />
       <HeroSection />
       <FeaturesSection />
-      <PricingSection />
-      <TestimonialsSection />
+      <HowItWorksSection />
+      <MetricsSection />
       <CTASection />
       <Footer />
     </div>
