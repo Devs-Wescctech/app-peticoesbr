@@ -1336,31 +1336,22 @@ function Footer() {
           viewport={{ once: true }}
           className="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4"
         >
-          <p className="text-sm">&copy; {new Date().getFullYear()} PetiçõesBR. Todos os direitos reservados.</p>
+          <p className="text-sm">
+            &copy; {new Date().getFullYear()} PetiçõesBR. Todos os direitos reservados. | By{' '}
+            <a 
+              href="https://www.wescctech.com.br" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="font-semibold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent hover:from-indigo-300 hover:to-purple-300 transition-all"
+            >
+              Wescctech
+            </a>
+          </p>
           <div className="flex gap-6 text-sm">
             <a href="#" className="hover:text-white transition-colors">Termos de Uso</a>
             <a href="#" className="hover:text-white transition-colors">Privacidade</a>
             <a href="#" className="hover:text-white transition-colors">Cookies</a>
           </div>
-        </motion.div>
-        
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="mt-8 pt-6 border-t border-gray-800/50 text-center"
-        >
-          <a 
-            href="https://www.wescctech.com.br" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors group"
-          >
-            <span>By</span>
-            <span className="font-semibold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent group-hover:from-indigo-300 group-hover:to-purple-300 transition-all">
-              Wescctech
-            </span>
-          </a>
         </motion.div>
       </div>
     </footer>
