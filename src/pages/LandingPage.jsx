@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform, useSpring, useInView, useMotionValue, animate } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useInView, useMotionValue, animate, AnimatePresence } from "framer-motion";
 import {
   FileSignature,
   Users,
@@ -21,8 +21,26 @@ import {
   Clock,
   Award,
   ArrowDown,
+  X,
+  Eye,
+  ExternalLink,
+  Hash,
+  Calendar,
+  Mail,
+  Phone,
+  Globe,
+  Instagram,
+  Twitter,
+  Linkedin,
+  Youtube,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 function usePrefersReducedMotion() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -350,16 +368,73 @@ function HeroSection() {
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           >
-            <a href="#recursos" className="text-gray-400 hover:text-indigo-600 transition-colors">
+            <a href="#plataforma" className="text-gray-400 hover:text-indigo-600 transition-colors">
               <ArrowDown className="w-6 h-6" />
             </a>
           </motion.div>
         </div>
+      </motion.div>
+    </section>
+  );
+}
 
-        <RevealOnScroll direction="up" delay={0.5} className="mt-16">
+function DashboardShowcase() {
+  return (
+    <section id="plataforma" className="py-20 md:py-28 bg-gradient-to-b from-gray-50 via-white to-gray-50 relative overflow-hidden">
+      <ParallaxLayer speed={-0.1} className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-indigo-200/40 to-purple-200/40 rounded-full blur-3xl" />
+      <ParallaxLayer speed={0.1} className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-br from-purple-200/30 to-pink-200/30 rounded-full blur-3xl" />
+      
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <RevealOnScroll direction="up">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-200/50 mb-6">
+              <Eye className="w-4 h-4 text-indigo-600" />
+              <span className="text-sm font-semibold text-indigo-700">Conheça a Plataforma</span>
+            </div>
+          </RevealOnScroll>
+          
+          <RevealOnScroll direction="up" delay={0.1}>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
+              Um painel completo
+              <span className="block bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                para gerenciar tudo
+              </span>
+            </h2>
+          </RevealOnScroll>
+          
+          <RevealOnScroll direction="up" delay={0.2}>
+            <p className="max-w-2xl mx-auto text-lg text-gray-600">
+              Interface intuitiva e moderna para acompanhar petições, campanhas e métricas em tempo real.
+            </p>
+          </RevealOnScroll>
+        </div>
+        
+        <RevealOnScroll direction="up" delay={0.3}>
           <DashboardPreview />
         </RevealOnScroll>
-      </motion.div>
+        
+        <RevealOnScroll direction="up" delay={0.4} className="mt-12">
+          <div className="flex flex-wrap justify-center gap-8 text-center">
+            {[
+              { icon: Zap, label: "Interface Rápida", desc: "Carregamento instantâneo" },
+              { icon: BarChart3, label: "Métricas em Tempo Real", desc: "Dados sempre atualizados" },
+              { icon: Target, label: "Foco em Resultados", desc: "Insights acionáveis" },
+            ].map((item, i) => (
+              <motion.div 
+                key={i} 
+                className="flex flex-col items-center gap-2"
+                whileHover={{ y: -5 }}
+              >
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-indigo-500/10 to-purple-500/10 flex items-center justify-center">
+                  <item.icon className="w-6 h-6 text-indigo-600" />
+                </div>
+                <div className="font-semibold text-gray-900">{item.label}</div>
+                <div className="text-sm text-gray-500">{item.desc}</div>
+              </motion.div>
+            ))}
+          </div>
+        </RevealOnScroll>
+      </div>
     </section>
   );
 }
@@ -513,41 +588,299 @@ const features = [
     icon: FileSignature,
     title: "Petições Digitais",
     description: "Crie petições profissionais com páginas personalizadas, metas de assinaturas e formulários inteligentes.",
-    color: "from-indigo-500 to-blue-500"
+    color: "from-indigo-500 to-blue-500",
+    modalContent: {
+      fullDescription: "Crie petições digitais profissionais em minutos. Defina metas de assinaturas, personalize a aparência com seu logo e cores, e compartilhe em todas as redes. Acompanhe o progresso em tempo real e engaje seus apoiadores.",
+      features: ["Páginas personalizáveis com seu logo", "Metas de assinaturas configuráveis", "Formulários inteligentes de coleta", "Compartilhamento em redes sociais", "URLs amigáveis e personalizadas"]
+    }
   },
   {
     icon: MessageCircle,
     title: "Campanhas WhatsApp",
     description: "Envie mensagens em massa para sua base de apoiadores com links diretos para suas petições.",
-    color: "from-green-500 to-emerald-500"
+    color: "from-green-500 to-emerald-500",
+    modalContent: {
+      fullDescription: "Alcance milhares de apoiadores instantaneamente via WhatsApp. Crie campanhas segmentadas, envie mensagens personalizadas com variáveis dinâmicas e acompanhe estatísticas de entrega em tempo real.",
+      features: ["Envio em massa para contatos", "Variáveis dinâmicas (nome, cidade)", "Agendamento de campanhas", "Estatísticas de entrega", "Templates reutilizáveis"]
+    }
   },
   {
     icon: Link2,
     title: "Páginas LinkBio",
     description: "Construa sua presença online com páginas personalizadas para centralizar suas causas.",
-    color: "from-purple-500 to-pink-500"
+    color: "from-purple-500 to-pink-500",
+    modalContent: {
+      fullDescription: "Crie sua página LinkBio personalizada para centralizar todas as suas petições e redes sociais. Design moderno, múltiplos estilos de cards e integração com todas as plataformas.",
+      features: ["Design responsivo e moderno", "Múltiplos estilos de cards", "Links para redes sociais", "Estatísticas de cliques", "URL personalizada"]
+    }
   },
   {
     icon: Upload,
     title: "Importação de Assinaturas",
     description: "Importe assinaturas de planilhas para consolidar seus apoiadores em uma única plataforma.",
-    color: "from-orange-500 to-red-500"
+    color: "from-orange-500 to-red-500",
+    modalContent: {
+      fullDescription: "Consolide todas as suas assinaturas em um só lugar. Importe dados de planilhas Excel, Google Sheets ou CSV. Detecção automática de colunas e validação de dados duplicados.",
+      features: ["Suporte a Excel, CSV e Google Sheets", "Mapeamento automático de colunas", "Validação de dados duplicados", "Histórico de importações", "Exportação para relatórios"]
+    }
   },
   {
     icon: FileText,
     title: "Templates de Mensagens",
     description: "Crie e gerencie templates personalizados para suas campanhas de mobilização.",
-    color: "from-cyan-500 to-blue-500"
+    color: "from-cyan-500 to-blue-500",
+    modalContent: {
+      fullDescription: "Biblioteca de templates prontos para usar em suas campanhas. Crie mensagens personalizadas com variáveis dinâmicas, salve modelos reutilizáveis e mantenha a consistência da comunicação.",
+      features: ["Biblioteca de templates prontos", "Editor visual de mensagens", "Variáveis dinâmicas", "Categorização por tipo", "Prévia em tempo real"]
+    }
   },
   {
     icon: BarChart3,
     title: "Dashboard Completo",
     description: "Acompanhe métricas de petições, campanhas e engajamento em tempo real.",
-    color: "from-violet-500 to-purple-500"
+    color: "from-violet-500 to-purple-500",
+    modalContent: {
+      fullDescription: "Visualize todas as métricas importantes em um só lugar. Dashboard intuitivo com gráficos interativos, relatórios exportáveis e insights para otimizar suas campanhas.",
+      features: ["Métricas em tempo real", "Gráficos interativos", "Relatórios exportáveis", "Filtros por período", "Comparativo de campanhas"]
+    }
   }
 ];
 
+function FeatureModal({ feature, isOpen, onClose }) {
+  if (!feature) return null;
+  
+  const mockScreens = {
+    "Petições Digitais": (
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="bg-gradient-to-r from-indigo-500 to-blue-500 p-6 text-white">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+              <FileSignature className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="font-bold text-lg">Mais áreas verdes na cidade</div>
+              <div className="text-white/80 text-sm">peticoesbr.com.br/p/areas-verdes</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex-1 bg-white/20 rounded-full h-3">
+              <div className="bg-white rounded-full h-3 w-3/4" />
+            </div>
+            <span className="font-bold">7.500 / 10.000</span>
+          </div>
+        </div>
+        <div className="p-6">
+          <p className="text-gray-600 mb-4">Queremos mais parques e praças em nossa cidade. Assine esta petição e faça parte desta mudança!</p>
+          <div className="space-y-3">
+            <input className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-50" placeholder="Seu nome completo" />
+            <input className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-50" placeholder="Seu email" />
+            <Button className="w-full bg-gradient-to-r from-indigo-500 to-blue-500">Assinar Petição</Button>
+          </div>
+        </div>
+      </div>
+    ),
+    "Campanhas WhatsApp": (
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="bg-gradient-to-r from-green-500 to-emerald-500 p-4 text-white">
+          <div className="font-bold">Nova Campanha WhatsApp</div>
+        </div>
+        <div className="p-4 space-y-4">
+          <div>
+            <label className="text-sm font-medium text-gray-700 block mb-1">Nome da Campanha</label>
+            <input className="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50" value="Mobilização Áreas Verdes" readOnly />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-gray-700 block mb-1">Mensagem</label>
+            <div className="bg-gray-50 rounded-lg p-3 border border-gray-200 text-sm">
+              <p>Olá <span className="bg-green-100 text-green-700 px-1 rounded">{"{{nome}}"}</span>! 👋</p>
+              <p className="mt-2">Precisamos da sua ajuda para conseguir mais áreas verdes em nossa cidade.</p>
+              <p className="mt-2">Assine nossa petição: <span className="text-blue-600 underline">peticoesbr.com.br/p/areas-verdes</span></p>
+            </div>
+          </div>
+          <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+            <div>
+              <div className="font-medium">Destinatários</div>
+              <div className="text-sm text-gray-500">1.250 contatos selecionados</div>
+            </div>
+            <Users className="w-5 h-5 text-gray-400" />
+          </div>
+          <Button className="w-full bg-gradient-to-r from-green-500 to-emerald-500">
+            <Send className="w-4 h-4 mr-2" />
+            Enviar Campanha
+          </Button>
+        </div>
+      </div>
+    ),
+    "Páginas LinkBio": (
+      <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-6 text-white">
+        <div className="text-center mb-6">
+          <div className="w-20 h-20 bg-white rounded-full mx-auto mb-3 flex items-center justify-center">
+            <span className="text-3xl">🌿</span>
+          </div>
+          <h3 className="font-bold text-xl">Movimento Verde SP</h3>
+          <p className="text-white/80 text-sm">Lutando por um futuro sustentável</p>
+        </div>
+        <div className="space-y-3">
+          {[
+            { icon: FileSignature, label: "Assine nossa Petição" },
+            { icon: Instagram, label: "@movimentoverdesp" },
+            { icon: Globe, label: "Site Oficial" },
+            { icon: Mail, label: "Contato" },
+          ].map((item, i) => (
+            <div key={i} className="bg-white/20 hover:bg-white/30 rounded-xl p-3 flex items-center gap-3 cursor-pointer transition-colors">
+              <item.icon className="w-5 h-5" />
+              <span className="font-medium">{item.label}</span>
+            </div>
+          ))}
+        </div>
+        <div className="mt-6 text-center text-white/60 text-xs">
+          peticoesbr.com.br/bio/movimentoverdesp
+        </div>
+      </div>
+    ),
+    "Importação de Assinaturas": (
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="bg-gradient-to-r from-orange-500 to-red-500 p-4 text-white">
+          <div className="font-bold">Importar Assinaturas</div>
+        </div>
+        <div className="p-4">
+          <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center mb-4">
+            <Upload className="w-10 h-10 text-gray-400 mx-auto mb-2" />
+            <p className="text-gray-600 font-medium">Arraste seu arquivo aqui</p>
+            <p className="text-sm text-gray-400">Excel, CSV ou Google Sheets</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-600">assinaturas_evento.xlsx</span>
+              <span className="text-green-600 font-medium">✓ 847 registros</span>
+            </div>
+            <div className="flex gap-2">
+              <div className="flex-1 bg-white rounded px-2 py-1 text-xs border">Nome → nome_completo</div>
+              <div className="flex-1 bg-white rounded px-2 py-1 text-xs border">Email → email</div>
+            </div>
+          </div>
+          <Button className="w-full mt-4 bg-gradient-to-r from-orange-500 to-red-500">Importar Assinaturas</Button>
+        </div>
+      </div>
+    ),
+    "Templates de Mensagens": (
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="bg-gradient-to-r from-cyan-500 to-blue-500 p-4 text-white flex items-center justify-between">
+          <div className="font-bold">Templates de Mensagens</div>
+          <Button size="sm" variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-0">
+            + Novo Template
+          </Button>
+        </div>
+        <div className="p-4 space-y-3">
+          {[
+            { name: "Convite para Petição", category: "Mobilização", color: "bg-indigo-100 text-indigo-700" },
+            { name: "Agradecimento por Assinar", category: "Follow-up", color: "bg-green-100 text-green-700" },
+            { name: "Lembrete de Meta", category: "Engajamento", color: "bg-orange-100 text-orange-700" },
+          ].map((template, i) => (
+            <div key={i} className="flex items-center justify-between bg-gray-50 rounded-lg p-3 hover:bg-gray-100 cursor-pointer transition-colors">
+              <div>
+                <div className="font-medium text-gray-900">{template.name}</div>
+                <span className={`text-xs px-2 py-0.5 rounded-full ${template.color}`}>{template.category}</span>
+              </div>
+              <ChevronRight className="w-4 h-4 text-gray-400" />
+            </div>
+          ))}
+        </div>
+      </div>
+    ),
+    "Dashboard Completo": (
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="bg-gradient-to-r from-violet-500 to-purple-500 p-4 text-white">
+          <div className="font-bold">Dashboard</div>
+        </div>
+        <div className="p-4">
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            {[
+              { label: "Assinaturas", value: "15.847", change: "+12%" },
+              { label: "Campanhas", value: "24", change: "+3" },
+            ].map((stat, i) => (
+              <div key={i} className="bg-gray-50 rounded-lg p-3">
+                <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">{stat.label}</span>
+                  <span className="text-xs text-green-600 font-medium">{stat.change}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="bg-gray-50 rounded-lg p-3">
+            <div className="text-sm font-medium text-gray-700 mb-2">Assinaturas por dia</div>
+            <div className="flex items-end gap-1 h-16">
+              {[40, 65, 45, 80, 55, 90, 70].map((h, i) => (
+                <div key={i} className="flex-1 bg-gradient-to-t from-violet-500 to-purple-400 rounded-t" style={{ height: `${h}%` }} />
+              ))}
+            </div>
+            <div className="flex justify-between text-xs text-gray-400 mt-1">
+              <span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span><span>Dom</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+        <div className={`bg-gradient-to-r ${feature.color} p-6 text-white`}>
+          <DialogHeader>
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
+                <feature.icon className="w-7 h-7" />
+              </div>
+              <div>
+                <DialogTitle className="text-2xl font-bold text-white">{feature.title}</DialogTitle>
+                <p className="text-white/80 mt-1">{feature.description}</p>
+              </div>
+            </div>
+          </DialogHeader>
+        </div>
+        
+        <div className="p-6">
+          <div className="grid md:grid-cols-2 gap-8">
+            <div>
+              <h4 className="font-bold text-lg text-gray-900 mb-3">Sobre o recurso</h4>
+              <p className="text-gray-600 leading-relaxed mb-6">{feature.modalContent.fullDescription}</p>
+              
+              <h4 className="font-bold text-lg text-gray-900 mb-3">Funcionalidades</h4>
+              <ul className="space-y-2">
+                {feature.modalContent.features.map((item, i) => (
+                  <li key={i} className="flex items-center gap-2 text-gray-600">
+                    <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              
+              <Link to="/login">
+                <Button className={`mt-6 bg-gradient-to-r ${feature.color} text-white`}>
+                  Começar a usar
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+            </div>
+            
+            <div>
+              <h4 className="font-bold text-lg text-gray-900 mb-3">Exemplo do sistema</h4>
+              <div className="transform scale-95 origin-top">
+                {mockScreens[feature.title]}
+              </div>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function FeaturesSection() {
+  const [selectedFeature, setSelectedFeature] = useState(null);
+  
   return (
     <section id="recursos" className="py-24 md:py-32 bg-white relative overflow-hidden">
       <ParallaxLayer speed={0.1} className="absolute inset-0">
@@ -585,10 +918,11 @@ function FeaturesSection() {
             <RevealOnScroll key={index} direction="up" delay={index * 0.1}>
               <motion.div
                 whileHover={{ y: -10, boxShadow: "0 25px 50px rgba(0,0,0,0.1)" }}
-                className="group relative h-full"
+                className="group relative h-full cursor-pointer"
+                onClick={() => setSelectedFeature(feature)}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:border-indigo-100 transition-all duration-500 h-full">
+                <div className="relative bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:border-indigo-100 transition-all duration-500 h-full flex flex-col">
                   <motion.div
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     className={`w-14 h-14 rounded-2xl bg-gradient-to-r ${feature.color} flex items-center justify-center mb-6 shadow-lg`}
@@ -596,21 +930,27 @@ function FeaturesSection() {
                     <feature.icon className="w-7 h-7 text-white" />
                   </motion.div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-                  <motion.div
-                    className="mt-6 flex items-center text-indigo-600 font-semibold"
-                    initial={{ opacity: 0, x: -10 }}
+                  <p className="text-gray-600 leading-relaxed flex-1">{feature.description}</p>
+                  <motion.button
+                    className="mt-6 flex items-center gap-2 text-indigo-600 font-semibold group/btn"
                     whileHover={{ x: 5 }}
                   >
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">Saiba mais</span>
-                    <ChevronRight className="w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </motion.div>
+                    <Eye className="w-4 h-4" />
+                    <span>Ver exemplo</span>
+                    <ChevronRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                  </motion.button>
                 </div>
               </motion.div>
             </RevealOnScroll>
           ))}
         </div>
       </div>
+      
+      <FeatureModal 
+        feature={selectedFeature} 
+        isOpen={!!selectedFeature} 
+        onClose={() => setSelectedFeature(null)} 
+      />
     </section>
   );
 }
@@ -963,6 +1303,7 @@ export default function LandingPage() {
       <ScrollProgress />
       <Header />
       <HeroSection />
+      <DashboardShowcase />
       <FeaturesSection />
       <HowItWorksSection />
       <MetricsSection />
