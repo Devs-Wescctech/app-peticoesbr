@@ -1,6 +1,7 @@
 import Layout from "./Layout.jsx";
 import PrivateRoute from "../components/PrivateRoute";
 
+import LandingPage from "./LandingPage";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
 import AdminDashboard from "./AdminDashboard";
@@ -20,13 +21,13 @@ import MessageTemplates from "./MessageTemplates";
 import ImportSignatures from "./ImportSignatures";
 import LinkBioPages from "./LinkBioPages";
 
-// ⚠️ componentes devem começar com maiúscula senão o React trata como tag HTML
 import PPage from "./p";
 import BioPage from "./bio";
 
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from "react-router-dom";
 
 const PAGES = {
+  LandingPage,
   Login,
   Dashboard,
   AdminDashboard,
@@ -52,15 +53,11 @@ const PAGES = {
 function _getCurrentPage(pathname) {
   let url = pathname;
   if (url.endsWith("/")) url = url.slice(0, -1);
+  if (url === "" || url === "/") return "LandingPage";
   let last = url.split("/").pop() || "";
   if (last.includes("?")) last = last.split("?")[0];
   const pageName = Object.keys(PAGES).find((page) => page.toLowerCase() === last.toLowerCase());
-  return pageName || Object.keys(PAGES)[0];
-}
-
-function RootRedirect() {
-  const token = localStorage.getItem('token');
-  return token ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />;
+  return pageName || "LandingPage";
 }
 
 // Conteúdo que depende da localização (já com basename aplicado pelo Router)
@@ -71,9 +68,8 @@ function PagesContent() {
   return (
     <Layout currentPageName={currentPage}>
       <Routes>
-        <Route path="/" element={<RootRedirect />} />
+        <Route path="/" element={<LandingPage />} />
         
-        {/* Rotas principais em lowercase */}
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
         <Route path="/admindashboard" element={<PrivateRoute><AdminDashboard /></PrivateRoute>} />
