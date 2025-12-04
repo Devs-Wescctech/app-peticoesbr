@@ -5,8 +5,8 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Build argument para configurar base URL
-ARG VITE_BASE_URL=/peticoesbr/
+# Build argument para configurar base URL (/ para domínio raiz)
+ARG VITE_BASE_URL=/
 
 # Copiar package files
 COPY package*.json ./

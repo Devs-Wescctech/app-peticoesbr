@@ -2,10 +2,15 @@
 
 ## 📍 Informações do Servidor
 
+### Opção A: Domínio Raiz (Recomendado)
+- **URL**: https://peticoesbr.com.br/
+- **Base Path**: `/`
+- **Rotas Públicas**: `/p?s=slug` e `/bio?slug=x`
+
+### Opção B: Subpath (legado)
 - **URL**: https://dev.wescctech.com.br/peticoesbr
-- **Servidor**: dev.wescctech.com.br
-- **Deployment Path**: `/var/www/html/peticoesbr`
-- **Database**: PostgreSQL user `sup_cristian`, database `sup_cristian`
+- **Base Path**: `/peticoesbr/`
+- **Rotas Públicas**: Redirect 301 para subpath
 
 ---
 
@@ -13,68 +18,67 @@
 
 ### Frontend
 - **Imagem**: `ghcr.io/devs-wescctech/peticoesbr-frontend:latest`
-- **Porta**: 8080 (internal)
-- **Base Path**: `/peticoesbr/`
-- **Build ARG**: `VITE_BASE_URL=/peticoesbr/`
+- **Porta**: 8080 (internal) ou 80 (standalone)
+- **Build ARG**: `VITE_BASE_URL=/` (domínio raiz) ou `/peticoesbr/` (subpath)
 
 ### Backend
 - **Imagem**: `ghcr.io/devs-wescctech/peticoesbr-backend:latest`
-- **Porta**: 3001 (internal)
-- **Volume**: `/var/www/html/peticoesbr/uploads:/app/uploads`
+- **Porta**: 3001
+- **Volume**: `/path/to/uploads:/app/uploads`
 
 ---
 
-## 🌐 Nginx Snippet Pattern
+## 🌐 Configuração Nginx
 
-### Arquivo: `/etc/nginx/snippets/peticoesbr.conf`
+### A) Para Domínio Raiz (peticoesbr.com.br)
 
-```nginx
-# API Backend
-location /api {
-    proxy_pass http://127.0.0.1:3001;
-    # ... headers
-}
-
-# Uploads (proxy para backend Express)
-location ^~ /uploads {
-    proxy_pass http://127.0.0.1:3001/uploads;
-    expires 1y;
-    add_header Cache-Control "public, immutable";
-}
-
-# Frontend SPA
-location /peticoesbr {
-    proxy_pass http://127.0.0.1:8080/;
-    # ... headers
-}
-
-# Rotas Públicas (301 redirect)
-location /p {
-    return 301 https://$host/peticoesbr/p$is_args$args;
-}
-
-location /bio {
-    return 301 https://$host/peticoesbr/bio$is_args$args;
-}
-```
-
-### Incluir no site principal
-
-**Arquivo**: `/etc/nginx/sites-available/dev.wescctech.com.br`
+Use o arquivo `nginx-snippets/peticoesbr-root.conf`:
 
 ```nginx
 server {
     listen 443 ssl http2;
-    server_name dev.wescctech.com.br;
+    server_name peticoesbr.com.br www.peticoesbr.com.br;
     
-    # ... SSL config
+    # SSL config...
     
-    # ===== Incluir PetiçõesBR =====
-    include /etc/nginx/snippets/peticoesbr.conf;
+    # API Backend
+    location /api {
+        proxy_pass http://127.0.0.1:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        client_max_body_size 50M;
+    }
     
-    # ... outros locations
+    # Uploads
+    location ^~ /uploads {
+        proxy_pass http://127.0.0.1:3001/uploads;
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+    
+    # Frontend SPA na raiz
+    location / {
+        root /var/www/html/peticoesbr;
+        try_files $uri $uri/ /index.html;
+        
+        # Cache para assets
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$ {
+            expires 1y;
+            add_header Cache-Control "public, immutable";
+        }
+    }
 }
 ```
+
+### B) Para Subpath (dev.wescctech.com.br/peticoesbr)
+
+Use o arquivo `nginx-snippets/peticoesbr.conf` com redirects para /p e /bio.
 
 ---
 
@@ -84,247 +88,96 @@ server {
 /var/www/html/peticoesbr/
 ├── docker-compose.yml      # Orquestração containers
 ├── .env                    # Variáveis de ambiente
+├── index.html              # Frontend build (se não usar container)
+├── assets/                 # JS/CSS build
 └── uploads/                # Volume montado (backend)
-    ├── image1.jpg
-    └── logo.png
 ```
 
 ---
 
 ## 🔄 Workflow de Deploy
 
-### 1. Desenvolvimento → GitHub
+### 1. Build com Docker (Domínio Raiz)
 
 ```bash
-# No Replit ou local
-git add .
-git commit -m "feat: nova funcionalidade"
-git push origin main
+# Build frontend para raiz
+docker build --build-arg VITE_BASE_URL=/ -t peticoesbr-frontend .
+
+# Ou com Docker Compose
+docker-compose build --build-arg VITE_BASE_URL=/
 ```
 
-### 2. GitHub Actions (Automático)
-
-- Build frontend com `VITE_BASE_URL=/peticoesbr/`
-- Build backend
-- Push para GHCR:
-  - `ghcr.io/devs-wescctech/peticoesbr-frontend:latest`
-  - `ghcr.io/devs-wescctech/peticoesbr-backend:latest`
-
-### 3. Servidor (Manual)
+### 2. Deploy no Servidor
 
 ```bash
-ssh sup_cristian@dev.wescctech.com.br
+# No servidor
 cd /var/www/html/peticoesbr
 
-# Parar, baixar novas imagens, e reiniciar
-docker-compose down && \
-docker-compose pull && \
+# Pull novas imagens
+docker-compose pull
+
+# Restart containers
+docker-compose down
 docker-compose up -d
 
-# Ver logs
-docker-compose logs -f
-```
-
----
-
-## 🔗 Rotas e URLs
-
-### Públicas (Sem Login)
-
-| Rota Original | Redirect 301 | URL Final |
-|--------------|--------------|-----------|
-| `/p?s=slug` | → `/peticoesbr/p?s=slug` | Landing page da petição |
-| `/bio?s=slug` | → `/peticoesbr/bio?s=slug` | Página link bio |
-
-### Aplicação Principal
-
-| Rota | URL | Descrição |
-|------|-----|-----------|
-| `/peticoesbr` | https://dev.wescctech.com.br/peticoesbr | Frontend React |
-| `/peticoesbr/login` | https://dev.wescctech.com.br/peticoesbr/login | Login |
-| `/peticoesbr/AdminDashboard` | https://dev.wescctech.com.br/peticoesbr/AdminDashboard | Super Admin |
-| `/api` | https://dev.wescctech.com.br/api | Backend Express |
-| `/uploads/file.jpg` | https://dev.wescctech.com.br/uploads/file.jpg | Uploads estáticos |
-
----
-
-## 🔐 Credenciais
-
-### Super Admin
-
-- **Email**: `tecnologia@wescctech.com.br`
-- **Senha**: `admin123`
-- **Acesso**: `/peticoesbr/AdminDashboard`
-
----
-
-## 🧪 Testes de Validação
-
-```bash
-# Backend direto
-curl -i http://localhost:3001/api/health
-
-# API via Nginx
-curl -i https://dev.wescctech.com.br/api/health
-
-# Frontend container
-curl -i http://localhost:8080/
-
-# Frontend via Nginx
-curl -i https://dev.wescctech.com.br/peticoesbr/
-
-# Uploads
-curl -I https://dev.wescctech.com.br/uploads/arquivo.jpg
-
-# Redirect /p
-curl -I https://dev.wescctech.com.br/p?s=teste
-# Deve retornar: HTTP/1.1 301 Moved Permanently
-# Location: https://dev.wescctech.com.br/peticoesbr/p?s=teste
-
-# Redirect /bio
-curl -I https://dev.wescctech.com.br/bio?s=teste
-# Deve retornar: HTTP/1.1 301 Moved Permanently
-# Location: https://dev.wescctech.com.br/peticoesbr/bio?s=teste
-```
-
----
-
-## 📦 Volumes Docker
-
-```bash
-# Backend container
-/var/www/html/peticoesbr/uploads → /app/uploads (container)
-
-# Verificar volume montado
-docker inspect peticoesbr-backend | grep -A 10 Mounts
-
-# Arquivos no host
-ls -la /var/www/html/peticoesbr/uploads/
-```
-
----
-
-## 🔄 Comandos Úteis
-
-### Containers
-
-```bash
-# Ver status
+# Verificar status
 docker-compose ps
-
-# Ver logs
 docker-compose logs -f
-docker logs peticoesbr-backend --tail 50
-docker logs peticoesbr-frontend --tail 50
-
-# Reiniciar
-docker-compose restart
-
-# Entrar no container
-docker exec -it peticoesbr-backend sh
-docker exec -it peticoesbr-frontend sh
-```
-
-### Nginx
-
-```bash
-# Testar configuração
-sudo nginx -t
-
-# Recarregar
-sudo systemctl reload nginx
-
-# Ver logs
-sudo tail -f /var/log/nginx/error.log
-sudo tail -f /var/log/nginx/access.log
-```
-
-### Uploads
-
-```bash
-# Permissões corretas
-sudo chown -R sup_cristian:sup_cristian /var/www/html/peticoesbr/uploads
-sudo chmod -R 755 /var/www/html/peticoesbr/uploads
-
-# Verificar arquivos
-ls -la /var/www/html/peticoesbr/uploads/
 ```
 
 ---
 
-## 🆘 Troubleshooting
+## 🔧 docker-compose.yml para Produção (Domínio Raiz)
 
-### Containers não sobem
+```yaml
+version: '3.8'
 
-```bash
-docker-compose logs
-cat .env
-sudo netstat -tulpn | grep -E '3001|8080'
+services:
+  backend:
+    image: ghcr.io/devs-wescctech/peticoesbr-backend:latest
+    container_name: peticoesbr-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+    volumes:
+      - ./uploads:/app/uploads
+    ports:
+      - "3001:3001"
+
+  frontend:
+    image: ghcr.io/devs-wescctech/peticoesbr-frontend:latest
+    container_name: peticoesbr-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
 ```
 
-### 404 na API
+---
 
-```bash
-# Verificar snippet incluído
-grep -r "peticoesbr.conf" /etc/nginx/sites-enabled/
+## 📋 .env (Exemplo)
 
-# Testar backend direto
-curl -i http://localhost:3001/api/health
+```env
+DATABASE_URL=postgresql://user:password@host:5432/database
+JWT_SECRET=your-super-secret-jwt-key
+JWT_REFRESH_SECRET=your-super-secret-refresh-key
 ```
-
-### Uploads retornam 404
-
-```bash
-# Verificar volume
-docker inspect peticoesbr-backend | grep -A 10 Mounts
-
-# Verificar arquivos no host
-ls -la /var/www/html/peticoesbr/uploads/
-
-# Testar acesso direto no backend
-curl -I http://localhost:3001/uploads/arquivo.jpg
-
-# Testar via Nginx
-curl -I https://dev.wescctech.com.br/uploads/arquivo.jpg
-```
-
-### Rotas /p e /bio não funcionam
-
-```bash
-# Verificar redirect no snippet
-cat /etc/nginx/snippets/peticoesbr.conf | grep -A 2 "location /p"
-
-# Deve mostrar: return 301 https://$host/peticoesbr/p$is_args$args;
-
-# Testar redirect
-curl -I https://dev.wescctech.com.br/p?s=teste
-# Espera: 301 + Location header
-```
-
-### React Router não encontra rotas
-
-- **Problema**: Erro `<Router basename="/peticoesbr"> is not able to match the URL`
-- **Causa**: URL não começa com `/peticoesbr`
-- **Solução**: Usar redirect 301 para `/peticoesbr/` ao invés de proxy direto
 
 ---
 
 ## ✅ Checklist de Deploy
 
-- [ ] Snippet criado em `/etc/nginx/snippets/peticoesbr.conf`
-- [ ] Snippet incluído em `sites-available/dev.wescctech.com.br`
-- [ ] Nginx testado e recarregado
-- [ ] Containers rodando (`docker-compose ps`)
-- [ ] Volume de uploads montado
-- [ ] API acessível: `https://dev.wescctech.com.br/api/health`
-- [ ] Frontend acessível: `https://dev.wescctech.com.br/peticoesbr`
-- [ ] Redirects funcionando: `/p` e `/bio`
-- [ ] Uploads acessíveis: `https://dev.wescctech.com.br/uploads/`
-- [ ] Login funcional
-- [ ] Admin Dashboard acessível
-
----
-
-**Última atualização**: 13/11/2025  
-**Configurado por**: Wescctech  
-**Status**: ✅ Produção Estável
+- [ ] Configurar DNS do domínio peticoesbr.com.br
+- [ ] Gerar certificado SSL (Let's Encrypt)
+- [ ] Criar arquivo .env com credenciais
+- [ ] Criar diretório uploads com permissões
+- [ ] Pull das imagens Docker
+- [ ] Iniciar containers
+- [ ] Configurar Nginx
+- [ ] Testar rotas públicas (/p, /bio)
+- [ ] Testar login e dashboard

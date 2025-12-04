@@ -43,14 +43,17 @@ The frontend uses Radix UI for accessible components, styled with TailwindCSS fo
 - **Docker Migration Infrastructure**: Complete containerization setup for production deployment with Dockerfiles for backend and frontend, `docker-compose` for development and production, and automated GitHub Actions CI/CD for building and pushing images to GHCR.
 
 ### Production Deployment Architecture
-- **Server**: dev.wescctech.com.br at path `/peticoesbr`
+- **URL Atual**: https://peticoesbr.com.br/ (domínio raiz) ou https://dev.wescctech.com.br/peticoesbr (subpath legado)
 - **Database**: PostgreSQL user `sup_cristian`, database `sup_cristian`
-- **Nginx Pattern**: Modular snippet architecture at `/etc/nginx/snippets/peticoesbr.conf`
+- **Nginx Pattern**: 
+  - Domínio raiz: `/etc/nginx/snippets/peticoesbr-root.conf`
+  - Subpath: `/etc/nginx/snippets/peticoesbr.conf`
 - **Containers**: 
   - Frontend: ghcr.io/devs-wescctech/peticoesbr-frontend (port 8080 → Nginx proxy)
   - Backend: ghcr.io/devs-wescctech/peticoesbr-backend (port 3001)
-- **Public Routes**: `/p` and `/bio` use 301 redirects to `/peticoesbr/p` and `/peticoesbr/bio` for React Router basename compatibility
-- **File Uploads**: Volume mounted at `/var/www/html/peticoesbr/uploads:/app/uploads`, served via Nginx proxy to backend Express static middleware
+- **VITE_BASE_URL**: `/` para domínio raiz, `/peticoesbr/` para subpath
+- **Public Routes**: `/p?s=slug` para petições, `/bio?slug=x` para páginas bio
+- **File Uploads**: Volume mounted at `/path/to/uploads:/app/uploads`, served via Nginx proxy to backend
 - **Deployment Path**: `/var/www/html/peticoesbr` contains `docker-compose.yml`, `.env`, and `uploads/` directory
 - **Update Process**: `docker-compose down && docker-compose pull && docker-compose up -d`
 
