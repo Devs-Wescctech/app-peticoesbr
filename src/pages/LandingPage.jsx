@@ -286,6 +286,42 @@ function HeroSection() {
           />
         </ParallaxLayer>
         
+        <ParallaxLayer speed={0.1}>
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            className="absolute top-20 left-[10%] w-[300px] h-[300px] border border-indigo-200/30 rounded-full"
+          />
+        </ParallaxLayer>
+        <ParallaxLayer speed={-0.1}>
+          <motion.div
+            animate={{ rotate: -360 }}
+            transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
+            className="absolute top-40 right-[15%] w-[200px] h-[200px] border border-purple-200/40 rounded-full"
+          />
+        </ParallaxLayer>
+        
+        <motion.div
+          animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[15%] left-[8%] w-16 h-16 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-2xl backdrop-blur-sm border border-indigo-200/30"
+        />
+        <motion.div
+          animate={{ y: [0, 15, 0], rotate: [0, -5, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute top-[25%] right-[12%] w-12 h-12 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl backdrop-blur-sm border border-purple-200/30"
+        />
+        <motion.div
+          animate={{ y: [0, -10, 0], rotate: [0, 15, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute bottom-[30%] left-[15%] w-10 h-10 bg-gradient-to-br from-pink-500/20 to-indigo-500/20 rounded-lg backdrop-blur-sm border border-pink-200/30"
+        />
+        <motion.div
+          animate={{ y: [0, 12, 0], rotate: [0, -10, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+          className="absolute bottom-[25%] right-[10%] w-14 h-14 bg-gradient-to-br from-indigo-500/15 to-purple-500/15 rounded-2xl backdrop-blur-sm border border-indigo-200/20"
+        />
+        
         <FloatingElement duration={4} distance={20}>
           <div className="absolute top-1/4 left-1/4 w-4 h-4 bg-indigo-400/60 rounded-full blur-sm" />
         </FloatingElement>
@@ -295,6 +331,21 @@ function HeroSection() {
         <FloatingElement duration={3} distance={10}>
           <div className="absolute bottom-1/3 left-1/3 w-3 h-3 bg-pink-400/60 rounded-full blur-sm" />
         </FloatingElement>
+        <FloatingElement duration={6} distance={25}>
+          <div className="absolute top-[20%] left-[60%] w-5 h-5 bg-indigo-300/50 rounded-full blur-sm" />
+        </FloatingElement>
+        <FloatingElement duration={4.5} distance={18}>
+          <div className="absolute bottom-[40%] right-[30%] w-4 h-4 bg-purple-300/60 rounded-full blur-sm" />
+        </FloatingElement>
+        
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="hero-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgb(99 102 241 / 0.06)" strokeWidth="1"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#hero-grid)" />
+        </svg>
       </div>
 
       <div className="absolute inset-0 opacity-30" style={{
@@ -1291,6 +1342,25 @@ function Footer() {
             <a href="#" className="hover:text-white transition-colors">Privacidade</a>
             <a href="#" className="hover:text-white transition-colors">Cookies</a>
           </div>
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mt-8 pt-6 border-t border-gray-800/50 text-center"
+        >
+          <a 
+            href="https://www.wescctech.com.br" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors group"
+          >
+            <span>By</span>
+            <span className="font-semibold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent group-hover:from-indigo-300 group-hover:to-purple-300 transition-all">
+              Wescctech
+            </span>
+          </a>
         </motion.div>
       </div>
     </footer>
