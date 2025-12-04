@@ -401,7 +401,7 @@ function HeroSection() {
 
           <RevealOnScroll direction="up" delay={0.4}>
             <div className="flex flex-wrap items-center justify-center gap-6 mt-12 text-sm text-gray-500">
-              {["100% Gratuito para começar", "Configuração em minutos", "Suporte humanizado"].map((text, i) => (
+              {["Plataforma completa", "Configuração em minutos", "Suporte humanizado"].map((text, i) => (
                 <motion.div
                   key={i}
                   className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-100"
@@ -877,51 +877,109 @@ function FeatureModal({ feature, isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
-        <div className={`bg-gradient-to-r ${feature.color} p-6 text-white`}>
-          <DialogHeader>
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
-                <feature.icon className="w-7 h-7" />
-              </div>
-              <div>
-                <DialogTitle className="text-2xl font-bold text-white">{feature.title}</DialogTitle>
-                <p className="text-white/80 mt-1">{feature.description}</p>
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto p-0 border-0 shadow-2xl">
+        <div className={`relative bg-gradient-to-br ${feature.color} p-8 text-white overflow-hidden`}>
+          <div className="absolute inset-0 bg-black/10" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
+          
+          <DialogHeader className="relative z-10">
+            <div className="flex items-start gap-5">
+              <motion.div 
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ type: "spring", duration: 0.6 }}
+                className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg border border-white/20"
+              >
+                <feature.icon className="w-8 h-8" />
+              </motion.div>
+              <div className="flex-1">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <DialogTitle className="text-2xl md:text-3xl font-bold text-white mb-2">{feature.title}</DialogTitle>
+                  <p className="text-white/90 text-lg leading-relaxed">{feature.description}</p>
+                </motion.div>
               </div>
             </div>
           </DialogHeader>
         </div>
         
-        <div className="p-6">
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <h4 className="font-bold text-lg text-gray-900 mb-3">Sobre o recurso</h4>
-              <p className="text-gray-600 leading-relaxed mb-6">{feature.modalContent.fullDescription}</p>
-              
-              <h4 className="font-bold text-lg text-gray-900 mb-3">Funcionalidades</h4>
-              <ul className="space-y-2">
-                {feature.modalContent.features.map((item, i) => (
-                  <li key={i} className="flex items-center gap-2 text-gray-600">
-                    <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              
-              <Link to="/login">
-                <Button className={`mt-6 bg-gradient-to-r ${feature.color} text-white`}>
-                  Começar a usar
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </Link>
-            </div>
-            
-            <div>
-              <h4 className="font-bold text-lg text-gray-900 mb-3">Exemplo do sistema</h4>
-              <div className="transform scale-95 origin-top">
-                {mockScreens[feature.title]}
+        <div className="p-8 bg-gradient-to-b from-gray-50 to-white">
+          <div className="grid lg:grid-cols-5 gap-8">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="lg:col-span-2 space-y-6"
+            >
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className={`w-8 h-8 rounded-lg bg-gradient-to-r ${feature.color} flex items-center justify-center`}>
+                    <Sparkles className="w-4 h-4 text-white" />
+                  </div>
+                  <h4 className="font-bold text-lg text-gray-900">Sobre o recurso</h4>
+                </div>
+                <p className="text-gray-600 leading-relaxed">{feature.modalContent.fullDescription}</p>
               </div>
-            </div>
+              
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className={`w-8 h-8 rounded-lg bg-gradient-to-r ${feature.color} flex items-center justify-center`}>
+                    <Check className="w-4 h-4 text-white" />
+                  </div>
+                  <h4 className="font-bold text-lg text-gray-900">Funcionalidades</h4>
+                </div>
+                <ul className="space-y-3">
+                  {feature.modalContent.features.map((item, i) => (
+                    <motion.li 
+                      key={i} 
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 + i * 0.05 }}
+                      className="flex items-start gap-3 text-gray-600"
+                    >
+                      <div className={`w-5 h-5 rounded-full bg-gradient-to-r ${feature.color} flex items-center justify-center flex-shrink-0 mt-0.5`}>
+                        <Check className="w-3 h-3 text-white" />
+                      </div>
+                      <span>{item}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+              
+              <Link to="/login" className="block">
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Button className={`w-full bg-gradient-to-r ${feature.color} text-white shadow-lg hover:shadow-xl transition-all py-6 text-lg font-semibold`}>
+                    Começar a usar
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                </motion.div>
+              </Link>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="lg:col-span-3"
+            >
+              <div className="sticky top-4">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className={`w-8 h-8 rounded-lg bg-gradient-to-r ${feature.color} flex items-center justify-center`}>
+                    <Eye className="w-4 h-4 text-white" />
+                  </div>
+                  <h4 className="font-bold text-lg text-gray-900">Preview do sistema</h4>
+                </div>
+                <div className="bg-gradient-to-br from-gray-100 to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-inner">
+                  <div className="transform hover:scale-[1.02] transition-transform duration-300">
+                    {mockScreens[feature.title]}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </DialogContent>
@@ -1319,13 +1377,40 @@ function Footer() {
           <div>
             <h4 className="font-bold text-white mb-6">Suporte</h4>
             <ul className="space-y-4">
-              {["Central de Ajuda", "Documentação", "Contato", "Status"].map((item) => (
-                <li key={item}>
-                  <motion.a href="#" className="hover:text-white transition-colors" whileHover={{ x: 5 }}>
-                    {item}
-                  </motion.a>
-                </li>
-              ))}
+              <li>
+                <motion.a 
+                  href="https://wa.me/555130273382" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors inline-flex items-center gap-2" 
+                  whileHover={{ x: 5 }}
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Fale Conosco
+                </motion.a>
+              </li>
+              <li>
+                <motion.a 
+                  href="https://wa.me/555130273382" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors" 
+                  whileHover={{ x: 5 }}
+                >
+                  Central de Ajuda
+                </motion.a>
+              </li>
+              <li>
+                <motion.a 
+                  href="https://wa.me/555130273382" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors" 
+                  whileHover={{ x: 5 }}
+                >
+                  Contato
+                </motion.a>
+              </li>
             </ul>
           </div>
         </div>
