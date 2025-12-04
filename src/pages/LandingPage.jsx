@@ -24,24 +24,47 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+function usePrefersReducedMotion() {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    
+    const handler = (event) => setPrefersReducedMotion(event.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+  
+  return prefersReducedMotion;
+}
+
 function useCountUp(end, duration = 2, inView) {
   const count = useMotionValue(0);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const endStr = end.toString();
+  const numericEnd = parseInt(endStr.replace(/[^0-9]/g, ""));
+  
   const rounded = useTransform(count, (latest) => {
-    if (end.toString().includes("K")) {
-      return Math.round(latest) + "K+";
+    const val = Math.round(latest);
+    if (endStr.includes("K")) {
+      return val + "K+";
     }
-    if (end.toString().includes("%")) {
-      return Math.round(latest) + "%";
+    if (endStr.includes("%")) {
+      return val + "%";
     }
-    return Math.round(latest) + "+";
+    return val + "+";
   });
 
   useEffect(() => {
     if (inView) {
-      const numericEnd = parseInt(end.toString().replace(/[^0-9]/g, ""));
-      animate(count, numericEnd, { duration, ease: "easeOut" });
+      if (prefersReducedMotion) {
+        count.set(numericEnd);
+      } else {
+        animate(count, numericEnd, { duration, ease: "easeOut" });
+      }
     }
-  }, [inView, end, duration, count]);
+  }, [inView, numericEnd, duration, count, prefersReducedMotion]);
 
   return rounded;
 }
@@ -76,25 +99,35 @@ function ParallaxLayer({ children, speed = 0.5, className = "" }) {
 function RevealOnScroll({ children, direction = "up", delay = 0, className = "" }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const prefersReducedMotion = usePrefersReducedMotion();
 
-  const variants = {
-    hidden: {
-      opacity: 0,
-      y: direction === "up" ? 60 : direction === "down" ? -60 : 0,
-      x: direction === "left" ? 60 : direction === "right" ? -60 : 0,
-      scale: direction === "scale" ? 0.8 : 1,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      x: 0,
-      scale: 1,
-      transition: {
-        duration: 0.8,
-        delay,
-        ease: [0.25, 0.4, 0.25, 1],
+  const getVariants = () => {
+    if (prefersReducedMotion) {
+      return {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { duration: 0.3, delay: delay * 0.5 } },
+      };
+    }
+    
+    return {
+      hidden: {
+        opacity: 0,
+        y: direction === "up" ? 60 : direction === "down" ? -60 : 0,
+        x: direction === "left" ? 60 : direction === "right" ? -60 : 0,
+        scale: direction === "scale" ? 0.8 : 1,
       },
-    },
+      visible: {
+        opacity: 1,
+        y: 0,
+        x: 0,
+        scale: 1,
+        transition: {
+          duration: 0.8,
+          delay,
+          ease: [0.25, 0.4, 0.25, 1],
+        },
+      },
+    };
   };
 
   return (
@@ -102,7 +135,7 @@ function RevealOnScroll({ children, direction = "up", delay = 0, className = "" 
       ref={ref}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      variants={variants}
+      variants={getVariants()}
       className={className}
     >
       {children}
@@ -700,7 +733,7 @@ const metrics = [
   { value: "50K", label: "Assinaturas Coletadas", icon: Users, description: "Por organizações na plataforma" },
   { value: "500", label: "Petições Criadas", icon: FileText, description: "Causas importantes mobilizadas" },
   { value: "10K", label: "Mensagens Enviadas", icon: MessageCircle, description: "Campanhas de WhatsApp" },
-  { value: "98", label: "Satisfação", icon: Award, description: "Dos usuários recomendam" },
+  { value: "98%", label: "Satisfação", icon: Award, description: "Dos usuários recomendam" },
 ];
 
 function MetricCard({ metric, index }) {
