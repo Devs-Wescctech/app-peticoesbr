@@ -19,9 +19,13 @@ RUN npm install --production=false && \
 # Copiar código fonte
 COPY . .
 
-# Criar diretório para uploads
+# Criar diretório para uploads com permissões corretas para usuário node
 RUN mkdir -p uploads && \
+    chown -R node:node uploads && \
     chmod 755 uploads
+
+# Garantir que todo o diretório app pertença ao node
+RUN chown -R node:node /app
 
 # Expor porta
 EXPOSE 3001
