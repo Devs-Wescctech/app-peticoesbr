@@ -1,0 +1,113 @@
+sup_wescc@srvappsprod:~$ cat /etc/nginx/sites-available/peticoesbr.conf Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.8.0-88-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Fri Dec  5 04:02:12 PM -03 2025
+
+  System load:  0.0                Processes:              268
+  Usage of /:   1.9% of 202.69GB   Users logged in:        1
+  Memory usage: 2%                 IPv4 address for ens18: 172.27.34.100
+  Swap usage:   0%
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+Expanded Security Maintenance for Applications is not enabled.
+
+8 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+Last login: Fri Dec  5 15:49:17 2025 from 172.16.4.37
+sup_wescc@srvappsprod:~$ sudo cat /etc/nginx/sites-available/peticoesbr.conf 
+[sudo] password for sup_wescc: 
+
+# Petições ONLINE 
+
+# HTTP apenas (primeira fase, antes do Certbot)
+server {
+    server_name peticoesbr.com.br www.peticoesbr.com.br;
+
+    # Frontend SPA na porta 3000
+    location /peticoesbr/ {
+        proxy_pass http://127.0.0.1:3000/;  # front novo na 3000
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        add_header Cache-Control "no-cache, no-store, must-revalidate";
+    }
+
+    # Backend API na porta 3001
+    location /api {
+        proxy_pass http://127.0.0.1:3001;
+        proxy_http_version 1.1;
+
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_read_timeout 300s;
+        proxy_connect_timeout 75s;
+        client_max_body_size 50M;
+    }
+
+    # Uploads
+    location ^~ /uploads {
+        proxy_pass http://127.0.0.1:3001/uploads;
+        proxy_http_version 1.1;
+
+        proxy_set_header Host      $host;
+        proxy_set_header X-Real-IP $remote_addr;
+
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # Rotas públicas (mantendo seu padrão atual)
+    location /p {
+        return 301 http://$host/peticoesbr/p$is_args$args;
+    }
+
+    location /bio {
+        return 301 http://$host/peticoesbr/bio$is_args$args;
+    }
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/peticoesbr.com.br/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/peticoesbr.com.br/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+server {
+    if ($host = peticoesbr.com.br) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    listen [::]:80;
+    server_name peticoesbr.com.br www.peticoesbr.com.br;
+    return 404; # managed by Certbot
