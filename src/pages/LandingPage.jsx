@@ -379,24 +379,26 @@ function HeroSection() {
           </RevealOnScroll>
 
           <RevealOnScroll direction="up" delay={0.2}>
-            <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-600 leading-relaxed">
+            <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-600 leading-relaxed mb-10">
               Crie petições, colete assinaturas digitais, envie campanhas de WhatsApp 
               e construa páginas personalizadas para amplificar sua voz.
             </p>
           </RevealOnScroll>
 
-          <RevealOnScroll direction="scale" delay={0.3} className="mt-10">
-            <Link to="/login">
-              <motion.div
-                whileHover={{ scale: 1.05, y: -3 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Button size="lg" className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 font-bold text-lg px-10 py-7 rounded-2xl transition-all duration-300">
-                  Começar Agora
-                  <Rocket className="w-5 h-5 ml-3" />
-                </Button>
-              </motion.div>
-            </Link>
+          <RevealOnScroll direction="up" delay={0.3}>
+            <div className="relative z-10">
+              <Link to="/login">
+                <motion.div
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button size="lg" className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 font-bold text-lg px-10 py-7 rounded-2xl transition-all duration-300">
+                    Começar Agora
+                    <Rocket className="w-5 h-5 ml-3" />
+                  </Button>
+                </motion.div>
+              </Link>
+            </div>
           </RevealOnScroll>
 
           <RevealOnScroll direction="up" delay={0.4}>
