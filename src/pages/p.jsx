@@ -25,7 +25,8 @@ import {
   Link as LinkIcon,
   Sparkles,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Instagram
 } from "lucide-react";
 import {
   Dialog,
@@ -159,6 +160,12 @@ export default function PetitionLanding() {
       icon: Send,
       color: "from-cyan-500 to-cyan-600",
       url: `https://t.me/share/url?url=${encodeURIComponent(landingUrl)}&text=${encodeURIComponent(shareText)}`
+    },
+    {
+      name: "Instagram",
+      icon: Instagram,
+      color: "from-pink-500 via-purple-500 to-orange-500",
+      url: `https://www.instagram.com/`
     },
   ];
 
