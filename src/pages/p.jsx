@@ -23,7 +23,9 @@ import {
   Linkedin,
   Send,
   Link as LinkIcon,
-  Sparkles
+  Sparkles,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 import {
   Dialog,
@@ -35,6 +37,7 @@ export default function PetitionLanding() {
   const urlParams = new URLSearchParams(window.location.search);
   const slug = urlParams.get('s');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showFullDescription, setShowFullDescription] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -225,9 +228,31 @@ export default function PetitionLanding() {
               {petition.title}
             </h1>
 
-            <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mb-10 leading-relaxed text-center">
-              {petition.description.slice(0, 200)}...
-            </p>
+            <div className="max-w-3xl mx-auto mb-10 text-center">
+              <p className="text-lg md:text-xl text-white/90 leading-relaxed">
+                {showFullDescription || petition.description.length <= 250
+                  ? petition.description
+                  : `${petition.description.slice(0, 250)}...`}
+              </p>
+              {petition.description.length > 250 && (
+                <button
+                  onClick={() => setShowFullDescription(!showFullDescription)}
+                  className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white/90 hover:text-white text-sm font-semibold transition-all"
+                >
+                  {showFullDescription ? (
+                    <>
+                      Ver menos
+                      <ChevronUp className="w-4 h-4" />
+                    </>
+                  ) : (
+                    <>
+                      Ler descrição completa
+                      <ChevronDown className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
 
             <div className="flex flex-wrap items-center justify-center gap-6 mb-10">
               <div className="flex items-center gap-3">
