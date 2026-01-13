@@ -23,9 +23,9 @@ const demoPetition = {
   description: "A nossa cidade merece um espaço de lazer moderno e acessível para todas as famílias. Esta petição solicita a construção de uma nova praça central com área verde, playground infantil, academia ao ar livre, pista de caminhada e espaço para eventos culturais. O projeto prevê iluminação LED sustentável, bancos acessíveis, banheiros públicos e estacionamento para bicicletas. A praça será um ponto de encontro para a comunidade, promovendo saúde, bem-estar e integração social entre os moradores do bairro.",
   goal: 5000,
   signatureCount: 1847,
-  logo_url: null,
-  banner_url: null,
-  primary_color: "#7c3aed"
+  logo_url: "https://images.unsplash.com/photo-1569974507005-6dc61f97fb5c?w=200&h=200&fit=crop",
+  banner_url: "https://images.unsplash.com/photo-1588714477688-cf28a50e94f7?w=1920&h=1080&fit=crop",
+  primary_color: "#16a34a"
 };
 
 export default function PetitionDemo() {
@@ -41,11 +41,20 @@ export default function PetitionDemo() {
   const primaryColor = demoPetition.primary_color;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/15 rounded-full blur-3xl" />
-      </div>
+    <div className="min-h-screen bg-black">
+      {demoPetition.banner_url ? (
+        <div 
+          className="fixed inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${demoPetition.banner_url})` }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-black/90" />
+        </div>
+      ) : (
+        <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/15 rounded-full blur-3xl" />
+        </div>
+      )}
 
       <div className="relative z-10">
         <div className="max-w-7xl mx-auto px-4 py-6">
@@ -60,6 +69,24 @@ export default function PetitionDemo() {
 
         <div className="max-w-7xl mx-auto px-4 pb-20">
           <div className="text-center mb-12">
+            {demoPetition.logo_url && (
+              <div className="flex justify-center mb-6">
+                <div className="relative group">
+                  <div 
+                    className="absolute -inset-3 rounded-2xl blur-xl opacity-40"
+                    style={{ backgroundColor: primaryColor }}
+                  />
+                  <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden shadow-2xl border-4 border-white/30">
+                    <img
+                      src={demoPetition.logo_url}
+                      alt={demoPetition.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+            
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
               {demoPetition.title}
             </h1>
