@@ -15,11 +15,8 @@ const PetitionLanding = lazy(() => import("./PetitionLanding"));
 const LinkTreePages = lazy(() => import("./LinkTreePages"));
 const LinkTreeView = lazy(() => import("./LinkTreeView"));
 const WhatsAppSender = lazy(() => import("./WhatsAppSender"));
-const EmailSender = lazy(() => import("./EmailSender"));
 const WhatsAppCampaigns = lazy(() => import("./WhatsAppCampaigns"));
 const CreateWhatsAppCampaign = lazy(() => import("./CreateWhatsAppCampaign"));
-const EmailCampaigns = lazy(() => import("./EmailCampaigns"));
-const CreateEmailCampaign = lazy(() => import("./CreateEmailCampaign"));
 const MessageTemplates = lazy(() => import("./MessageTemplates"));
 const ImportSignatures = lazy(() => import("./ImportSignatures"));
 const LinkBioPages = lazy(() => import("./LinkBioPages"));
@@ -38,11 +35,8 @@ const PAGES = {
   LinkTreePages,
   LinkTreeView,
   WhatsAppSender,
-  EmailSender,
   WhatsAppCampaigns,
   CreateWhatsAppCampaign,
-  EmailCampaigns,
-  CreateEmailCampaign,
   MessageTemplates,
   ImportSignatures,
   LinkBioPages,
@@ -90,11 +84,8 @@ function PagesContent() {
           <Route path="/linktreepages" element={<PrivateRoute><LinkTreePages /></PrivateRoute>} />
           <Route path="/linktreeview" element={<PrivateRoute><LinkTreeView /></PrivateRoute>} />
           <Route path="/whatsappsender" element={<PrivateRoute><WhatsAppSender /></PrivateRoute>} />
-          <Route path="/emailsender" element={<PrivateRoute><EmailSender /></PrivateRoute>} />
           <Route path="/whatsappcampaigns" element={<PrivateRoute><WhatsAppCampaigns /></PrivateRoute>} />
           <Route path="/createwhatsappcampaign" element={<PrivateRoute><CreateWhatsAppCampaign /></PrivateRoute>} />
-          <Route path="/emailcampaigns" element={<PrivateRoute><EmailCampaigns /></PrivateRoute>} />
-          <Route path="/createemailcampaign" element={<PrivateRoute><CreateEmailCampaign /></PrivateRoute>} />
           <Route path="/messagetemplates" element={<PrivateRoute><MessageTemplates /></PrivateRoute>} />
           <Route path="/importsignatures" element={<PrivateRoute><ImportSignatures /></PrivateRoute>} />
           <Route path="/linkbiopages" element={<PrivateRoute><LinkBioPages /></PrivateRoute>} />
@@ -111,11 +102,8 @@ function PagesContent() {
           <Route path="/LinkTreePages" element={<Navigate to="/linktreepages" replace />} />
           <Route path="/LinkTreeView" element={<Navigate to="/linktreeview" replace />} />
           <Route path="/WhatsAppSender" element={<Navigate to="/whatsappsender" replace />} />
-          <Route path="/EmailSender" element={<Navigate to="/emailsender" replace />} />
           <Route path="/WhatsAppCampaigns" element={<Navigate to="/whatsappcampaigns" replace />} />
           <Route path="/CreateWhatsAppCampaign" element={<Navigate to="/createwhatsappcampaign" replace />} />
-          <Route path="/EmailCampaigns" element={<Navigate to="/emailcampaigns" replace />} />
-          <Route path="/CreateEmailCampaign" element={<Navigate to="/createemailcampaign" replace />} />
           <Route path="/MessageTemplates" element={<Navigate to="/messagetemplates" replace />} />
           <Route path="/ImportSignatures" element={<Navigate to="/importsignatures" replace />} />
           <Route path="/LinkBioPages" element={<Navigate to="/linkbiopages" replace />} />

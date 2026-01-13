@@ -379,13 +379,13 @@ function HeroSection() {
           </RevealOnScroll>
 
           <RevealOnScroll direction="up" delay={0.2}>
-            <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-600 mb-12 leading-relaxed">
+            <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-600 leading-relaxed">
               Crie petições, colete assinaturas digitais, envie campanhas de WhatsApp 
               e construa páginas personalizadas para amplificar sua voz.
             </p>
           </RevealOnScroll>
 
-          <RevealOnScroll direction="scale" delay={0.3}>
+          <RevealOnScroll direction="scale" delay={0.3} className="mt-10">
             <Link to="/login">
               <motion.div
                 whileHover={{ scale: 1.05, y: -3 }}

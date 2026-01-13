@@ -11,7 +11,6 @@ import {
   Menu,
   X,
   MessageCircle,
-  Mail,
   ChevronLeft,
   ChevronRight,
   LogOut,
@@ -44,11 +43,6 @@ const navigationItems = [
     title: "Campanhas WhatsApp",
     url: createPageUrl("WhatsAppCampaigns"),
     icon: MessageCircle,
-  },
-  {
-    title: "Campanhas Email",
-    url: createPageUrl("EmailCampaigns"),
-    icon: Mail,
   },
   {
     title: "Painel Admin",
