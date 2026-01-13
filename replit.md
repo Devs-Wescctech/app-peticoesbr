@@ -1,7 +1,7 @@
 # Petições - Full-Stack Application
 
 ## Overview
-This full-stack petition management system enables users to create and manage petitions, run email and WhatsApp campaigns, and build personalized link bio/link tree pages. It offers a comprehensive, self-hosted solution for grassroots organizing and digital advocacy, including features for signature collection, communication, and online presence management, with a vision to empower digital advocacy.
+This full-stack petition management system enables users to create and manage petitions, run WhatsApp campaigns, and build personalized link bio/link tree pages. It offers a comprehensive, self-hosted solution for grassroots organizing and digital advocacy, including features for signature collection, communication, and online presence management, with a vision to empower digital advocacy.
 
 ## User Preferences
 - Prefer custom backend over third-party services for better control
@@ -25,7 +25,7 @@ The frontend uses Radix UI for accessible components, styled with TailwindCSS fo
 - **Super Admin System**: A dedicated super administrator with system-wide privileges can manage all tenants and users. This includes an AdminDashboard with real-time statistics, tenant management (activate/suspend/delete), and user overview.
 - **Authentication & Route Protection**: JWT-based authentication with refresh token rotation is implemented, supporting email/password and ready for Google OAuth. JWTs include `tenantId` and `isSuperAdmin` flags. All private routes are protected, redirecting unauthenticated users to a dedicated login page.
 - **Petition Management**: CRUD operations for petitions, including goal tracking, slug generation, and signature collection, are tenant-scoped.
-- **Campaign Tools**: Creation and management of Email and WhatsApp campaigns with tenant scoping, real-time progress updates, and message templates.
+- **Campaign Tools**: Creation and management of WhatsApp campaigns with tenant scoping, real-time progress updates, and message templates.
 - **Link Pages**: Builders for "Link Bio" and "Link Tree" pages with custom slugs, all tenant-isolated.
 - **Signature Management**: Functionality for importing and managing petition signatures with tenant validation.
 - **File Uploads**: Local storage for petition banners and logos.
