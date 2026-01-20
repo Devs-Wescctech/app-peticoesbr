@@ -192,10 +192,10 @@ export default function LinkTreePages() {
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-10">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
-              <h1 className="text-3xl md:text-5xl font-black text-white mb-2 tracking-tight">
+              <h1 className="text-3xl md:text-4xl font-black text-white mb-1 tracking-tight">
                 Páginas Linktree
               </h1>
-              <p className="text-lg text-white/90">
+              <p className="text-sm md:text-base text-white/90">
                 Agrupe suas petições em páginas personalizadas
               </p>
             </div>
