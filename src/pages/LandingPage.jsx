@@ -381,7 +381,7 @@ function HeroSection() {
           </RevealOnScroll>
 
           <RevealOnScroll direction="up" delay={0.2}>
-            <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-600 leading-relaxed mb-10">
+            <p className="max-w-2xl mx-auto text-lg sm:text-xl text-white/90 leading-relaxed mb-10">
               Crie petições, colete assinaturas digitais, envie campanhas de WhatsApp 
               e construa páginas personalizadas para amplificar sua voz.
             </p>
