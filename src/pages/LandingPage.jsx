@@ -392,7 +392,8 @@ function HeroSection() {
               {["Plataforma completa", "Configuração em minutos", "Suporte humanizado"].map((text, i) => (
                 <motion.div
                   key={i}
-                  className="flex items-center gap-2 bg-transparent px-4 py-2 rounded-full border border-white/50"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/50"
+                  style={{ background: 'none', backgroundColor: 'transparent' }}
                   whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.8)" }}
                 >
                   <Check className="w-4 h-4 text-white" />
