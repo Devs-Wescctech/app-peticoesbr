@@ -486,12 +486,6 @@ function DashboardPreview() {
             <motion.div whileHover={{ scale: 1.2 }} className="w-3 h-3 rounded-full bg-yellow-400 cursor-pointer" />
             <motion.div whileHover={{ scale: 1.2 }} className="w-3 h-3 rounded-full bg-green-400 cursor-pointer" />
           </div>
-          <div className="flex-1 flex justify-center">
-            <div className="bg-white rounded-lg px-4 py-1.5 text-sm text-gray-500 border border-gray-200 flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-green-400" />
-              peticoesbr.com.br/dashboard
-            </div>
-          </div>
         </div>
         
         <div className="flex">
