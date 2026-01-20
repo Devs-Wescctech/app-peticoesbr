@@ -388,22 +388,6 @@ function HeroSection() {
           </RevealOnScroll>
 
           <RevealOnScroll direction="up" delay={0.3}>
-            <div className="relative z-10">
-              <Link to="/login">
-                <motion.div
-                  whileHover={{ scale: 1.05, y: -3 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Button size="lg" className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 font-bold text-lg px-10 py-7 rounded-2xl transition-all duration-300">
-                    Começar Agora
-                    <Rocket className="w-5 h-5 ml-3" />
-                  </Button>
-                </motion.div>
-              </Link>
-            </div>
-          </RevealOnScroll>
-
-          <RevealOnScroll direction="up" delay={0.4}>
             <div className="flex flex-wrap items-center justify-center gap-6 mt-12 text-sm text-gray-500">
               {["Plataforma completa", "Configuração em minutos", "Suporte humanizado"].map((text, i) => (
                 <motion.div
