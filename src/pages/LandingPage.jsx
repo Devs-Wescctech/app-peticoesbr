@@ -233,9 +233,9 @@ function Header() {
 
           <Link to="/login">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button className="bg-white text-indigo-600 hover:bg-gray-100 font-semibold px-6 rounded-full transition-all duration-300">
+              <Button className="bg-white !text-indigo-600 hover:bg-gray-100 font-semibold px-6 rounded-full transition-all duration-300">
                 Acessar Plataforma
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="w-4 h-4 ml-2 text-indigo-600" />
               </Button>
             </motion.div>
           </Link>
