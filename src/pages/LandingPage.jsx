@@ -370,7 +370,7 @@ function HeroSection() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-8">
               Transforme suas causas em
               <motion.span
-                className="block mt-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
+                className="block mt-2 text-white"
                 animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
                 style={{ backgroundSize: "200% 200%" }}
