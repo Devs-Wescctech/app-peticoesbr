@@ -63,9 +63,13 @@ router.post('/', async (req, res) => {
       return res.json({ success: true, message: 'Mensagem enviada com sucesso' });
     } else {
       console.error('WesccTech API error:', data);
+      let errorMessage = data.error || data.message || 'Erro ao enviar mensagem';
+      if (data.details && data.details.length > 0) {
+        errorMessage = data.details.map(d => d.message).join(', ');
+      }
       return res.status(response.status || 500).json({ 
         success: false, 
-        error: data.error || data.message || 'Erro ao enviar mensagem' 
+        error: errorMessage 
       });
     }
   } catch (error) {

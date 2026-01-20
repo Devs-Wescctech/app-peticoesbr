@@ -1354,8 +1354,9 @@ function CTASection() {
                   </div>
                   <div>
                     <textarea
-                      placeholder="Sua mensagem"
+                      placeholder="Sua mensagem (mínimo 10 caracteres)"
                       required
+                      minLength={10}
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
