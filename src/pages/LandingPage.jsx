@@ -962,32 +962,32 @@ function FeaturesSection() {
   const [selectedFeature, setSelectedFeature] = useState(null);
   
   return (
-    <section id="recursos" className="py-24 md:py-32 bg-white relative overflow-hidden">
+    <section id="recursos" className="py-24 md:py-32 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 relative overflow-hidden">
       <ParallaxLayer speed={0.1} className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-gray-50 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-gray-50 to-transparent" />
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-indigo-700/50 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-pink-600/50 to-transparent" />
       </ParallaxLayer>
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 md:mb-20">
           <RevealOnScroll direction="up">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100 mb-6">
-              <Zap className="w-4 h-4 text-indigo-600" />
-              <span className="text-sm font-semibold text-indigo-700">Recursos Poderosos</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 border border-white/30 mb-6">
+              <Zap className="w-4 h-4 text-white" />
+              <span className="text-sm font-semibold text-white">Recursos Poderosos</span>
             </div>
           </RevealOnScroll>
           
           <RevealOnScroll direction="up" delay={0.1}>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6">
               Tudo para sua
-              <span className="block bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="block text-white/90">
                 mobilização digital
               </span>
             </h2>
           </RevealOnScroll>
           
           <RevealOnScroll direction="up" delay={0.2}>
-            <p className="max-w-2xl mx-auto text-lg text-gray-600">
+            <p className="max-w-2xl mx-auto text-lg text-white/80">
               Ferramentas profissionais para criar, gerenciar e amplificar movimentos sociais.
             </p>
           </RevealOnScroll>
@@ -1292,7 +1292,7 @@ function CTASection() {
 
 function Footer() {
   return (
-    <footer className="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-gray-300 py-16 md:py-20">
+    <footer className="bg-gray-900 text-gray-400 py-16 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           <div className="lg:col-span-2">
