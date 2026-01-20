@@ -1159,26 +1159,23 @@ function MetricCard({ metric, index }) {
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      whileHover={{ y: -10 }}
+      whileHover={{ y: -10, scale: 1.02 }}
       className="relative group"
     >
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-500"
-      />
-      <div className="relative bg-gradient-to-br from-gray-50 to-white rounded-3xl p-8 border border-gray-100 shadow-sm group-hover:bg-transparent group-hover:border-transparent transition-all duration-500 text-center h-full">
+      <div className="relative bg-gradient-to-br from-gray-50 to-white rounded-3xl p-8 border border-gray-100 shadow-sm group-hover:shadow-xl group-hover:border-indigo-200 transition-all duration-500 text-center h-full group-hover:bg-gradient-to-br group-hover:from-indigo-50 group-hover:to-purple-50">
         <motion.div
           whileHover={{ scale: 1.1, rotate: 10 }}
-          className="w-14 h-14 rounded-2xl bg-gradient-to-r from-indigo-500/10 to-purple-500/10 group-hover:bg-white/20 flex items-center justify-center mx-auto mb-4 transition-colors duration-500"
+          className="w-14 h-14 rounded-2xl bg-gradient-to-r from-indigo-500/10 to-purple-500/10 group-hover:from-indigo-500/20 group-hover:to-purple-500/20 flex items-center justify-center mx-auto mb-4 transition-colors duration-500"
         >
-          <metric.icon className="w-7 h-7 text-indigo-600 group-hover:text-white transition-colors duration-500" />
+          <metric.icon className="w-7 h-7 text-indigo-600 transition-colors duration-500" />
         </motion.div>
-        <motion.div className="text-4xl md:text-5xl font-extrabold text-gray-900 group-hover:text-white mb-2 transition-colors duration-500">
+        <motion.div className="text-4xl md:text-5xl font-extrabold text-gray-900 group-hover:text-indigo-700 mb-2 transition-colors duration-500">
           {count}
         </motion.div>
-        <div className="text-lg font-semibold text-gray-700 group-hover:text-white/90 mb-1 transition-colors duration-500">
+        <div className="text-lg font-semibold text-gray-700 group-hover:text-indigo-600 mb-1 transition-colors duration-500">
           {metric.label}
         </div>
-        <div className="text-sm text-gray-500 group-hover:text-white/70 transition-colors duration-500">
+        <div className="text-sm text-gray-500 group-hover:text-purple-600 transition-colors duration-500">
           {metric.description}
         </div>
       </div>
