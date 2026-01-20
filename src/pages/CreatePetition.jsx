@@ -221,24 +221,13 @@ export default function CreatePetition() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
 
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-10">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-black text-white mb-1 tracking-tight">
-                {editingId ? 'Editar Petição' : 'Criar Nova Petição'}
-              </h1>
-              <p className="text-sm md:text-base text-white/90">
-                {editingId ? 'Atualize os dados e veja as alterações em tempo real' : 'Preencha os dados e veja o preview em tempo real'}
-              </p>
-            </div>
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={() => navigate(createPageUrl("Dashboard"))}
-              className="bg-white text-indigo-600 hover:bg-white/90 shadow-2xl hover:shadow-white/20 transition-all duration-300 hover:scale-105 font-semibold"
-            >
-              <ArrowLeft className="w-5 h-5 mr-2" />
-              Voltar
-            </Button>
+          <div>
+            <h1 className="text-3xl md:text-4xl font-black text-white mb-1 tracking-tight">
+              {editingId ? 'Editar Petição' : 'Criar Nova Petição'}
+            </h1>
+            <p className="text-sm md:text-base text-white/90">
+              {editingId ? 'Atualize os dados e veja as alterações em tempo real' : 'Preencha os dados e veja o preview em tempo real'}
+            </p>
           </div>
         </div>
       </div>

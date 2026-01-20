@@ -199,15 +199,6 @@ export default function PetitionDetails() {
                 <Trash2 className="w-5 h-5 mr-2" />
                 Excluir
               </Button>
-              <Button
-                variant="secondary"
-                size="lg"
-                onClick={() => navigate(createPageUrl("PetitionsList"))}
-                className="bg-white text-indigo-600 hover:bg-white/90 shadow-2xl font-semibold"
-              >
-                <ArrowLeft className="w-5 h-5 mr-2" />
-                Voltar
-              </Button>
             </div>
           </div>
         </div>
