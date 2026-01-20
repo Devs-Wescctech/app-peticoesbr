@@ -408,13 +408,6 @@ function DashboardShowcase() {
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <RevealOnScroll direction="up">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-200/50 mb-6">
-              <Eye className="w-4 h-4 text-indigo-600" />
-              <span className="text-sm font-semibold text-indigo-700">Conheça a Plataforma</span>
-            </div>
-          </RevealOnScroll>
-          
           <RevealOnScroll direction="up" delay={0.1}>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
               Um painel completo
