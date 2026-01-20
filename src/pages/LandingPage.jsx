@@ -1005,9 +1005,9 @@ function FeaturesSection() {
                 <div className="relative bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:border-indigo-100 transition-all duration-500 h-full flex flex-col">
                   <motion.div
                     whileHover={{ scale: 1.1, rotate: 5 }}
-                    className={`w-14 h-14 rounded-2xl bg-gradient-to-r ${feature.color} flex items-center justify-center mb-6 shadow-lg`}
+                    className="w-14 h-14 flex items-center justify-center mb-6"
                   >
-                    <feature.icon className="w-7 h-7 text-white" />
+                    <feature.icon className="w-10 h-10 text-indigo-600" />
                   </motion.div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
                   <p className="text-gray-600 leading-relaxed flex-1">{feature.description}</p>
