@@ -132,7 +132,7 @@ export default function Layout({ children, currentPageName }) {
         <div className="p-6 border-b border-gray-100">
           <div className="flex items-center justify-center">
             <img 
-              src="/attached_assets/Design_sem_nome_(7)_1768923086680.png" 
+              src="/attached_assets/Design_sem_nome_(8)_1768932018811.png" 
               alt="PetiçõesBR" 
               className={`${sidebarCollapsed ? 'h-10' : 'h-12'} w-auto transition-all duration-300`}
             />
@@ -202,7 +202,7 @@ export default function Layout({ children, currentPageName }) {
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center">
             <img 
-              src="/attached_assets/Design_sem_nome_(7)_1768923086680.png" 
+              src="/attached_assets/Design_sem_nome_(8)_1768932018811.png" 
               alt="PetiçõesBR" 
               className="h-10 w-auto"
             />
