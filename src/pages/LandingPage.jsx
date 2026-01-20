@@ -497,13 +497,11 @@ function DashboardPreview() {
         <div className="flex">
           <div className="hidden md:flex w-64 bg-gradient-to-b from-gray-50 to-white border-r border-gray-100 flex-col p-4">
             <div className="flex items-center gap-3 mb-8 p-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center">
-                <FileSignature className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <div className="font-bold text-gray-900 text-sm">PetiçõesBR</div>
-                <div className="text-xs text-gray-500">Dashboard</div>
-              </div>
+              <img 
+                src="/attached_assets/Design_sem_nome_(8)_1768926127108.png" 
+                alt="PetiçõesBR" 
+                className="h-10 w-auto"
+              />
             </div>
             
             <nav className="space-y-1">
