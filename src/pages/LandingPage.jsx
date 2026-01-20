@@ -1126,17 +1126,7 @@ function HowItWorksSection() {
           </div>
         </div>
 
-        <RevealOnScroll direction="up" delay={0.6} className="text-center mt-16">
-          <Link to="/login">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
-              <Button size="lg" className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-xl shadow-purple-500/25 font-bold text-lg px-10 py-7 rounded-2xl">
-                Começar Agora
-                <ArrowRight className="w-5 h-5 ml-3" />
-              </Button>
-            </motion.div>
-          </Link>
-        </RevealOnScroll>
-      </div>
+              </div>
     </section>
   );
 }
