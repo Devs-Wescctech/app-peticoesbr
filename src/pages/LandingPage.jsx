@@ -913,14 +913,14 @@ function FeatureModal({ feature, isOpen, onClose }) {
                 </ul>
               </div>
               
-              <Link to="/login" className="block">
+              <a href="#contato" className="block">
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <Button className={`w-full bg-gradient-to-r ${feature.color} text-white shadow-lg hover:shadow-xl transition-all py-6 text-lg font-semibold`}>
                     Começar a usar
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </motion.div>
-              </Link>
+              </a>
             </motion.div>
             
             <motion.div 
@@ -1267,7 +1267,7 @@ function CTASection() {
   };
 
   return (
-    <section ref={ref} className="py-24 md:py-32 relative overflow-hidden">
+    <section ref={ref} id="contato" className="py-24 md:py-32 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600" />
       
       <motion.div style={{ y }} className="absolute inset-0 overflow-hidden">
