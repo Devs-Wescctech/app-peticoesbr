@@ -500,7 +500,7 @@ function DashboardPreview() {
               <img 
                 src="/attached_assets/Design_sem_nome_(8)_1768926127108.png" 
                 alt="PetiçõesBR" 
-                className="h-10 w-auto"
+                className="h-20 w-auto"
               />
             </div>
             
