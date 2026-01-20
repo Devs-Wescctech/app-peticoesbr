@@ -1532,7 +1532,7 @@ function Footer() {
               rel="noopener noreferrer"
               className="inline-flex items-center hover:opacity-80 transition-opacity"
             >
-              <img src="/attached_assets/image_1768930971152.png" alt="WesccTech" className="h-5 inline-block" />
+              <img src="/attached_assets/image_1768930971152.png" alt="WesccTech" className="h-8 inline-block" />
             </a>
           </p>
           <div className="flex gap-6 text-sm">
