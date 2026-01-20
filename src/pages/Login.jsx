@@ -60,7 +60,7 @@ export default function Login() {
               <img 
                 src="/attached_assets/Design_sem_nome_(7)_1768923086680.png" 
                 alt="PetiçõesBR - Sistema de Gestão de Petições" 
-                className="h-48 lg:h-56 xl:h-64 w-auto"
+                className="h-32 lg:h-40 xl:h-48 w-auto"
               />
             </div>
 
