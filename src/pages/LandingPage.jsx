@@ -840,8 +840,9 @@ function FeatureModal({ feature, isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto p-0 border-0 shadow-2xl">
-        <div className={`relative bg-gradient-to-br ${feature.color} p-8 text-white overflow-hidden`}>
+      <DialogContent className="max-w-5xl max-h-[90vh] p-0 border-0 shadow-2xl flex flex-col overflow-hidden">
+        {/* Fixed Header */}
+        <div className={`relative bg-gradient-to-br ${feature.color} p-8 text-white overflow-hidden flex-shrink-0`}>
           <div className="absolute inset-0 bg-black/10" />
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
@@ -870,7 +871,8 @@ function FeatureModal({ feature, isOpen, onClose }) {
           </DialogHeader>
         </div>
         
-        <div className="p-8 bg-gradient-to-b from-gray-50 to-white">
+        {/* Scrollable Content */}
+        <div className="p-8 bg-gradient-to-b from-gray-50 to-white flex-1 overflow-y-auto">
           <div className="grid lg:grid-cols-5 gap-8">
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
@@ -912,23 +914,6 @@ function FeatureModal({ feature, isOpen, onClose }) {
                   ))}
                 </ul>
               </div>
-              
-              <motion.div 
-                whileHover={{ scale: 1.02 }} 
-                whileTap={{ scale: 0.98 }}
-                onClick={() => {
-                  onClose();
-                  setTimeout(() => {
-                    document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
-                  }, 100);
-                }}
-                className="cursor-pointer"
-              >
-                <Button className={`w-full bg-gradient-to-r ${feature.color} text-white shadow-lg hover:shadow-xl transition-all py-6 text-lg font-semibold`}>
-                  Começar a usar
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-              </motion.div>
             </motion.div>
             
             <motion.div 
@@ -937,7 +922,7 @@ function FeatureModal({ feature, isOpen, onClose }) {
               transition={{ delay: 0.3 }}
               className="lg:col-span-3"
             >
-              <div className="sticky top-4">
+              <div>
                 <div className="flex items-center gap-2 mb-4">
                   <div className={`w-8 h-8 rounded-lg bg-gradient-to-r ${feature.color} flex items-center justify-center`}>
                     <Eye className="w-4 h-4 text-white" />
@@ -950,6 +935,36 @@ function FeatureModal({ feature, isOpen, onClose }) {
                   </div>
                 </div>
               </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Fixed Footer */}
+        <div className="flex-shrink-0 bg-white border-t border-gray-200 p-4">
+          <div className="flex gap-4">
+            <Button 
+              variant="outline" 
+              onClick={onClose}
+              className="flex-1 py-6 text-lg font-semibold border-2 border-gray-300 hover:bg-gray-100"
+            >
+              <X className="w-5 h-5 mr-2" />
+              Fechar
+            </Button>
+            <motion.div 
+              whileHover={{ scale: 1.02 }} 
+              whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                onClose();
+                setTimeout(() => {
+                  document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }}
+              className="cursor-pointer flex-1"
+            >
+              <Button className={`w-full bg-gradient-to-r ${feature.color} text-white shadow-lg hover:shadow-xl transition-all py-6 text-lg font-semibold`}>
+                Começar a usar
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
             </motion.div>
           </div>
         </div>
