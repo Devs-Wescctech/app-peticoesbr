@@ -855,7 +855,7 @@ function FeatureModal({ feature, isOpen, onClose }) {
                 transition={{ type: "spring", duration: 0.6 }}
                 className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg border border-white/20 overflow-hidden"
               >
-                <img src="/attached_assets/Design_sem_nome_(9)_1768930562667.png" alt="Logo" className="w-20 h-20 object-contain" />
+                <img src="/attached_assets/Design_sem_nome_(9)_1768930562667.png" alt="Logo" className="w-28 h-28 object-contain" />
               </motion.div>
               <div className="flex-1">
                 <motion.div
