@@ -134,7 +134,7 @@ export default function Layout({ children, currentPageName }) {
             <img 
               src="/attached_assets/Design_sem_nome_(8)_1768932018811.png" 
               alt="PetiçõesBR" 
-              className={`${sidebarCollapsed ? 'h-10' : 'h-12'} w-auto transition-all duration-300`}
+              className={`${sidebarCollapsed ? 'h-12' : 'h-20'} w-auto transition-all duration-300`}
             />
           </div>
         </div>
