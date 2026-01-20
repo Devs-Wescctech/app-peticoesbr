@@ -1209,7 +1209,7 @@ function MetricsSection() {
           <RevealOnScroll direction="up" delay={0.1}>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
               Números que
-              <span className="block bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                 inspiram confiança
               </span>
             </h2>
