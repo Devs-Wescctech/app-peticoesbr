@@ -1228,12 +1228,23 @@ function MetricsSection() {
 
 function CTASection() {
   const ref = useRef(null);
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
   });
 
   const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setSubmitted(true);
+    setIsSubmitting(false);
+  };
 
   return (
     <section ref={ref} className="py-24 md:py-32 relative overflow-hidden">
@@ -1251,40 +1262,101 @@ function CTASection() {
         <div className="absolute bottom-1/3 right-1/3 w-3 h-3 bg-white/15 rounded-full" />
       </FloatingElement>
       
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <RevealOnScroll direction="up">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm mb-8">
-            <Clock className="w-4 h-4 text-white" />
-            <span className="text-sm font-semibold text-white">Comece em menos de 5 minutos</span>
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="text-center lg:text-left">
+            <RevealOnScroll direction="up">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm mb-8">
+                <Clock className="w-4 h-4 text-white" />
+                <span className="text-sm font-semibold text-white">Comece em menos de 5 minutos</span>
+              </div>
+            </RevealOnScroll>
+            
+            <RevealOnScroll direction="up" delay={0.1}>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Pronto para transformar
+                <span className="block">sua mobilização digital?</span>
+              </h2>
+            </RevealOnScroll>
+            
+            <RevealOnScroll direction="up" delay={0.2}>
+              <p className="text-xl text-white/80 mb-8 max-w-lg">
+                Junte-se a organizações e ativistas que já amplificam sua voz com o PetiçõesBR.
+              </p>
+            </RevealOnScroll>
           </div>
-        </RevealOnScroll>
-        
-        <RevealOnScroll direction="up" delay={0.1}>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight">
-            Pronto para transformar
-            <span className="block">sua mobilização digital?</span>
-          </h2>
-        </RevealOnScroll>
-        
-        <RevealOnScroll direction="up" delay={0.2}>
-          <p className="text-xl text-white/80 mb-12 max-w-2xl mx-auto">
-            Junte-se a organizações e ativistas que já amplificam sua voz com o PetiçõesBR.
-          </p>
-        </RevealOnScroll>
-        
-        <RevealOnScroll direction="scale" delay={0.3}>
-          <Link to="/login">
+
+          <RevealOnScroll direction="up" delay={0.3}>
             <motion.div
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20"
             >
-              <Button size="lg" className="bg-white text-indigo-600 hover:bg-gray-100 font-bold text-lg px-12 py-7 rounded-2xl shadow-2xl">
-                Acessar Plataforma
-                <ArrowRight className="w-5 h-5 ml-3" />
-              </Button>
+              {submitted ? (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Check className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-2">Mensagem enviada!</h3>
+                  <p className="text-white/80">Entraremos em contato em breve.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <h3 className="text-xl font-bold text-white mb-4">Entre em contato</h3>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Seu nome"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      placeholder="Seu email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="tel"
+                      placeholder="Seu telefone"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <textarea
+                      placeholder="Sua mensagem"
+                      required
+                      rows={4}
+                      value={formData.message}
+                      onChange={(e) => setFormData({...formData, message: e.target.value})}
+                      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-colors resize-none"
+                    />
+                  </div>
+                  <motion.button
+                    type="submit"
+                    disabled={isSubmitting}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full bg-white text-indigo-600 font-bold py-4 rounded-xl hover:bg-gray-100 transition-colors disabled:opacity-70"
+                  >
+                    {isSubmitting ? 'Enviando...' : 'Enviar mensagem'}
+                  </motion.button>
+                </form>
+              )}
             </motion.div>
-          </Link>
-        </RevealOnScroll>
+          </RevealOnScroll>
+        </div>
       </div>
     </section>
   );
