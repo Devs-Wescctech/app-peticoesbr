@@ -853,9 +853,9 @@ function FeatureModal({ feature, isOpen, onClose }) {
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ type: "spring", duration: 0.6 }}
-                className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg border border-white/20"
+                className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg border border-white/20 overflow-hidden"
               >
-                <feature.icon className="w-8 h-8" />
+                <img src="/attached_assets/Design_sem_nome_(9)_1768930562667.png" alt="Logo" className="w-12 h-12 object-contain" />
               </motion.div>
               <div className="flex-1">
                 <motion.div
