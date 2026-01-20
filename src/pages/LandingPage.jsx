@@ -1201,13 +1201,14 @@ function MetricsSection() {
     offset: ["start end", "end start"]
   });
 
-  const bgY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const bgY = useTransform(scrollYProgress, [0, 1], [-150, 150]);
+  const bgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1.15, 1.1]);
 
   return (
     <section ref={ref} id="numeros" className="py-24 md:py-32 relative overflow-hidden">
       <motion.div 
-        className="absolute inset-0 w-full h-[120%] -top-[10%]"
-        style={{ y: bgY }}
+        className="absolute inset-0 w-full h-[150%] -top-[25%]"
+        style={{ y: bgY, scale: bgScale }}
       >
         <img 
           src="/attached_assets/12188676_4890914_1768925874823.jpg" 
