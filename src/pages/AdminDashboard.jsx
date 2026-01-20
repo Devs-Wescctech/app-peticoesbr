@@ -605,7 +605,7 @@ export default function AdminDashboard() {
                     <Badge className="bg-emerald-500 text-white shadow-md px-4 py-1.5">Online</Badge>
                   </div>
                   <p className="text-gray-600 text-sm leading-relaxed bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    ✨ Todos os serviços estão funcionando normalmente. Multi-tenancy ativo com isolamento completo de dados.
+                    Todos os serviços estão funcionando normalmente. Multi-tenancy ativo com isolamento completo de dados.
                   </p>
                 </div>
               </CardContent>
