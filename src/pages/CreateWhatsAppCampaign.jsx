@@ -450,7 +450,7 @@ export default function CreateWhatsAppCampaign() {
         <div className="absolute inset-0 bg-grid-white/10" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
 
-        <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-12">
+        <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-10">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
               <h1 className="text-3xl md:text-5xl font-black text-white mb-2 tracking-tight">
