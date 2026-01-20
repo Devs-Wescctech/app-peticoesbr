@@ -1219,13 +1219,6 @@ function MetricsSection() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 md:mb-20">
           <RevealOnScroll direction="up">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-100 mb-6">
-              <TrendingUp className="w-4 h-4 text-emerald-600" />
-              <span className="text-sm font-semibold text-emerald-700">Resultados Comprovados</span>
-            </div>
-          </RevealOnScroll>
-          
-          <RevealOnScroll direction="up" delay={0.1}>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
               Números que
               <span className="block bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
