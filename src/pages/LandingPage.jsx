@@ -303,26 +303,6 @@ function HeroSection() {
           />
         </ParallaxLayer>
         
-        <motion.div
-          animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[15%] left-[8%] w-16 h-16 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-2xl backdrop-blur-sm border border-indigo-200/30"
-        />
-        <motion.div
-          animate={{ y: [0, 15, 0], rotate: [0, -5, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute top-[25%] right-[12%] w-12 h-12 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl backdrop-blur-sm border border-purple-200/30"
-        />
-        <motion.div
-          animate={{ y: [0, -10, 0], rotate: [0, 15, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute bottom-[30%] left-[15%] w-10 h-10 bg-gradient-to-br from-pink-500/20 to-indigo-500/20 rounded-lg backdrop-blur-sm border border-pink-200/30"
-        />
-        <motion.div
-          animate={{ y: [0, 12, 0], rotate: [0, -10, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-          className="absolute bottom-[25%] right-[10%] w-14 h-14 bg-gradient-to-br from-indigo-500/15 to-purple-500/15 rounded-2xl backdrop-blur-sm border border-indigo-200/20"
-        />
         
         <FloatingElement duration={4} distance={20}>
           <div className="absolute top-1/4 left-1/4 w-4 h-4 bg-indigo-400/60 rounded-full blur-sm" />
