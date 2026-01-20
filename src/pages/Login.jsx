@@ -56,15 +56,11 @@ export default function Login() {
 
         <div className="relative z-10 flex flex-col justify-center px-16 text-white">
           <div className="mb-8 animate-fade-in">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-xl flex items-center justify-center border border-white/30 shadow-2xl">
-                <TrendingUp className="w-10 h-10 text-white" />
-              </div>
-              <div>
-                <h1 className="text-5xl font-bold">PetiçõesBR</h1>
-                <p className="text-indigo-100 text-base mt-1">Sistema de Gestão de Petições</p>
-              </div>
-            </div>
+            <img 
+              src="/attached_assets/Design_sem_nome_(7)_1768923086680.png" 
+              alt="PetiçõesBR - Sistema de Gestão de Petições" 
+              className="h-24 w-auto mb-8"
+            />
           </div>
 
           <div className="space-y-8 animate-slide-up">
@@ -102,11 +98,11 @@ export default function Login() {
       <div className="flex-1 flex items-center justify-center p-8 bg-gray-50">
         <div className="w-full max-w-md animate-fade-in">
           <div className="lg:hidden mb-8 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 mb-4 shadow-lg">
-              <TrendingUp className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-2xl font-bold text-gray-900">PetiçõesBR</h1>
-            <p className="text-gray-600 text-sm">Sistema de Gestão de Petições</p>
+            <img 
+              src="/attached_assets/Design_sem_nome_(8)_1768922683736.png" 
+              alt="PetiçõesBR" 
+              className="h-16 w-auto mx-auto"
+            />
           </div>
 
           <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)' }}>
