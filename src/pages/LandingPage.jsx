@@ -194,14 +194,7 @@ function Header() {
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <motion.div
-        className="absolute inset-0 border-b transition-all duration-300"
-        style={{
-          backgroundColor: scrolled ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.7)",
-          backdropFilter: "blur(20px)",
-          borderColor: scrolled ? "rgba(0,0,0,0.1)" : "transparent",
-        }}
-      />
+      <div className="absolute inset-0 bg-indigo-600" />
       <nav className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link to="/" className="flex items-center group">
@@ -210,9 +203,9 @@ function Header() {
               whileTap={{ scale: 0.95 }}
             >
               <img 
-                src="/attached_assets/Design_sem_nome_(8)_1768922683736.png" 
+                src="/attached_assets/Design_sem_nome_(7)_1768923086680.png" 
                 alt="PetiçõesBR - Mobilização Digital" 
-                className="h-20 w-auto"
+                className="h-16 w-auto"
               />
             </motion.div>
           </Link>
@@ -222,7 +215,7 @@ function Header() {
               <motion.a
                 key={item}
                 href={`#${item}`}
-                className="text-gray-600 hover:text-indigo-600 font-medium transition-colors relative"
+                className="text-white/90 hover:text-white font-medium transition-colors relative"
                 whileHover={{ y: -2 }}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -230,7 +223,7 @@ function Header() {
               >
                 {item === "recursos" ? "Recursos" : item === "como-funciona" ? "Como Funciona" : "Resultados"}
                 <motion.span
-                  className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500"
+                  className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white"
                   whileHover={{ width: "100%" }}
                   transition={{ duration: 0.3 }}
                 />
@@ -240,7 +233,7 @@ function Header() {
 
           <Link to="/login">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 font-semibold px-6 transition-all duration-300">
+              <Button className="bg-white text-indigo-600 hover:bg-gray-100 font-semibold px-6 transition-all duration-300">
                 Acessar Plataforma
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
