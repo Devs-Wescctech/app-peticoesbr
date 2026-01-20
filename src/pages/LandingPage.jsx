@@ -913,14 +913,17 @@ function FeatureModal({ feature, isOpen, onClose }) {
                 </ul>
               </div>
               
-              <a href="#contato" className="block">
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                  <Button className={`w-full bg-gradient-to-r ${feature.color} text-white shadow-lg hover:shadow-xl transition-all py-6 text-lg font-semibold`}>
-                    Começar a usar
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </motion.div>
-              </a>
+              <motion.div 
+                whileHover={{ scale: 1.02 }} 
+                whileTap={{ scale: 0.98 }}
+                onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
+                className="cursor-pointer"
+              >
+                <Button className={`w-full bg-gradient-to-r ${feature.color} text-white shadow-lg hover:shadow-xl transition-all py-6 text-lg font-semibold`}>
+                  Começar a usar
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </motion.div>
             </motion.div>
             
             <motion.div 
