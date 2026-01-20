@@ -206,6 +206,7 @@ function Header() {
                 src="/attached_assets/Design_sem_nome_(9)_1768924813957.png" 
                 alt="PetiçõesBR - Mobilização Digital" 
                 className="h-16 w-auto"
+                style={{ filter: 'brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(1583%) hue-rotate(243deg) brightness(89%) contrast(101%)' }}
               />
             </motion.div>
           </Link>
@@ -488,6 +489,7 @@ function DashboardPreview() {
                 src="/attached_assets/Design_sem_nome_(8)_1768926127108.png" 
                 alt="PetiçõesBR" 
                 className="h-20 w-auto"
+                style={{ filter: 'brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(1583%) hue-rotate(243deg) brightness(89%) contrast(101%)' }}
               />
             </div>
             
