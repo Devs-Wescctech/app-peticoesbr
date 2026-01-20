@@ -1195,9 +1195,27 @@ function MetricCard({ metric, index }) {
 }
 
 function MetricsSection() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+
   return (
-    <section id="numeros" className="py-24 md:py-32 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={ref} id="numeros" className="py-24 md:py-32 relative overflow-hidden">
+      <motion.div 
+        className="absolute inset-0 w-full h-[120%] -top-[10%]"
+        style={{ y: bgY }}
+      >
+        <img 
+          src="/attached_assets/12188676_4890914_1768925874823.jpg" 
+          alt="" 
+          className="w-full h-full object-cover"
+        />
+      </motion.div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 md:mb-20">
           <RevealOnScroll direction="up">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-100 mb-6">
