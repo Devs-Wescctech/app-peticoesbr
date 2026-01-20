@@ -212,7 +212,7 @@ function Header() {
               <img 
                 src="/attached_assets/Design_sem_nome_(8)_1768922683736.png" 
                 alt="PetiçõesBR - Mobilização Digital" 
-                className="h-16 w-auto"
+                className="h-20 w-auto"
               />
             </motion.div>
           </Link>
