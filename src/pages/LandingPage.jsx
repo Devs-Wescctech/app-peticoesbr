@@ -853,7 +853,7 @@ function FeatureModal({ feature, isOpen, onClose }) {
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ type: "spring", duration: 0.6 }}
-                className="w-16 h-16 flex items-center justify-center"
+                className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg border border-white/20 overflow-hidden"
               >
                 <img src="/attached_assets/Design_sem_nome_(9)_1768930562667.png" alt="Logo" className="w-28 h-28 object-contain" />
               </motion.div>
@@ -984,13 +984,6 @@ function FeaturesSection() {
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 md:mb-20">
-          <RevealOnScroll direction="up">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 border border-white/30 mb-6">
-              <Zap className="w-4 h-4 text-white" />
-              <span className="text-sm font-semibold text-white">Recursos Poderosos</span>
-            </div>
-          </RevealOnScroll>
-          
           <RevealOnScroll direction="up" delay={0.1}>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6">
               Tudo para sua
