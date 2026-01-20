@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
 
     console.log('Sending contact to WesccTech API:', JSON.stringify(payload, null, 2));
 
-    const response = await fetch('https://wescctech.replit.app/api/external/contact', {
+    const response = await fetch('https://wescc.replit.app/api/external/contact', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
