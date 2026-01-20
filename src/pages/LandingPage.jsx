@@ -204,20 +204,17 @@ function Header() {
       />
       <nav className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to="/" className="flex items-center group">
             <motion.div
-              whileHover={{ scale: 1.05, rotate: 5 }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/30"
             >
-              <FileSignature className="w-5 h-5 text-white" />
+              <img 
+                src="/attached_assets/Design_sem_nome_(8)_1768922683736.png" 
+                alt="PetiçõesBR - Mobilização Digital" 
+                className="h-12 w-auto"
+              />
             </motion.div>
-            <div className="hidden sm:block">
-              <span className="font-bold text-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                PetiçõesBR
-              </span>
-              <span className="block text-xs text-gray-500 -mt-0.5">Mobilização Digital</span>
-            </div>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
@@ -1331,15 +1328,13 @@ function Footer() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="flex items-center gap-3 mb-6"
+              className="mb-6"
             >
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg">
-                <FileSignature className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <span className="font-bold text-2xl text-white">PetiçõesBR</span>
-                <span className="block text-sm text-gray-500">Mobilização Digital</span>
-              </div>
+              <img 
+                src="/attached_assets/Design_sem_nome_(8)_1768922683736.png" 
+                alt="PetiçõesBR - Mobilização Digital" 
+                className="h-14 w-auto brightness-0 invert"
+              />
             </motion.div>
             <p className="text-gray-400 max-w-md mb-8 leading-relaxed">
               A plataforma mais completa para criar petições, gerenciar campanhas e mobilizar apoiadores no Brasil.

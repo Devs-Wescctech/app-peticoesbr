@@ -130,21 +130,12 @@ export default function Layout({ children, currentPageName }) {
         sidebarCollapsed ? 'w-20' : 'w-64'
       }`}>
         <div className="p-6 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md shrink-0"
-              style={{
-                background: `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`
-              }}
-            >
-              <TrendingUp className="w-5 h-5 text-white" />
-            </div>
-            {!sidebarCollapsed && (
-              <div>
-                <h2 className="font-bold text-base text-gray-900">PetiçõesBR</h2>
-                <p className="text-xs text-gray-500">Sistema de Petições</p>
-              </div>
-            )}
+          <div className="flex items-center justify-center">
+            <img 
+              src="/attached_assets/Design_sem_nome_(8)_1768922683736.png" 
+              alt="PetiçõesBR" 
+              className={`${sidebarCollapsed ? 'h-10' : 'h-12'} w-auto transition-all duration-300`}
+            />
           </div>
         </div>
 
@@ -209,16 +200,12 @@ export default function Layout({ children, currentPageName }) {
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
         <div className="flex items-center justify-between p-4">
-          <div className="flex items-center gap-2">
-            <div 
-              className="w-9 h-9 rounded-xl flex items-center justify-center"
-              style={{
-                background: `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`
-              }}
-            >
-              <TrendingUp className="w-5 h-5 text-white" />
-            </div>
-            <h2 className="font-bold text-base text-gray-900">PetiçõesBR</h2>
+          <div className="flex items-center">
+            <img 
+              src="/attached_assets/Design_sem_nome_(8)_1768922683736.png" 
+              alt="PetiçõesBR" 
+              className="h-10 w-auto"
+            />
           </div>
           <Button
             variant="ghost"
