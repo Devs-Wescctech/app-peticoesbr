@@ -256,9 +256,21 @@ function HeroSection() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9]);
 
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, 150]);
+
   return (
     <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-indigo-50/50 to-purple-50/50" />
+      <motion.div 
+        className="absolute inset-0 w-full h-[120%] -top-[10%]"
+        style={{ y: bgY }}
+      >
+        <img 
+          src="/attached_assets/34993248_8257793_1768923590034.jpg" 
+          alt="" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/20" />
+      </motion.div>
       
       <div className="absolute inset-0 overflow-hidden">
         <ParallaxLayer speed={-0.3}>
