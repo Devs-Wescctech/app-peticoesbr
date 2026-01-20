@@ -211,23 +211,25 @@ function Header() {
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
-            {["recursos", "como-funciona", "numeros"].map((item, i) => (
-              <motion.a
-                key={item}
-                href={`#${item}`}
-                className="text-white/90 hover:text-white font-medium transition-colors relative"
-                whileHover={{ y: -2 }}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * i }}
-              >
-                {item === "recursos" ? "Recursos" : item === "como-funciona" ? "Como Funciona" : "Resultados"}
-                <motion.span
-                  className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white"
-                  whileHover={{ width: "100%" }}
-                  transition={{ duration: 0.3 }}
-                />
-              </motion.a>
+            {["recursos", "como-funciona", "numeros"].map((item, i, arr) => (
+              <React.Fragment key={item}>
+                <motion.a
+                  href={`#${item}`}
+                  className="text-white/90 hover:text-white font-medium transition-colors relative"
+                  whileHover={{ y: -2 }}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * i }}
+                >
+                  {item === "recursos" ? "Recursos" : item === "como-funciona" ? "Como Funciona" : "Resultados"}
+                  <motion.span
+                    className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white"
+                    whileHover={{ width: "100%" }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </motion.a>
+                {i < arr.length - 1 && <span className="w-px h-4 bg-white/50"></span>}
+              </React.Fragment>
             ))}
           </div>
 
