@@ -69,14 +69,6 @@ export default function Dashboard() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
         
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-10">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 bg-white/20 backdrop-blur-xl rounded-lg flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-white" />
-            </div>
-            <Badge className="bg-white/20 backdrop-blur-xl text-white border-white/30 text-xs">
-              Sistema de Petições
-            </Badge>
-          </div>
           <h1 className="text-3xl md:text-4xl font-black text-white mb-1 tracking-tight">
             Dashboard Geral
           </h1>

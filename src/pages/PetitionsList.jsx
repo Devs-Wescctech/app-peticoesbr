@@ -138,15 +138,6 @@ export default function PetitionsList() {
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-12">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-10 h-10 bg-white/20 backdrop-blur-xl rounded-xl flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-white" />
-                </div>
-                <Badge className="bg-white/20 backdrop-blur-xl text-white border-white/30">
-                  {filteredPetitions.length}{" "}
-                  {filteredPetitions.length === 1 ? "Petição" : "Petições"}
-                </Badge>
-              </div>
               <h1 className="text-3xl md:text-5xl font-black text-white mb-2 tracking-tight">
                 Minhas Petições
               </h1>
