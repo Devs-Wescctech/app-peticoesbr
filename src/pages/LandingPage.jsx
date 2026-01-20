@@ -239,8 +239,10 @@ function Header() {
               whileHover={{ scale: 1.05 }} 
               whileTap={{ scale: 0.95 }}
             >
-              <Button className="bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600 text-white font-semibold px-6 rounded-full transition-all duration-300">
-                Começar agora
+              <Button className="relative overflow-hidden bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600 text-white font-semibold px-6 rounded-full transition-all duration-300 group">
+                <span className="relative z-10">Começar agora</span>
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
               </Button>
             </motion.a>
             <Link to="/login">
