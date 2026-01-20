@@ -840,7 +840,7 @@ function FeatureModal({ feature, isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl max-h-[90vh] p-0 border-0 shadow-2xl flex flex-col overflow-hidden">
+      <DialogContent className="max-w-5xl max-h-[90vh] p-0 border-0 shadow-2xl flex flex-col overflow-hidden" hideCloseButton>
         {/* Fixed Header */}
         <div className={`relative bg-gradient-to-br ${feature.color} p-8 text-white overflow-hidden flex-shrink-0`}>
           <div className="absolute inset-0 bg-black/10" />
@@ -947,7 +947,6 @@ function FeatureModal({ feature, isOpen, onClose }) {
               onClick={onClose}
               className="flex-1 py-6 text-lg font-semibold border-2 border-gray-300 hover:bg-gray-100"
             >
-              <X className="w-5 h-5 mr-2" />
               Fechar
             </Button>
             <motion.div 
