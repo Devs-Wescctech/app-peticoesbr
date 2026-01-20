@@ -135,6 +135,7 @@ export default function Layout({ children, currentPageName }) {
               src="/attached_assets/Design_sem_nome_(8)_1768932018811.png" 
               alt="PetiçõesBR" 
               className={`${sidebarCollapsed ? 'h-14' : 'h-28'} w-auto transition-all duration-300`}
+              style={{ filter: 'brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(1583%) hue-rotate(243deg) brightness(89%) contrast(101%)' }}
             />
           </div>
         </div>
@@ -205,6 +206,7 @@ export default function Layout({ children, currentPageName }) {
               src="/attached_assets/Design_sem_nome_(8)_1768932018811.png" 
               alt="PetiçõesBR" 
               className="h-10 w-auto"
+              style={{ filter: 'brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(1583%) hue-rotate(243deg) brightness(89%) contrast(101%)' }}
             />
           </div>
           <Button
