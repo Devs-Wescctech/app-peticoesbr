@@ -1437,7 +1437,7 @@ function Footer() {
               className="mb-6"
             >
               <img 
-                src="/attached_assets/Design_sem_nome_(8)_1768922683736.png" 
+                src="/attached_assets/Design_sem_nome_(8)_1768932018811.png" 
                 alt="PetiçõesBR - Mobilização Digital" 
                 className="h-14 w-auto brightness-0 invert"
               />
