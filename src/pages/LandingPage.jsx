@@ -358,7 +358,7 @@ function HeroSection() {
       <motion.div style={{ y, opacity, scale }} className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="text-center">
           <RevealOnScroll direction="up" delay={0}>
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 border border-white/30 backdrop-blur-sm mb-8">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-transparent border border-white/50 mb-8">
               <Sparkles className="w-4 h-4 text-white" />
               <span className="text-sm font-semibold text-white">
                 Plataforma completa para mobilização digital
