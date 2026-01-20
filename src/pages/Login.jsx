@@ -54,42 +54,44 @@ export default function Login() {
           <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
         </div>
 
-        <div className="relative z-10 flex flex-col justify-center px-16 text-white">
-          <div className="mb-8 animate-fade-in">
-            <img 
-              src="/attached_assets/Design_sem_nome_(7)_1768923086680.png" 
-              alt="PetiçõesBR - Sistema de Gestão de Petições" 
-              className="h-72 w-auto mb-8"
-            />
-          </div>
+        <div className="relative z-10 flex flex-col justify-center px-12 lg:px-16 xl:px-20 py-12 text-white w-full">
+          <div className="max-w-xl mx-auto w-full">
+            <div className="mb-6 animate-fade-in">
+              <img 
+                src="/attached_assets/Design_sem_nome_(7)_1768923086680.png" 
+                alt="PetiçõesBR - Sistema de Gestão de Petições" 
+                className="h-48 lg:h-56 xl:h-64 w-auto"
+              />
+            </div>
 
-          <div className="space-y-8 animate-slide-up">
-            <h2 className="text-4xl font-bold leading-tight">
-              Amplifique sua voz.<br />
-              Crie mudanças reais.
-            </h2>
-            <p className="text-xl text-indigo-100 leading-relaxed">
-              Plataforma completa para criar petições, gerenciar campanhas e engajar sua comunidade em causas que importam.
-            </p>
+            <div className="space-y-6 animate-slide-up">
+              <h2 className="text-3xl lg:text-4xl font-bold leading-tight">
+                Amplifique sua voz.<br />
+                Crie mudanças reais.
+              </h2>
+              <p className="text-lg lg:text-xl text-indigo-100 leading-relaxed">
+                Plataforma completa para criar petições, gerenciar campanhas e engajar sua comunidade em causas que importam.
+              </p>
 
-            <div className="space-y-5 pt-8">
-              {[
-                { icon: Zap, title: 'Campanhas Automatizadas', desc: 'Email e WhatsApp integrados' },
-                { icon: FileText, title: 'Coleta de Assinaturas', desc: 'Sistema digital completo e seguro' },
-                { icon: Link2, title: 'Páginas Bio Personalizadas', desc: 'Link tree profissional para suas causas' },
-                { icon: BarChart3, title: 'Análise em Tempo Real', desc: 'Dashboards e relatórios detalhados' },
-                { icon: Users, title: 'Multi-Petições', desc: 'Gerencie múltiplas campanhas em um só lugar' },
-              ].map((feature, idx) => (
-                <div key={idx} className="flex items-start gap-5 animate-fade-in" style={{ animationDelay: `${idx * 0.1}s` }}>
-                  <div className="w-12 h-12 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 flex-shrink-0">
-                    <feature.icon className="w-6 h-6" />
+              <div className="space-y-4 pt-6">
+                {[
+                  { icon: Zap, title: 'Campanhas Automatizadas', desc: 'Email e WhatsApp integrados' },
+                  { icon: FileText, title: 'Coleta de Assinaturas', desc: 'Sistema digital completo e seguro' },
+                  { icon: Link2, title: 'Páginas Bio Personalizadas', desc: 'Link tree profissional para suas causas' },
+                  { icon: BarChart3, title: 'Análise em Tempo Real', desc: 'Dashboards e relatórios detalhados' },
+                  { icon: Users, title: 'Multi-Petições', desc: 'Gerencie múltiplas campanhas em um só lugar' },
+                ].map((feature, idx) => (
+                  <div key={idx} className="flex items-start gap-4 animate-fade-in" style={{ animationDelay: `${idx * 0.1}s` }}>
+                    <div className="w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 flex-shrink-0">
+                      <feature.icon className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-white text-base">{feature.title}</h3>
+                      <p className="text-sm text-indigo-100 mt-0.5">{feature.desc}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-white text-lg">{feature.title}</h3>
-                    <p className="text-base text-indigo-100 mt-1">{feature.desc}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
