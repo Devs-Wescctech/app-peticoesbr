@@ -1530,9 +1530,9 @@ function Footer() {
               href="https://www.wescctech.com.br" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="font-semibold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent hover:from-indigo-300 hover:to-purple-300 transition-all"
+              className="inline-flex items-center hover:opacity-80 transition-opacity"
             >
-              Wescctech
+              <img src="/attached_assets/image_1768930971152.png" alt="WesccTech" className="h-5 inline-block" />
             </a>
           </p>
           <div className="flex gap-6 text-sm">
