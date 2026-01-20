@@ -1222,6 +1222,7 @@ function CTASection() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errorModal, setErrorModal] = useState({ show: false, message: '' });
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
@@ -1255,11 +1256,11 @@ function CTASection() {
         setSubmitted(true);
       } else {
         console.error('Erro ao enviar:', data.error);
-        alert('Erro ao enviar mensagem. Tente novamente.');
+        setErrorModal({ show: true, message: data.error || 'Erro ao enviar mensagem. Tente novamente.' });
       }
     } catch (error) {
       console.error('Erro ao enviar:', error);
-      alert('Erro ao enviar mensagem. Tente novamente.');
+      setErrorModal({ show: true, message: 'Erro ao enviar mensagem. Tente novamente.' });
     } finally {
       setIsSubmitting(false);
     }
@@ -1378,6 +1379,39 @@ function CTASection() {
           </RevealOnScroll>
         </div>
       </div>
+
+      {/* Error Modal */}
+      {errorModal.show && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          onClick={() => setErrorModal({ show: false, message: '' })}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                <X className="w-6 h-6 text-red-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900">Erro ao enviar</h3>
+            </div>
+            <p className="text-gray-600 mb-6">{errorModal.message}</p>
+            <button
+              onClick={() => setErrorModal({ show: false, message: '' })}
+              className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all"
+            >
+              Fechar
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
     </section>
   );
 }
