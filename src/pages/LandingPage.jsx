@@ -1292,7 +1292,7 @@ function CTASection() {
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-400 py-16 md:py-20">
+    <footer className="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-gray-300 py-16 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           <div className="lg:col-span-2">
