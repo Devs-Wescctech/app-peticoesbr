@@ -1524,15 +1524,15 @@ function Footer() {
           viewport={{ once: true }}
           className="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4"
         >
-          <p className="text-sm">
-            &copy; {new Date().getFullYear()} PetiçõesBR. Todos os direitos reservados. | By{' '}
+          <p className="text-sm flex items-center gap-1">
+            <span>&copy; {new Date().getFullYear()} PetiçõesBR. Todos os direitos reservados. | By</span>
             <a 
               href="https://www.wescctech.com.br" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center hover:opacity-80 transition-opacity"
             >
-              <img src="/attached_assets/image_1768930971152.png" alt="WesccTech" className="h-12 inline-block" />
+              <img src="/attached_assets/image_1768930971152.png" alt="WesccTech" className="h-12" />
             </a>
           </p>
           <div className="flex gap-6 text-sm">
