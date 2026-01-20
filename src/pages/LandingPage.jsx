@@ -265,7 +265,7 @@ function HeroSection() {
         style={{ y: bgY }}
       >
         <img 
-          src="/attached_assets/34993248_8257793_1768923590034.jpg" 
+          src="/attached_assets/35782533_8331644_1768924007708.jpg" 
           alt="" 
           className="w-full h-full object-cover"
         />
