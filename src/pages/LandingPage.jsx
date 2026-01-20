@@ -1232,9 +1232,37 @@ function CTASection() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setSubmitted(true);
-    setIsSubmitting(false);
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          company: '',
+          service: 'Petições',
+          message: formData.message,
+          source: 'PetiçõesBR'
+        })
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        console.error('Erro ao enviar:', data.error);
+        alert('Erro ao enviar mensagem. Tente novamente.');
+      }
+    } catch (error) {
+      console.error('Erro ao enviar:', error);
+      alert('Erro ao enviar mensagem. Tente novamente.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

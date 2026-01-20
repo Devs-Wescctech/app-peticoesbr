@@ -17,6 +17,7 @@ import linkbioPagesRouter from './routes/linkbio-pages.js';
 import uploadRouter from './routes/upload.js';
 import usersRouter from './routes/users.js';
 import adminRouter from './routes/admin.js';
+import contactRouter from './routes/contact.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -42,6 +43,7 @@ app.use('/api/message-templates', messageTemplatesRouter);
 app.use('/api/linktree-pages', linktreePagesRouter);
 app.use('/api/linkbio-pages', linkbioPagesRouter);
 app.use('/api/upload', uploadRouter);
+app.use('/api/contact', contactRouter);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Backend is running' });
