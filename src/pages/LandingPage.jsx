@@ -239,7 +239,7 @@ function Header() {
               whileHover={{ scale: 1.05 }} 
               whileTap={{ scale: 0.95 }}
             >
-              <Button className="relative overflow-hidden bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600 text-white font-semibold px-6 rounded-full transition-all duration-300 group">
+              <Button className="relative overflow-hidden bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600 text-white font-semibold px-6 rounded-full transition-all duration-300 group min-w-[180px] justify-center">
                 <span className="relative z-10">Começar agora</span>
                 <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
                 <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
@@ -247,7 +247,7 @@ function Header() {
             </motion.a>
             <Link to="/login">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button className="bg-white hover:bg-gray-100 font-semibold px-6 rounded-full transition-all duration-300">
+                <Button className="bg-white hover:bg-gray-100 font-semibold px-6 rounded-full transition-all duration-300 min-w-[180px] justify-center">
                   <span className="bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">Acessar Plataforma</span>
                   <ArrowRight className="w-4 h-4 ml-2 text-orange-500" />
                 </Button>
