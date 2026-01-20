@@ -203,7 +203,7 @@ function Header() {
               whileTap={{ scale: 0.95 }}
             >
               <img 
-                src="/attached_assets/Design_sem_nome_(7)_1768923086680.png" 
+                src="/attached_assets/Design_sem_nome_(9)_1768924813957.png" 
                 alt="PetiçõesBR - Mobilização Digital" 
                 className="h-16 w-auto"
               />
