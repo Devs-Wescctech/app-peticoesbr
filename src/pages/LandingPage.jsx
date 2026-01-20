@@ -916,7 +916,12 @@ function FeatureModal({ feature, isOpen, onClose }) {
               <motion.div 
                 whileHover={{ scale: 1.02 }} 
                 whileTap={{ scale: 0.98 }}
-                onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => {
+                  onClose();
+                  setTimeout(() => {
+                    document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
+                  }, 100);
+                }}
                 className="cursor-pointer"
               >
                 <Button className={`w-full bg-gradient-to-r ${feature.color} text-white shadow-lg hover:shadow-xl transition-all py-6 text-lg font-semibold`}>
