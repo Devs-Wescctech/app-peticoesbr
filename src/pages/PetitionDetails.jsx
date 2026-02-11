@@ -22,7 +22,9 @@ import {
   FileText,
   Trash2,
   Edit,
-  Copy
+  Copy,
+  QrCode,
+  Loader2
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -35,6 +37,8 @@ export default function PetitionDetails() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
+  const [downloadingQr, setDownloadingQr] = useState(false);
 
   const { data: petition, isLoading } = useQuery({
     queryKey: ['petition', petitionId],
@@ -135,6 +139,54 @@ export default function PetitionDetails() {
   const copyLink = () => {
     navigator.clipboard.writeText(publicUrl);
     alert('Link copiado para a área de transferência!');
+  };
+
+  const downloadPdf = async () => {
+    setDownloadingPdf(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/petitions/${petitionId}/pdf`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (!response.ok) throw new Error('Erro ao gerar PDF');
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `peticao-${petition.slug || petition.id}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      alert('Erro ao baixar PDF: ' + err.message);
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
+
+  const downloadQrCode = async () => {
+    setDownloadingQr(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/petitions/${petitionId}/qrcode`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (!response.ok) throw new Error('Erro ao gerar QR Code');
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `qrcode-${petition.slug || petition.id}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      alert('Erro ao baixar QR Code: ' + err.message);
+    } finally {
+      setDownloadingQr(false);
+    }
   };
 
   const handleShare = async () => {
@@ -451,6 +503,32 @@ export default function PetitionDetails() {
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Baixar CSV ({signatureCount})
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full font-medium border-2 hover:bg-gray-50"
+                  onClick={downloadPdf}
+                  disabled={signatureCount === 0 || downloadingPdf}
+                >
+                  {downloadingPdf ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <FileText className="w-4 h-4 mr-2" />
+                  )}
+                  {downloadingPdf ? 'Gerando PDF...' : 'Baixar Abaixo-Assinado (PDF)'}
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full font-medium border-2 hover:bg-gray-50"
+                  onClick={downloadQrCode}
+                  disabled={downloadingQr}
+                >
+                  {downloadingQr ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <QrCode className="w-4 h-4 mr-2" />
+                  )}
+                  {downloadingQr ? 'Gerando...' : 'Baixar QR Code'}
                 </Button>
               </CardContent>
             </Card>

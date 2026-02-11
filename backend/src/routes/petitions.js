@@ -1,6 +1,8 @@
 import express from 'express';
 import pool from '../config/database.js';
 import { authenticate, requireTenant, optionalAuthenticate } from '../middleware/auth.js';
+import PDFDocument from 'pdfkit';
+import QRCode from 'qrcode';
 
 const router = express.Router();
 
@@ -166,6 +168,152 @@ router.delete('/:id', authenticate, requireTenant, async (req, res) => {
     
     res.json({ message: 'Petition deleted successfully' });
   } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET /api/petitions/:id/pdf - Generate PDF with petition details and signatures
+router.get('/:id/pdf', authenticate, requireTenant, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { tenantId } = req.user;
+
+    const petitionResult = await pool.query(
+      'SELECT * FROM petitions WHERE id = $1 AND tenant_id = $2',
+      [id, tenantId]
+    );
+
+    if (petitionResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Petition not found' });
+    }
+
+    const petition = petitionResult.rows[0];
+
+    const signaturesResult = await pool.query(
+      'SELECT * FROM signatures WHERE petition_id = $1 AND tenant_id = $2 ORDER BY created_at ASC',
+      [id, tenantId]
+    );
+
+    const signatures = signaturesResult.rows;
+    const accentColor = petition.primary_color || '#6366f1';
+
+    const formatDate = (date) => {
+      const d = new Date(date);
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    };
+
+    const doc = new PDFDocument({ size: 'A4', margin: 50 });
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="peticao-${petition.slug}.pdf"`);
+
+    doc.pipe(res);
+
+    doc.rect(0, 0, doc.page.width, 4).fill(accentColor);
+
+    doc.fontSize(22).fillColor(accentColor).text(petition.title, 50, 30, { align: 'center' });
+    doc.moveDown(0.5);
+
+    doc.moveTo(50, doc.y).lineTo(doc.page.width - 50, doc.y).strokeColor(accentColor).lineWidth(1).stroke();
+    doc.moveDown(0.5);
+
+    if (petition.description) {
+      doc.fontSize(11).fillColor('#333333').text(petition.description, { align: 'justify' });
+      doc.moveDown(1);
+    }
+
+    doc.fontSize(12).fillColor('#000000').text(`Total de assinaturas: ${signatures.length}`, { continued: petition.goal ? true : false });
+    if (petition.goal) {
+      doc.text(` / Meta: ${petition.goal}`);
+    }
+    doc.moveDown(1);
+
+    const tableTop = doc.y;
+    const colNum = 50;
+    const colName = 90;
+    const colEmail = 280;
+    const colDate = 450;
+    const rowHeight = 20;
+
+    const drawTableHeader = () => {
+      doc.rect(colNum, doc.y, doc.page.width - 100, rowHeight).fill(accentColor);
+      doc.fontSize(10).fillColor('#FFFFFF');
+      doc.text('#', colNum + 5, doc.y + 5, { width: 35 });
+      doc.text('Nome', colName + 5, doc.y + 5, { width: 185 });
+      doc.text('Email', colEmail + 5, doc.y + 5, { width: 165 });
+      doc.text('Data', colDate + 5, doc.y + 5, { width: 95 });
+      doc.y += rowHeight;
+      doc.fillColor('#000000');
+    };
+
+    drawTableHeader();
+
+    signatures.forEach((sig, index) => {
+      if (doc.y + rowHeight > doc.page.height - 80) {
+        doc.addPage();
+        doc.rect(0, 0, doc.page.width, 4).fill(accentColor);
+        doc.y = 30;
+        drawTableHeader();
+      }
+
+      const bgColor = index % 2 === 0 ? '#F9FAFB' : '#FFFFFF';
+      doc.rect(colNum, doc.y, doc.page.width - 100, rowHeight).fill(bgColor);
+
+      const rowY = doc.y + 5;
+      doc.fontSize(9).fillColor('#333333');
+      doc.text(String(index + 1), colNum + 5, rowY, { width: 35 });
+      doc.text(sig.name || '-', colName + 5, rowY, { width: 185 });
+      doc.text(sig.email || '-', colEmail + 5, rowY, { width: 165 });
+      doc.text(sig.created_at ? formatDate(sig.created_at) : '-', colDate + 5, rowY, { width: 95 });
+
+      doc.y += rowHeight;
+    });
+
+    doc.moveDown(2);
+    const footerY = doc.page.height - 50;
+    doc.fontSize(8).fillColor('#999999').text(
+      `Documento gerado em ${formatDate(new Date())}`,
+      50, footerY, { align: 'center', width: doc.page.width - 100 }
+    );
+
+    doc.end();
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET /api/petitions/:id/qrcode - Generate QR Code for public petition page
+router.get('/:id/qrcode', authenticate, requireTenant, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { tenantId } = req.user;
+
+    const result = await pool.query(
+      'SELECT slug FROM petitions WHERE id = $1 AND tenant_id = $2',
+      [id, tenantId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Petition not found' });
+    }
+
+    const petition = result.rows[0];
+    const publicUrl = `${req.protocol}://${req.get('host')}/p?s=${petition.slug}`;
+
+    const qrBuffer = await QRCode.toBuffer(publicUrl, {
+      type: 'png',
+      width: 400,
+      margin: 2,
+    });
+
+    res.setHeader('Content-Type', 'image/png');
+    res.send(qrBuffer);
+  } catch (error) {
+    console.error('Error generating QR Code:', error);
     res.status(500).json({ error: error.message });
   }
 });
