@@ -321,7 +321,15 @@ export default function PetitionLanding() {
             ) : null}
 
             {/* Main Title */}
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight tracking-tight text-center">
+            <h1 className={`font-black text-white mb-6 leading-tight tracking-tight text-center ${
+              petition.title.length > 80
+                ? 'text-xl md:text-2xl lg:text-3xl'
+                : petition.title.length > 50
+                ? 'text-2xl md:text-3xl lg:text-4xl'
+                : petition.title.length > 30
+                ? 'text-3xl md:text-4xl lg:text-5xl'
+                : 'text-4xl md:text-6xl lg:text-7xl'
+            }`}>
               {petition.title}
             </h1>
 
