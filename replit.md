@@ -28,7 +28,9 @@ The frontend uses Radix UI for accessible components, styled with TailwindCSS fo
 - **Campaign Tools**: Creation and management of WhatsApp campaigns with tenant scoping, real-time progress updates, and message templates.
 - **Link Pages**: Builders for "Link Bio" and "Link Tree" pages with custom slugs, all tenant-isolated.
 - **Signature Management**: Functionality for importing and managing petition signatures with tenant validation. Email is optional; only name is required.
-- **File Uploads**: Local storage for petition banners and logos.
+- **File Uploads**: Local storage for petition banners, logos, and videos.
+- **PDF Export**: Server-side PDF generation (pdfkit) for formal abaixo-assinado documents with petition data and signature tables. Endpoint: GET /api/petitions/:id/pdf.
+- **QR Code Generation**: Server-side QR code generation (qrcode) linking to public petition pages. Endpoint: GET /api/petitions/:id/qrcode.
 - **API Client**: Custom fetch-based client with a Base44 wrapper for frontend-backend communication.
 - **Environment Variables**: Configurable `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, and `VITE_BASE_URL`.
 
