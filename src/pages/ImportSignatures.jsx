@@ -104,11 +104,11 @@ export default function ImportSignatures() {
       };
 
       // Validação básica
-      if (!signatureData.name || !signatureData.email) {
+      if (!signatureData.name) {
         failed++;
         errors.push({
           line: i + 2,
-          error: 'Nome ou email ausente',
+          error: 'Nome ausente',
           data: row
         });
         continue;
@@ -263,7 +263,7 @@ export default function ImportSignatures() {
                   </p>
                   <div className="text-xs text-gray-700 space-y-1 font-mono">
                     <p>• <strong>nome</strong> (obrigatório): Nome completo</p>
-                    <p>• <strong>email</strong> (obrigatório): Email válido</p>
+                    <p>• <strong>email</strong> (opcional): Email válido</p>
                     <p>• <strong>telefone</strong> (opcional): Telefone com DDD</p>
                     <p>• <strong>cidade</strong> (opcional): Nome da cidade</p>
                     <p>• <strong>estado</strong> (opcional): UF (ex: SP, RJ)</p>

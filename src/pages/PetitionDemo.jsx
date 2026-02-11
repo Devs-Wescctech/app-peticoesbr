@@ -141,7 +141,7 @@ export default function PetitionDemo() {
 
                     <div>
                       <Label htmlFor="email" className="text-sm text-gray-600">
-                        Email *
+                        Email
                       </Label>
                       <Input
                         id="email"

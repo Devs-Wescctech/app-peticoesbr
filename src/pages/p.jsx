@@ -355,7 +355,7 @@ export default function PetitionLanding() {
 
                       <div>
                         <Label htmlFor="email" className="text-sm font-bold text-gray-900">
-                          Email *
+                          Email
                         </Label>
                         <Input
                           id="email"
@@ -363,7 +363,6 @@ export default function PetitionLanding() {
                           value={formData.email}
                           onChange={(e) => setFormData({...formData, email: e.target.value})}
                           placeholder="seu@email.com"
-                          required
                           className="mt-1.5 h-11 border-2"
                         />
                       </div>
