@@ -248,17 +248,17 @@ export default function PetitionLanding() {
           >
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/90" />
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-900/30 to-pink-900/30" />
+            <div className="absolute inset-0" style={{ background: `linear-gradient(to right, ${primaryColor}4D, ${primaryColor}4D)` }} />
           </div>
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900" />
+          <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom right, ${primaryColor}, ${primaryColor}cc, ${primaryColor}99)` }} />
         )}
 
         {/* Animated Elements */}
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s', animationDelay: '2s' }} />
+          <div className="absolute top-0 left-0 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s', backgroundColor: `${primaryColor}33` }} />
+          <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s', backgroundColor: `${primaryColor}33` }} />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s', animationDelay: '2s', backgroundColor: `${primaryColor}1A` }} />
         </div>
 
         {/* Content */}
@@ -390,7 +390,7 @@ export default function PetitionLanding() {
 
                       <div>
                         <Label htmlFor="email" className="text-sm font-bold text-gray-900">
-                          Email *
+                          Email
                         </Label>
                         <Input
                           id="email"
@@ -398,7 +398,6 @@ export default function PetitionLanding() {
                           value={formData.email}
                           onChange={(e) => setFormData({...formData, email: e.target.value})}
                           placeholder="seu@email.com"
-                          required
                           className="mt-1.5 h-11 border-2"
                         />
                       </div>
@@ -518,7 +517,7 @@ export default function PetitionLanding() {
                     </Button>
 
                     <p className="text-xs text-gray-500 text-center leading-relaxed">
-                      Ao assinar, você concorda em receber atualizações sobre esta petição
+                      {petition.lgpd_text || "Ao assinar, você concorda em receber atualizações sobre esta petição"}
                     </p>
                   </form>
                 </CardContent>

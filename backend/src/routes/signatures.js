@@ -26,9 +26,9 @@ router.post('/public', async (req, res) => {
       petition_id, name, email, phone, city, state, cpf, comment
     } = req.body;
     
-    if (!petition_id || !name || !email) {
+    if (!petition_id || !name) {
       return res.status(400).json({ 
-        error: 'petition_id, name e email são obrigatórios' 
+        error: 'petition_id e name são obrigatórios' 
       });
     }
     
@@ -114,9 +114,9 @@ router.post('/', authenticate, requireTenant, async (req, res) => {
       petition_id, name, email, phone, city, state, cpf, comment
     } = req.body;
     
-    if (!petition_id || !name || !email) {
+    if (!petition_id || !name) {
       return res.status(400).json({ 
-        error: 'petition_id, name e email são obrigatórios' 
+        error: 'petition_id e name são obrigatórios' 
       });
     }
     

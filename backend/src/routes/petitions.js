@@ -68,7 +68,7 @@ router.post('/', authenticate, requireTenant, async (req, res) => {
     const {
       title, description, banner_url, logo_url, primary_color,
       share_text, goal, status, slug, collect_phone, collect_city,
-      collect_state, collect_cpf, collect_comment
+      collect_state, collect_cpf, collect_comment, lgpd_text
     } = req.body;
     
     console.log('📝 Creating petition:', { title, slug, tenantId });
@@ -77,14 +77,14 @@ router.post('/', authenticate, requireTenant, async (req, res) => {
       `INSERT INTO petitions (
         title, description, banner_url, logo_url, primary_color,
         share_text, goal, status, slug, collect_phone, collect_city,
-        collect_state, collect_cpf, collect_comment, tenant_id
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+        collect_state, collect_cpf, collect_comment, tenant_id, lgpd_text
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
       RETURNING *`,
       [
         title, description, banner_url, logo_url, primary_color || '#6366f1',
         share_text, goal || 1, status || 'rascunho', slug,
         collect_phone || false, collect_city || false, collect_state || false,
-        collect_cpf || false, collect_comment || false, tenantId
+        collect_cpf || false, collect_comment || false, tenantId, lgpd_text || null
       ]
     );
     
@@ -107,7 +107,7 @@ router.put('/:id', authenticate, requireTenant, async (req, res) => {
     const {
       title, description, banner_url, logo_url, primary_color,
       share_text, goal, status, slug, collect_phone, collect_city,
-      collect_state, collect_cpf, collect_comment
+      collect_state, collect_cpf, collect_comment, lgpd_text
     } = req.body;
     
     const result = await pool.query(
@@ -126,13 +126,14 @@ router.put('/:id', authenticate, requireTenant, async (req, res) => {
         collect_state = COALESCE($12, collect_state),
         collect_cpf = COALESCE($13, collect_cpf),
         collect_comment = COALESCE($14, collect_comment),
+        lgpd_text = $15,
         updated_date = CURRENT_TIMESTAMP
-      WHERE id = $15 AND tenant_id = $16
+      WHERE id = $16 AND tenant_id = $17
       RETURNING *`,
       [
         title, description, banner_url, logo_url, primary_color,
         share_text, goal, status, slug, collect_phone, collect_city,
-        collect_state, collect_cpf, collect_comment, id, tenantId
+        collect_state, collect_cpf, collect_comment, lgpd_text || null, id, tenantId
       ]
     );
     

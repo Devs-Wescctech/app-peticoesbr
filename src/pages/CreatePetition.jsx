@@ -54,6 +54,7 @@ export default function CreatePetition() {
     collect_state: false,
     collect_cpf: false,
     collect_comment: true,
+    lgpd_text: "Ao assinar, você concorda em receber atualizações sobre esta petição",
   });
 
   const { data: existingPetition, isLoading: loadingPetition } = useQuery({
@@ -84,6 +85,7 @@ export default function CreatePetition() {
         collect_state: !!existingPetition.collect_state,
         collect_cpf: !!existingPetition.collect_cpf,
         collect_comment: !!existingPetition.collect_comment,
+        lgpd_text: existingPetition.lgpd_text || "Ao assinar, você concorda em receber atualizações sobre esta petição",
       });
     }
   }, [existingPetition]);
@@ -113,6 +115,7 @@ export default function CreatePetition() {
         collect_state: !!data.collect_state,
         collect_cpf: !!data.collect_cpf,
         collect_comment: !!data.collect_comment,
+        lgpd_text: data.lgpd_text || null,
       };
       
       if (editingId) {
@@ -468,6 +471,26 @@ export default function CreatePetition() {
                       </button>
                     ))}
                   </div>
+                </div>
+
+                {/* Texto LGPD */}
+                <div>
+                  <Label
+                    htmlFor="lgpd_text"
+                    className="text-sm font-semibold mb-1.5 block"
+                  >
+                    Texto LGPD (abaixo do botão de assinar)
+                  </Label>
+                  <Textarea
+                    id="lgpd_text"
+                    value={formData.lgpd_text}
+                    onChange={(e) => handleChange("lgpd_text", e.target.value)}
+                    placeholder="Ao assinar, você concorda em receber atualizações sobre esta petição"
+                    className="min-h-[80px]"
+                  />
+                  <p className="text-xs text-gray-600 mt-1">
+                    Texto exibido abaixo do botão de assinar na página da petição
+                  </p>
                 </div>
 
                 {/* Meta e Slug */}
