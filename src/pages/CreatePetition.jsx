@@ -15,6 +15,7 @@ import {
   Phone,
   Hash,
   MessageSquare,
+  Mail,
   Map,
   Eye,
   Save,
@@ -49,6 +50,7 @@ export default function CreatePetition() {
     goal: 1000,
     status: "rascunho",
     slug: "",
+    collect_email: false,
     collect_phone: false,
     collect_city: true,
     collect_state: false,
@@ -80,6 +82,7 @@ export default function CreatePetition() {
         goal: existingPetition.goal || 1000,
         status: existingPetition.status || "rascunho",
         slug: existingPetition.slug || "",
+        collect_email: !!existingPetition.collect_email,
         collect_phone: !!existingPetition.collect_phone,
         collect_city: !!existingPetition.collect_city,
         collect_state: !!existingPetition.collect_state,
@@ -110,6 +113,7 @@ export default function CreatePetition() {
         goal: Number(data.goal) || 1,
         status: data.status,
         slug: data.slug,
+        collect_email: !!data.collect_email,
         collect_phone: !!data.collect_phone,
         collect_city: !!data.collect_city,
         collect_state: !!data.collect_state,
@@ -187,6 +191,13 @@ export default function CreatePetition() {
     setFormData((prev) => ({ ...prev, [field]: !prev[field] }));
 
   const collectionFields = [
+    {
+      id: "collect_email",
+      label: "Email",
+      icon: Mail,
+      color: "from-orange-500 to-orange-600",
+      description: "Coletar email do assinante",
+    },
     {
       id: "collect_city",
       label: "Cidade",

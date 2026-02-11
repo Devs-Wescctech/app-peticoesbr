@@ -202,16 +202,16 @@ export default function PetitionLanding() {
             style={{ backgroundImage: `url(${petition.banner_url})` }}
           >
             <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/90" />
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-900/30 to-pink-900/30" />
+            <div className="absolute inset-0" style={{ background: `linear-gradient(to right, ${primaryColor}4D, ${primaryColor}4D)` }} />
           </div>
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900" />
+          <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom right, ${primaryColor}, ${primaryColor}cc, ${primaryColor}99)` }} />
         )}
 
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s', animationDelay: '2s' }} />
+          <div className="absolute top-0 left-0 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s', backgroundColor: `${primaryColor}33` }} />
+          <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s', backgroundColor: `${primaryColor}33` }} />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s', animationDelay: '2s', backgroundColor: `${primaryColor}1A` }} />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 py-20">
@@ -219,7 +219,7 @@ export default function PetitionLanding() {
             {petition.logo_url && (
               <div className="flex justify-center mb-8">
                 <div className="relative group">
-                  <div className="absolute -inset-4 bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity" />
+                  <div className="absolute -inset-4 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity" style={{ background: `linear-gradient(to right, ${primaryColor}, ${primaryColor}cc, ${primaryColor}99)` }} />
                   <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 backdrop-blur-sm">
                     <img
                       src={petition.logo_url}
@@ -338,7 +338,7 @@ export default function PetitionLanding() {
 
                 <CardContent className="p-6 bg-white/95 backdrop-blur-sm">
                   <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid md:grid-cols-2 gap-3">
+                    <div className={`grid ${petition.collect_email ? 'md:grid-cols-2' : 'grid-cols-1'} gap-3`}>
                       <div>
                         <Label htmlFor="name" className="text-sm font-bold text-gray-900">
                           Nome Completo *
@@ -353,19 +353,21 @@ export default function PetitionLanding() {
                         />
                       </div>
 
-                      <div>
-                        <Label htmlFor="email" className="text-sm font-bold text-gray-900">
-                          Email
-                        </Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          value={formData.email}
-                          onChange={(e) => setFormData({...formData, email: e.target.value})}
-                          placeholder="seu@email.com"
-                          className="mt-1.5 h-11 border-2"
-                        />
-                      </div>
+                      {petition.collect_email && (
+                        <div>
+                          <Label htmlFor="email" className="text-sm font-bold text-gray-900">
+                            Email
+                          </Label>
+                          <Input
+                            id="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={(e) => setFormData({...formData, email: e.target.value})}
+                            placeholder="seu@email.com"
+                            className="mt-1.5 h-11 border-2"
+                          />
+                        </div>
+                      )}
                     </div>
 
                     {petition.collect_phone && (
@@ -469,7 +471,7 @@ export default function PetitionLanding() {
                     </Button>
 
                     <p className="text-xs text-gray-500 text-center leading-relaxed">
-                      Ao assinar, você concorda em receber atualizações sobre esta petição
+                      {petition.lgpd_text || "Ao assinar, você concorda em receber atualizações sobre esta petição"}
                     </p>
                   </form>
                 </CardContent>

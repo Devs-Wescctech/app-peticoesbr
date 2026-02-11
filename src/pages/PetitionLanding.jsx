@@ -270,7 +270,7 @@ export default function PetitionLanding() {
             {petition.logo_url && (
               <div className="flex justify-center mb-8">
                 <div className="relative group">
-                  <div className="absolute -inset-4 bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity" />
+                  <div className="absolute -inset-4 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity" style={{ background: `linear-gradient(to right, ${primaryColor}, ${primaryColor}cc, ${primaryColor}99)` }} />
                   <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 backdrop-blur-sm">
                     <img
                       src={petition.logo_url}
@@ -373,7 +373,7 @@ export default function PetitionLanding() {
 
                 <CardContent className="p-6 bg-white/95 backdrop-blur-sm">
                   <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid md:grid-cols-2 gap-3">
+                    <div className={`grid ${petition.collect_email ? 'md:grid-cols-2' : 'grid-cols-1'} gap-3`}>
                       <div>
                         <Label htmlFor="name" className="text-sm font-bold text-gray-900">
                           Nome Completo *
@@ -388,19 +388,21 @@ export default function PetitionLanding() {
                         />
                       </div>
 
-                      <div>
-                        <Label htmlFor="email" className="text-sm font-bold text-gray-900">
-                          Email
-                        </Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          value={formData.email}
-                          onChange={(e) => setFormData({...formData, email: e.target.value})}
-                          placeholder="seu@email.com"
-                          className="mt-1.5 h-11 border-2"
-                        />
-                      </div>
+                      {petition.collect_email && (
+                        <div>
+                          <Label htmlFor="email" className="text-sm font-bold text-gray-900">
+                            Email
+                          </Label>
+                          <Input
+                            id="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={(e) => setFormData({...formData, email: e.target.value})}
+                            placeholder="seu@email.com"
+                            className="mt-1.5 h-11 border-2"
+                          />
+                        </div>
+                      )}
                     </div>
 
                     {petition.collect_phone && (

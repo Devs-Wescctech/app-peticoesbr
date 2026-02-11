@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS petitions (
     collect_city BOOLEAN DEFAULT true,
     collect_state BOOLEAN DEFAULT false,
     collect_cpf BOOLEAN DEFAULT false,
+    collect_email BOOLEAN DEFAULT false,
     collect_comment BOOLEAN DEFAULT true,
     lgpd_text TEXT,
     views_count INTEGER DEFAULT 0,
