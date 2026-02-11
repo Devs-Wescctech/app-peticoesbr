@@ -127,6 +127,14 @@ export default function CreatePetition() {
       queryClient.invalidateQueries({ queryKey: ["petitions"] });
       navigate(createPageUrl("PetitionsList"));
     },
+    onError: (error) => {
+      const msg = error?.message || error?.error || String(error);
+      if (msg.includes('Slug') || msg.includes('slug')) {
+        alert('Essa URL (slug) já está em uso. Por favor, escolha outra.');
+      } else {
+        alert('Erro ao salvar petição: ' + msg);
+      }
+    },
   });
 
   // Upload genérico (logo/banner)
