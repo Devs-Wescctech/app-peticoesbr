@@ -36,6 +36,7 @@ export default function CreatePetition() {
   const queryClient = useQueryClient();
   const [uploading, setUploading] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
   
   const urlParams = new URLSearchParams(window.location.search);
   const editingId = urlParams.get('edit') || urlParams.get('id');
@@ -144,24 +145,24 @@ export default function CreatePetition() {
     },
   });
 
-  // Upload genérico (logo/banner)
   const handleFileUpload = async (e, type = "banner") => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    type === "logo" ? setUploadingLogo(true) : setUploading(true);
+    const setLoading = type === "logo" ? setUploadingLogo : type === "video" ? setUploadingVideo : setUploading;
+    setLoading(true);
     try {
-      const prefix = type === "logo" ? "logos" : "banners";
-      const { url } = await uploadToStorage(file, prefix);
+      const { url } = await uploadToStorage(file, type);
+      const fieldMap = { logo: "logo_url", banner: "banner_url", video: "video_url" };
       setFormData((prev) => ({
         ...prev,
-        [type === "logo" ? "logo_url" : "banner_url"]: url,
+        [fieldMap[type]]: url,
       }));
     } catch (err) {
       console.error("Erro ao fazer upload:", err);
       alert("Falha no upload: " + String(err?.message || err));
     } finally {
-      type === "logo" ? setUploadingLogo(false) : setUploading(false);
+      setLoading(false);
     }
   };
 
@@ -393,20 +394,74 @@ export default function CreatePetition() {
                   </div>
                 </div>
 
-                {/* Video URL */}
+                {/* Video Upload */}
                 <div>
-                  <Label htmlFor="video_url" className="text-sm font-semibold mb-1.5 block">
+                  <Label className="text-sm font-semibold mb-1.5 block">
                     Vídeo (alternativa à logo)
                   </Label>
-                  <Input
-                    id="video_url"
-                    value={formData.video_url}
-                    onChange={(e) => handleChange("video_url", e.target.value)}
-                    placeholder="https://www.youtube.com/watch?v=..."
-                    className="mt-1.5"
-                  />
+                  <div className="border-2 border-dashed border-indigo-300 rounded-xl p-4 hover:border-indigo-400 transition-colors bg-gradient-to-br from-indigo-50/50 to-purple-50/50">
+                    {formData.video_url ? (
+                      <div className="relative">
+                        <video
+                          src={formData.video_url}
+                          controls
+                          className="w-full max-h-48 rounded-lg mx-auto"
+                        />
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          size="sm"
+                          className="mt-3 w-full font-medium"
+                          onClick={() => handleChange("video_url", "")}
+                        >
+                          Remover Vídeo
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="text-center">
+                        <div className="w-20 h-20 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
+                          <Upload className="w-10 h-10 text-indigo-600" />
+                        </div>
+                        <p className="text-xs text-gray-600 mb-3 font-medium">
+                          Envie um vídeo para exibir no lugar da logo (MP4, WebM, MOV)
+                        </p>
+                        <input
+                          type="file"
+                          accept="video/*"
+                          onChange={(e) => handleFileUpload(e, "video")}
+                          className="hidden"
+                          id="video-upload"
+                          disabled={uploadingVideo}
+                        />
+                        <label htmlFor="video-upload">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            disabled={uploadingVideo}
+                            className="border-2 border-indigo-300 text-indigo-700 hover:bg-indigo-50 font-semibold"
+                            asChild
+                          >
+                            <span>
+                              {uploadingVideo ? (
+                                <>
+                                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                  Enviando...
+                                </>
+                              ) : (
+                                <>
+                                  <Upload className="w-4 h-4 mr-2" />
+                                  Escolher Vídeo
+                                </>
+                              )}
+                            </span>
+                          </Button>
+                        </label>
+                      </div>
+                    )}
+                  </div>
                   <p className="text-xs text-gray-600 mt-1">
-                    Cole a URL de um vídeo do YouTube, Vimeo ou link direto MP4. Se preenchido, o vídeo aparecerá no lugar da logo.
+                    Se preenchido, o vídeo aparecerá no lugar da logo na petição.
                   </p>
                 </div>
 
