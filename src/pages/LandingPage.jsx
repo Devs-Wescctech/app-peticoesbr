@@ -203,7 +203,7 @@ function Header() {
               whileTap={{ scale: 0.95 }}
             >
               <img 
-                src="/attached_assets/Design_sem_nome_(9)_1768924813957.png" 
+                src="/assets/Design_sem_nome_(9)_1768924813957.png" 
                 alt="PetiçõesBR - Mobilização Digital" 
                 className="h-16 w-auto"
               />
@@ -280,7 +280,7 @@ function HeroSection() {
         style={{ y: bgY }}
       >
         <img 
-          src="/attached_assets/35782533_8331644_1768924007708.jpg" 
+          src="/assets/35782533_8331644_1768924007708.jpg" 
           alt="" 
           className="w-full h-full object-cover"
         />
@@ -498,7 +498,7 @@ function DashboardPreview() {
           <div className="hidden md:flex w-64 bg-gradient-to-b from-gray-50 to-white border-r border-gray-100 flex-col p-4">
             <div className="flex items-center gap-3 mb-8 p-3">
               <img 
-                src="/attached_assets/Design_sem_nome_(8)_1768926127108.png" 
+                src="/assets/Design_sem_nome_(8)_1768926127108.png" 
                 alt="PetiçõesBR" 
                 className="h-20 w-auto"
                 style={{ filter: 'brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(1583%) hue-rotate(243deg) brightness(89%) contrast(101%)' }}
@@ -862,7 +862,7 @@ function FeatureModal({ feature, isOpen, onClose }) {
                 transition={{ type: "spring", duration: 0.6 }}
                 className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg border border-white/20 overflow-hidden"
               >
-                <img src="/attached_assets/Design_sem_nome_(9)_1768930562667.png" alt="Logo" className="w-28 h-28 object-contain" />
+                <img src="/assets/Design_sem_nome_(9)_1768930562667.png" alt="Logo" className="w-28 h-28 object-contain" />
               </motion.div>
               <div className="flex-1">
                 <motion.div
@@ -1212,7 +1212,7 @@ function MetricsSection() {
         style={{ y: bgY, scale: bgScale }}
       >
         <img 
-          src="/attached_assets/12188676_4890914_1768925874823.jpg" 
+          src="/assets/12188676_4890914_1768925874823.jpg" 
           alt="" 
           className="w-full h-full object-cover"
         />
@@ -1451,7 +1451,7 @@ function Footer() {
               className="mb-6"
             >
               <img 
-                src="/attached_assets/Design_sem_nome_(8)_1768922683736.png" 
+                src="/assets/Design_sem_nome_(8)_1768922683736.png" 
                 alt="PetiçõesBR - Mobilização Digital" 
                 className="h-14 w-auto brightness-0 invert"
               />
@@ -1546,7 +1546,7 @@ function Footer() {
               rel="noopener noreferrer"
               className="inline-flex items-center hover:opacity-80 transition-opacity"
             >
-              <img src="/attached_assets/image_1768930971152.png" alt="WesccTech" className="h-12" />
+              <img src="/assets/image_1768930971152.png" alt="WesccTech" className="h-12" />
             </a>
           </p>
           <div className="flex gap-6 text-sm">

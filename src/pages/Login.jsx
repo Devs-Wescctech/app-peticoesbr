@@ -58,7 +58,7 @@ export default function Login() {
           <div className="max-w-xl mx-auto w-full">
             <div className="mb-6 animate-fade-in">
               <img 
-                src="/attached_assets/Design_sem_nome_(7)_1768923086680.png" 
+                src="/assets/Design_sem_nome_(7)_1768923086680.png" 
                 alt="PetiçõesBR - Sistema de Gestão de Petições" 
                 className="h-32 lg:h-40 xl:h-48 w-auto"
               />
@@ -101,7 +101,7 @@ export default function Login() {
         <div className="w-full max-w-md animate-fade-in">
           <div className="lg:hidden mb-8 text-center">
             <img 
-              src="/attached_assets/Design_sem_nome_(8)_1768922683736.png" 
+              src="/assets/Design_sem_nome_(8)_1768922683736.png" 
               alt="PetiçõesBR" 
               className="h-16 w-auto mx-auto"
             />
