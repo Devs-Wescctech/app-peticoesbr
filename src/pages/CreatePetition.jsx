@@ -57,6 +57,7 @@ export default function CreatePetition() {
     collect_cpf: false,
     collect_comment: true,
     lgpd_text: "Ao assinar, você concorda em receber atualizações sobre esta petição",
+    video_url: "",
   });
 
   const { data: existingPetition, isLoading: loadingPetition } = useQuery({
@@ -89,6 +90,7 @@ export default function CreatePetition() {
         collect_cpf: !!existingPetition.collect_cpf,
         collect_comment: !!existingPetition.collect_comment,
         lgpd_text: existingPetition.lgpd_text || "Ao assinar, você concorda em receber atualizações sobre esta petição",
+        video_url: existingPetition.video_url || "",
       });
     }
   }, [existingPetition]);
@@ -120,6 +122,7 @@ export default function CreatePetition() {
         collect_cpf: !!data.collect_cpf,
         collect_comment: !!data.collect_comment,
         lgpd_text: data.lgpd_text || null,
+        video_url: data.video_url || null,
       };
       
       if (editingId) {
@@ -388,6 +391,23 @@ export default function CreatePetition() {
                       </div>
                     )}
                   </div>
+                </div>
+
+                {/* Video URL */}
+                <div>
+                  <Label htmlFor="video_url" className="text-sm font-semibold mb-1.5 block">
+                    Vídeo (alternativa à logo)
+                  </Label>
+                  <Input
+                    id="video_url"
+                    value={formData.video_url}
+                    onChange={(e) => handleChange("video_url", e.target.value)}
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    className="mt-1.5"
+                  />
+                  <p className="text-xs text-gray-600 mt-1">
+                    Cole a URL de um vídeo do YouTube, Vimeo ou link direto MP4. Se preenchido, o vídeo aparecerá no lugar da logo.
+                  </p>
                 </div>
 
                 {/* Banner Upload */}

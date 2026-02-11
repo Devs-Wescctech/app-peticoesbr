@@ -236,6 +236,38 @@ export default function PetitionLanding() {
     alert('Link copiado para área de transferência!');
   };
 
+  const renderVideo = (url) => {
+    const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]+)/);
+    if (ytMatch) {
+      return (
+        <iframe
+          src={`https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0`}
+          className="w-full aspect-video rounded-2xl shadow-2xl border-4 border-white/20"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      );
+    }
+    const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+    if (vimeoMatch) {
+      return (
+        <iframe
+          src={`https://player.vimeo.com/video/${vimeoMatch[1]}`}
+          className="w-full aspect-video rounded-2xl shadow-2xl border-4 border-white/20"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
+        />
+      );
+    }
+    return (
+      <video
+        src={url}
+        controls
+        className="w-full aspect-video rounded-2xl shadow-2xl border-4 border-white/20 object-cover"
+      />
+    );
+  };
+
   return (
     <div className="min-h-screen bg-black">
       {/* Hero Section - Full Screen with Background Image */}
@@ -266,8 +298,14 @@ export default function PetitionLanding() {
           <div className="max-w-5xl mx-auto">
             {/* Removed the old success toast based on `showSuccess` */}
 
-            {/* Logo/Image Principal */}
-            {petition.logo_url && (
+            {/* Logo/Image Principal ou Vídeo */}
+            {petition.video_url ? (
+              <div className="flex justify-center mb-8">
+                <div className="relative w-full max-w-lg">
+                  {renderVideo(petition.video_url)}
+                </div>
+              </div>
+            ) : petition.logo_url ? (
               <div className="flex justify-center mb-8">
                 <div className="relative group">
                   <div className="absolute -inset-4 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity" style={{ background: `linear-gradient(to right, ${primaryColor}, ${primaryColor}cc, ${primaryColor}99)` }} />
@@ -280,7 +318,7 @@ export default function PetitionLanding() {
                   </div>
                 </div>
               </div>
-            )}
+            ) : null}
 
             {/* Main Title */}
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight tracking-tight text-center">

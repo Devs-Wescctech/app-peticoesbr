@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS petitions (
     description TEXT NOT NULL,
     banner_url TEXT,
     logo_url TEXT,
+    video_url TEXT,
     primary_color VARCHAR(7) DEFAULT '#6366f1',
     share_text TEXT,
     goal INTEGER NOT NULL CHECK (goal > 0),
