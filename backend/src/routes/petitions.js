@@ -190,7 +190,7 @@ router.get('/:id/pdf', authenticate, requireTenant, async (req, res) => {
     const petition = petitionResult.rows[0];
 
     const signaturesResult = await pool.query(
-      'SELECT * FROM signatures WHERE petition_id = $1 ORDER BY created_at ASC',
+      'SELECT * FROM signatures WHERE petition_id = $1 ORDER BY created_date ASC',
       [id]
     );
 
@@ -267,7 +267,7 @@ router.get('/:id/pdf', authenticate, requireTenant, async (req, res) => {
       doc.text(String(index + 1), colNum + 5, rowY, { width: 35 });
       doc.text(sig.name || '-', colName + 5, rowY, { width: 185 });
       doc.text(sig.email || '-', colEmail + 5, rowY, { width: 165 });
-      doc.text(sig.created_at ? formatDate(sig.created_at) : '-', colDate + 5, rowY, { width: 95 });
+      doc.text(sig.created_date ? formatDate(sig.created_date) : '-', colDate + 5, rowY, { width: 95 });
 
       doc.y += rowHeight;
     });
