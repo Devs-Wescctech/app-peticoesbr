@@ -477,59 +477,69 @@ export default function PetitionDetails() {
             </Card>
 
             {/* Actions */}
-            <Card className="border-none shadow-xl">
-              <CardHeader>
-                <CardTitle>Ações</CardTitle>
+            <Card className="border-none shadow-xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 pb-3">
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-indigo-600" />
+                  Ações Rápidas
+                </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 space-y-3">
-                <Button
-                  className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 font-semibold shadow-md"
-                  onClick={handleShare}
-                >
-                  <Share2 className="w-4 h-4 mr-2" />
-                  Compartilhar Petição
-                </Button>
-                <a href={publicUrl} target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" className="w-full font-medium border-2 hover:bg-gray-50">
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    Ver Landing Page
-                  </Button>
-                </a>
-                <Button
-                  variant="outline"
-                  className="w-full font-medium border-2 hover:bg-gray-50"
-                  onClick={downloadCSV}
-                  disabled={signatureCount === 0}
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  Baixar CSV ({signatureCount})
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full font-medium border-2 hover:bg-gray-50"
-                  onClick={downloadPdf}
-                  disabled={signatureCount === 0 || downloadingPdf}
-                >
-                  {downloadingPdf ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <FileText className="w-4 h-4 mr-2" />
-                  )}
-                  {downloadingPdf ? 'Gerando PDF...' : 'Baixar Abaixo-Assinado (PDF)'}
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full font-medium border-2 hover:bg-gray-50"
-                  onClick={downloadQrCode}
-                  disabled={downloadingQr}
-                >
-                  {downloadingQr ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <QrCode className="w-4 h-4 mr-2" />
-                  )}
-                  {downloadingQr ? 'Gerando...' : 'Baixar QR Code'}
-                </Button>
+              <CardContent className="p-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={handleShare}
+                    className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-95"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                      <Share2 className="w-5 h-5" />
+                    </div>
+                    <span className="text-xs font-semibold">Compartilhar</span>
+                  </button>
+
+                  <a href={publicUrl} target="_blank" rel="noopener noreferrer" className="contents">
+                    <button
+                      className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-95"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                        <ExternalLink className="w-5 h-5" />
+                      </div>
+                      <span className="text-xs font-semibold">Landing Page</span>
+                    </button>
+                  </a>
+
+                  <button
+                    onClick={downloadCSV}
+                    disabled={signatureCount === 0}
+                    className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gradient-to-br from-emerald-500 to-green-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-95 disabled:opacity-50 disabled:hover:scale-100"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                      <Download className="w-5 h-5" />
+                    </div>
+                    <span className="text-xs font-semibold">CSV ({signatureCount})</span>
+                  </button>
+
+                  <button
+                    onClick={downloadPdf}
+                    disabled={signatureCount === 0 || downloadingPdf}
+                    className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-95 disabled:opacity-50 disabled:hover:scale-100"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                      {downloadingPdf ? <Loader2 className="w-5 h-5 animate-spin" /> : <FileText className="w-5 h-5" />}
+                    </div>
+                    <span className="text-xs font-semibold">{downloadingPdf ? 'Gerando...' : 'PDF Assinado'}</span>
+                  </button>
+
+                  <button
+                    onClick={downloadQrCode}
+                    disabled={downloadingQr}
+                    className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-95 disabled:opacity-50 disabled:hover:scale-100 col-span-2"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                      {downloadingQr ? <Loader2 className="w-5 h-5 animate-spin" /> : <QrCode className="w-5 h-5" />}
+                    </div>
+                    <span className="text-xs font-semibold">{downloadingQr ? 'Gerando...' : 'QR Code'}</span>
+                  </button>
+                </div>
               </CardContent>
             </Card>
 
