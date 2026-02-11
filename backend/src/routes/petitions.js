@@ -190,8 +190,8 @@ router.get('/:id/pdf', authenticate, requireTenant, async (req, res) => {
     const petition = petitionResult.rows[0];
 
     const signaturesResult = await pool.query(
-      'SELECT * FROM signatures WHERE petition_id = $1 AND tenant_id = $2 ORDER BY created_at ASC',
-      [id, tenantId]
+      'SELECT * FROM signatures WHERE petition_id = $1 ORDER BY created_at ASC',
+      [id]
     );
 
     const signatures = signaturesResult.rows;
@@ -302,7 +302,9 @@ router.get('/:id/qrcode', authenticate, requireTenant, async (req, res) => {
     }
 
     const petition = result.rows[0];
-    const publicUrl = `${req.protocol}://${req.get('host')}/p?s=${petition.slug}`;
+    const forwardedProto = req.get('x-forwarded-proto') || req.protocol;
+    const forwardedHost = req.get('x-forwarded-host') || req.get('host');
+    const publicUrl = `${forwardedProto}://${forwardedHost}/p?s=${petition.slug}`;
 
     const qrBuffer = await QRCode.toBuffer(publicUrl, {
       type: 'png',
