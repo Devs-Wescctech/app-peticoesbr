@@ -172,7 +172,7 @@ router.delete('/:id', authenticate, requireTenant, async (req, res) => {
   }
 });
 
-// GET /api/petitions/:id/pdf - Generate PDF with petition details and signatures
+// GET /api/petitions/:id/pdf - Generate formal parliamentary PDF (abaixo-assinado)
 router.get('/:id/pdf', authenticate, requireTenant, async (req, res) => {
   try {
     const { id } = req.params;
@@ -198,6 +198,7 @@ router.get('/:id/pdf', authenticate, requireTenant, async (req, res) => {
     const accentColor = petition.primary_color || '#6366f1';
 
     const formatDate = (date) => {
+      if (!date) return '-';
       const d = new Date(date);
       const day = String(d.getDate()).padStart(2, '0');
       const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -205,79 +206,205 @@ router.get('/:id/pdf', authenticate, requireTenant, async (req, res) => {
       return `${day}/${month}/${year}`;
     };
 
-    const doc = new PDFDocument({ size: 'A4', margin: 50 });
+    const margin = 60;
+    const doc = new PDFDocument({ size: 'A4', margin, bufferPages: true });
 
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="peticao-${petition.slug}.pdf"`);
+    res.setHeader('Content-Disposition', `attachment; filename="abaixo-assinado-${petition.slug}.pdf"`);
 
     doc.pipe(res);
 
-    doc.rect(0, 0, doc.page.width, 4).fill(accentColor);
+    const pageWidth = doc.page.width;
+    const contentWidth = pageWidth - margin * 2;
+    const pageHeight = doc.page.height;
+    const footerY = pageHeight - 45;
+    const bottomLimit = footerY - 20;
 
-    doc.fontSize(22).fillColor(accentColor).text(petition.title, 50, 30, { align: 'center' });
-    doc.moveDown(0.5);
+    const showCityState = petition.collect_city || petition.collect_state;
 
-    doc.moveTo(50, doc.y).lineTo(doc.page.width - 50, doc.y).strokeColor(accentColor).lineWidth(1).stroke();
-    doc.moveDown(0.5);
-
-    if (petition.description) {
-      doc.fontSize(11).fillColor('#333333').text(petition.description, { align: 'justify' });
-      doc.moveDown(1);
+    const colNum = margin;
+    const colNumW = 35;
+    const colName = colNum + colNumW;
+    const colDateW = 75;
+    const colDate = margin + contentWidth - colDateW;
+    let colCityW = 0;
+    let colCity = colDate;
+    if (showCityState) {
+      colCityW = 100;
+      colCity = colDate - colCityW;
     }
-
-    doc.fontSize(12).fillColor('#000000').text(`Total de assinaturas: ${signatures.length}`, { continued: petition.goal ? true : false });
-    if (petition.goal) {
-      doc.text(` / Meta: ${petition.goal}`);
-    }
-    doc.moveDown(1);
-
-    const tableTop = doc.y;
-    const colNum = 50;
-    const colName = 90;
-    const colEmail = 280;
-    const colDate = 450;
+    const colNameW = colCity - colName;
     const rowHeight = 20;
 
-    const drawTableHeader = () => {
-      doc.rect(colNum, doc.y, doc.page.width - 100, rowHeight).fill(accentColor);
-      doc.fontSize(10).fillColor('#FFFFFF');
-      doc.text('#', colNum + 5, doc.y + 5, { width: 35 });
-      doc.text('Nome', colName + 5, doc.y + 5, { width: 185 });
-      doc.text('Email', colEmail + 5, doc.y + 5, { width: 165 });
-      doc.text('Data', colDate + 5, doc.y + 5, { width: 95 });
-      doc.y += rowHeight;
+    const drawTableHeader = (yPos) => {
+      doc.rect(colNum, yPos, contentWidth, rowHeight).fill(accentColor);
+      const textY = yPos + 5;
+      doc.fontSize(9).fillColor('#FFFFFF');
+      doc.text('#', colNum + 4, textY, { width: colNumW - 4, lineBreak: false });
+      doc.text('Nome Completo', colName + 4, textY, { width: colNameW - 4, lineBreak: false });
+      if (showCityState) {
+        doc.text('Cidade/UF', colCity + 4, textY, { width: colCityW - 4, lineBreak: false });
+      }
+      doc.text('Data', colDate + 4, textY, { width: colDateW - 4, lineBreak: false });
       doc.fillColor('#000000');
+      return yPos + rowHeight;
     };
 
-    drawTableHeader();
-
-    signatures.forEach((sig, index) => {
-      if (doc.y + rowHeight > doc.page.height - 80) {
-        doc.addPage();
-        doc.rect(0, 0, doc.page.width, 4).fill(accentColor);
-        doc.y = 30;
-        drawTableHeader();
-      }
-
-      const bgColor = index % 2 === 0 ? '#F9FAFB' : '#FFFFFF';
-      doc.rect(colNum, doc.y, doc.page.width - 100, rowHeight).fill(bgColor);
-
-      const rowY = doc.y + 5;
-      doc.fontSize(9).fillColor('#333333');
-      doc.text(String(index + 1), colNum + 5, rowY, { width: 35 });
-      doc.text(sig.name || '-', colName + 5, rowY, { width: 185 });
-      doc.text(sig.email || '-', colEmail + 5, rowY, { width: 165 });
-      doc.text(sig.created_date ? formatDate(sig.created_date) : '-', colDate + 5, rowY, { width: 95 });
-
-      doc.y += rowHeight;
+    // === PAGE 1: HEADER ===
+    doc.fontSize(18).fillColor(accentColor).text('ABAIXO-ASSINADO', margin, margin, {
+      align: 'center',
+      width: contentWidth,
     });
 
-    doc.moveDown(2);
-    const footerY = doc.page.height - 50;
-    doc.fontSize(8).fillColor('#999999').text(
-      `Documento gerado em ${formatDate(new Date())}`,
-      50, footerY, { align: 'center', width: doc.page.width - 100 }
+    let currentY = doc.y + 8;
+    doc.moveTo(margin, currentY).lineTo(pageWidth - margin, currentY).strokeColor(accentColor).lineWidth(1.5).stroke();
+    currentY += 15;
+
+    doc.fontSize(13).fillColor('#000000').text(petition.title, margin, currentY, {
+      align: 'center',
+      width: contentWidth,
+    });
+    currentY = doc.y + 20;
+
+    doc.fontSize(11).fillColor('#1a1a1a').text(
+      'Nós, cidadãos brasileiros abaixo-assinados, vimos por meio deste documento manifestar nosso posicionamento e reivindicar providências sobre a seguinte matéria:',
+      margin, currentY, { align: 'justify', width: contentWidth }
     );
+    currentY = doc.y + 12;
+
+    if (petition.description) {
+      doc.fontSize(10).fillColor('#333333').text(petition.description, margin, currentY, {
+        align: 'justify',
+        width: contentWidth,
+      });
+      currentY = doc.y + 20;
+    }
+
+    // === SUMMARY BOX ===
+    const boxPadding = 10;
+    let summaryLines = [`Total de assinaturas: ${signatures.length}`];
+    if (petition.goal) {
+      summaryLines.push(`Meta: ${petition.goal} assinaturas`);
+    }
+    if (signatures.length > 0) {
+      const firstDate = formatDate(signatures[0].created_date);
+      const lastDate = formatDate(signatures[signatures.length - 1].created_date);
+      summaryLines.push(`Período: ${firstDate} a ${lastDate}`);
+    }
+    summaryLines.push(`Documento gerado em: ${formatDate(new Date())}`);
+
+    const summaryTextHeight = summaryLines.length * 16 + boxPadding * 2;
+    doc.rect(margin, currentY, contentWidth, summaryTextHeight).lineWidth(0.5).strokeColor('#999999').stroke();
+    let summaryTextY = currentY + boxPadding;
+    summaryLines.forEach((line) => {
+      doc.fontSize(9).fillColor('#333333').text(line, margin + boxPadding, summaryTextY, {
+        width: contentWidth - boxPadding * 2,
+        lineBreak: false,
+      });
+      summaryTextY += 16;
+    });
+    currentY = currentY + summaryTextHeight + 20;
+
+    // === SIGNATURE TABLE ===
+    if (signatures.length === 0) {
+      doc.fontSize(11).fillColor('#666666').text(
+        'Nenhuma assinatura registrada até o momento.',
+        margin, currentY, { align: 'center', width: contentWidth }
+      );
+      currentY = doc.y + 30;
+    } else {
+      doc.fontSize(11).fillColor('#000000').text('LISTA DE SIGNATÁRIOS', margin, currentY, {
+        align: 'center',
+        width: contentWidth,
+      });
+      currentY = doc.y + 10;
+
+      currentY = drawTableHeader(currentY);
+
+      signatures.forEach((sig, index) => {
+        if (currentY + rowHeight > bottomLimit) {
+          doc.addPage();
+          currentY = margin;
+          currentY = drawTableHeader(currentY);
+        }
+
+        const bgColor = index % 2 === 0 ? '#F5F5F5' : '#FFFFFF';
+        doc.rect(colNum, currentY, contentWidth, rowHeight).fill(bgColor);
+
+        const textY = currentY + 5;
+        doc.fontSize(8).fillColor('#1a1a1a');
+        doc.text(String(index + 1), colNum + 4, textY, { width: colNumW - 4, lineBreak: false });
+        doc.text(sig.name || '-', colName + 4, textY, { width: colNameW - 8, lineBreak: false });
+        if (showCityState) {
+          const cityState = [sig.city, sig.state].filter(Boolean).join('/') || '-';
+          doc.text(cityState, colCity + 4, textY, { width: colCityW - 4, lineBreak: false });
+        }
+        doc.text(formatDate(sig.created_date), colDate + 4, textY, { width: colDateW - 4, lineBreak: false });
+
+        currentY += rowHeight;
+      });
+
+      doc.moveTo(colNum, currentY).lineTo(colNum + contentWidth, currentY).strokeColor('#999999').lineWidth(0.5).stroke();
+      currentY += 5;
+    }
+
+    // === CLOSING SECTION ===
+    if (currentY + 120 > bottomLimit) {
+      doc.addPage();
+      currentY = margin;
+    }
+
+    currentY += 25;
+    doc.fontSize(10).fillColor('#000000').text(
+      'Local e data: __________________________________________, _______ de _________________________ de ____________',
+      margin, currentY, { align: 'left', width: contentWidth }
+    );
+    currentY = doc.y + 40;
+
+    doc.moveTo(margin + 100, currentY).lineTo(pageWidth - margin - 100, currentY).strokeColor('#000000').lineWidth(0.5).stroke();
+    currentY += 5;
+    doc.fontSize(9).fillColor('#333333').text('Assinatura do(a) representante', margin, currentY, {
+      align: 'center',
+      width: contentWidth,
+    });
+    currentY = doc.y + 5;
+    doc.fontSize(8).fillColor('#666666').text('(Responsável pela entrega deste documento)', margin, currentY, {
+      align: 'center',
+      width: contentWidth,
+    });
+
+    // === LGPD NOTICE ===
+    if (petition.lgpd_text) {
+      currentY = doc.y + 20;
+      if (currentY + 60 > bottomLimit) {
+        doc.addPage();
+        currentY = margin;
+      }
+      doc.fontSize(7).fillColor('#888888').text(
+        'Aviso de Privacidade (LGPD):',
+        margin, currentY, { width: contentWidth }
+      );
+      currentY = doc.y + 2;
+      doc.fontSize(7).fillColor('#888888').text(petition.lgpd_text, margin, currentY, {
+        align: 'justify',
+        width: contentWidth,
+      });
+    }
+
+    // === PAGE NUMBERS AND FOOTERS (second pass) ===
+    const range = doc.bufferedPageRange();
+    const totalPages = range.count;
+    for (let i = range.start; i < range.start + totalPages; i++) {
+      doc.switchToPage(i);
+      doc.fontSize(7).fillColor('#999999').text(
+        petition.title,
+        margin, footerY, { align: 'left', width: contentWidth, lineBreak: false }
+      );
+      doc.fontSize(7).fillColor('#999999').text(
+        `Página ${i + 1} de ${totalPages}`,
+        margin, footerY, { align: 'right', width: contentWidth, lineBreak: false }
+      );
+    }
 
     doc.end();
   } catch (error) {
@@ -302,9 +429,23 @@ router.get('/:id/qrcode', authenticate, requireTenant, async (req, res) => {
     }
 
     const petition = result.rows[0];
-    const forwardedProto = req.get('x-forwarded-proto') || req.protocol;
-    const forwardedHost = req.get('x-forwarded-host') || req.get('host');
-    const publicUrl = `${forwardedProto}://${forwardedHost}/p?s=${petition.slug}`;
+    
+    // Determine the base URL for the QR code
+    let baseUrl;
+    if (process.env.PUBLIC_URL) {
+      // Production: use PUBLIC_URL environment variable (e.g., https://peticoesbr.com.br)
+      baseUrl = process.env.PUBLIC_URL.replace(/\/$/, ''); // Remove trailing slash if present
+    } else if (process.env.REPLIT_DEV_DOMAIN) {
+      // Replit development: use REPLIT_DEV_DOMAIN environment variable
+      baseUrl = `https://${process.env.REPLIT_DEV_DOMAIN}`;
+    } else {
+      // Fallback: use request headers (for local development)
+      const forwardedProto = req.get('x-forwarded-proto') || 'https';
+      const forwardedHost = req.get('x-forwarded-host') || req.get('host');
+      baseUrl = `${forwardedProto}://${forwardedHost}`;
+    }
+    
+    const publicUrl = `${baseUrl}/p?s=${petition.slug}`;
 
     const qrBuffer = await QRCode.toBuffer(publicUrl, {
       type: 'png',
