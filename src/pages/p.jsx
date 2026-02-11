@@ -553,85 +553,77 @@ export default function PetitionLanding() {
       </div>
 
       <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
-        <DialogContent className="max-w-2xl p-0 border-0 bg-transparent overflow-hidden">
+        <DialogContent className="max-w-md p-0 border-0 bg-transparent overflow-hidden max-h-[90vh] overflow-y-auto">
           <div className="relative">
-            <div 
-              className="absolute inset-0 opacity-20 blur-3xl"
-              style={{ background: `radial-gradient(circle, ${primaryColor} 0%, transparent 70%)` }}
-            />
-            
             <Card className="border-none shadow-2xl bg-white/95 backdrop-blur-xl overflow-hidden">
               <div 
-                className="relative p-8 text-center"
+                className="relative p-5 text-center"
                 style={{ 
                   background: `linear-gradient(135deg, ${primaryColor} 0%, ${primaryColor}dd 100%)` 
                 }}
               >
                 <button
                   onClick={() => setShowSuccessModal(false)}
-                  className="absolute top-4 right-4 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
+                  className="absolute top-3 right-3 w-7 h-7 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
                 >
-                  <X className="w-5 h-5 text-white" />
+                  <X className="w-4 h-4 text-white" />
                 </button>
 
-                <div className="w-24 h-24 mx-auto mb-4 bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center animate-bounce">
-                  <CheckCircle className="w-14 h-14 text-white" />
+                <div className="w-16 h-16 mx-auto mb-3 bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-10 h-10 text-white" />
                 </div>
-                <h2 className="text-4xl font-black text-white mb-2">
+                <h2 className="text-2xl font-black text-white mb-1">
                   Obrigado por Assinar!
                 </h2>
-                <p className="text-white/90 text-lg">
-                  Sua voz foi ouvida! Agora compartilhe para amplificar o impacto
+                <p className="text-white/90 text-sm">
+                  Compartilhe para amplificar o impacto
                 </p>
               </div>
 
-              <CardContent className="p-8">
-                <div className="grid grid-cols-3 gap-4 mb-8">
-                  <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
-                    <Sparkles className="w-8 h-8 mx-auto mb-2 text-green-600" />
-                    <p className="text-2xl font-black text-gray-900">{(signatureCountValue + (showSuccessModal ? 1 : 0)).toLocaleString('pt-BR')}</p>
-                    <p className="text-xs text-gray-600">Assinaturas</p>
+              <CardContent className="p-5">
+                <div className="grid grid-cols-3 gap-2 mb-5">
+                  <div className="text-center p-2.5 bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg">
+                    <p className="text-lg font-black text-gray-900">{(signatureCountValue + (showSuccessModal ? 1 : 0)).toLocaleString('pt-BR')}</p>
+                    <p className="text-[10px] text-gray-600">Assinaturas</p>
                   </div>
-                  <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl">
-                    <Target className="w-8 h-8 mx-auto mb-2 text-blue-600" />
-                    <p className="text-2xl font-black text-gray-900">{petition.goal.toLocaleString('pt-BR')}</p>
-                    <p className="text-xs text-gray-600">Meta</p>
+                  <div className="text-center p-2.5 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg">
+                    <p className="text-lg font-black text-gray-900">{petition.goal.toLocaleString('pt-BR')}</p>
+                    <p className="text-[10px] text-gray-600">Meta</p>
                   </div>
-                  <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl">
-                    <TrendingUp className="w-8 h-8 mx-auto mb-2 text-purple-600" />
-                    <p className="text-2xl font-black text-gray-900">{Math.min(((signatureCountValue + (showSuccessModal ? 1 : 0)) / petition.goal) * 100, 100).toFixed(0)}%</p>
-                    <p className="text-xs text-gray-600">Progresso</p>
+                  <div className="text-center p-2.5 bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg">
+                    <p className="text-lg font-black text-gray-900">{Math.min(((signatureCountValue + (showSuccessModal ? 1 : 0)) / petition.goal) * 100, 100).toFixed(0)}%</p>
+                    <p className="text-[10px] text-gray-600">Progresso</p>
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  <h3 className="text-xl font-black text-gray-900 text-center mb-4">
+                <div className="space-y-3">
+                  <h3 className="text-sm font-bold text-gray-900 text-center">
                     Compartilhe nas Redes Sociais
                   </h3>
                   
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-3 gap-2">
                     {socialShares.map((social) => (
                       <button
                         key={social.name}
                         onClick={() => handleShare(social)}
-                        className={`flex flex-col items-center gap-2 p-4 rounded-xl bg-gradient-to-br ${social.color} text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105`}
+                        className={`flex flex-col items-center gap-1 p-2.5 rounded-lg bg-gradient-to-br ${social.color} text-white font-bold shadow hover:shadow-md transition-all duration-300 hover:scale-105`}
                       >
-                        <social.icon className="w-8 h-8" />
-                        <span className="text-sm">{social.name}</span>
+                        <social.icon className="w-5 h-5" />
+                        <span className="text-[10px]">{social.name}</span>
                       </button>
                     ))}
                     <button
                       onClick={copyLink}
-                      className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gradient-to-br from-gray-600 to-gray-700 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                      className="flex flex-col items-center gap-1 p-2.5 rounded-lg bg-gradient-to-br from-gray-600 to-gray-700 text-white font-bold shadow hover:shadow-md transition-all duration-300 hover:scale-105"
                     >
-                      <LinkIcon className="w-8 h-8" />
-                      <span className="text-sm">Copiar Link</span>
+                      <LinkIcon className="w-5 h-5" />
+                      <span className="text-[10px]">Copiar Link</span>
                     </button>
                   </div>
 
                   <Button
                     onClick={() => setShowSuccessModal(false)}
-                    className="w-full mt-6 h-14 text-lg font-bold"
+                    className="w-full mt-3 h-11 text-sm font-bold"
                     style={{
                       background: `linear-gradient(135deg, ${primaryColor} 0%, ${primaryColor}dd 100%)`
                     }}
