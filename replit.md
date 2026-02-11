@@ -24,10 +24,10 @@ The frontend uses Radix UI for accessible components, styled with TailwindCSS fo
 - **Multi-Tenancy**: A central `control-plane` schema manages tenants. All data tables include a `tenant_id` column for row-level tenant isolation, enforced by API middleware.
 - **Super Admin System**: A dedicated super administrator with system-wide privileges can manage all tenants and users. This includes an AdminDashboard with real-time statistics, tenant management (activate/suspend/delete), and user overview.
 - **Authentication & Route Protection**: JWT-based authentication with refresh token rotation is implemented, supporting email/password and ready for Google OAuth. JWTs include `tenantId` and `isSuperAdmin` flags. All private routes are protected, redirecting unauthenticated users to a dedicated login page.
-- **Petition Management**: CRUD operations for petitions, including goal tracking, slug generation, and signature collection, are tenant-scoped.
+- **Petition Management**: CRUD operations for petitions, including goal tracking, slug generation, signature collection, and customizable LGPD text, are tenant-scoped. The petition page background color uses the petition's primary_color dynamically (not hardcoded).
 - **Campaign Tools**: Creation and management of WhatsApp campaigns with tenant scoping, real-time progress updates, and message templates.
 - **Link Pages**: Builders for "Link Bio" and "Link Tree" pages with custom slugs, all tenant-isolated.
-- **Signature Management**: Functionality for importing and managing petition signatures with tenant validation.
+- **Signature Management**: Functionality for importing and managing petition signatures with tenant validation. Email is optional; only name is required.
 - **File Uploads**: Local storage for petition banners and logos.
 - **API Client**: Custom fetch-based client with a Base44 wrapper for frontend-backend communication.
 - **Environment Variables**: Configurable `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, and `VITE_BASE_URL`.
