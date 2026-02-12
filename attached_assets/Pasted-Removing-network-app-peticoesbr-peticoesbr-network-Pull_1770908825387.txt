@@ -1,0 +1,67 @@
+Removing network app-peticoesbr_peticoesbr-network
+Pulling backend  ... done
+Pulling frontend ... done
+Creating network "app-peticoesbr_peticoesbr-network" with driver "bridge"
+Creating peticoesbr-backend ... done
+Creating peticoesbr-frontend ... done
+sup_wescc@srvappsprod:/var/www/html/app-peticoesbr$ ls
+docker-compose.yml  uploads
+sup_wescc@srvappsprod:/var/www/html/app-peticoesbr$ cat /var/www/html/peticoesbr/.env
+cat: /var/www/html/peticoesbr/.env: No such file or directory
+sup_wescc@srvappsprod:/var/www/html/app-peticoesbr$ cat /var/www/html/app-peticoesbr/.env
+cat: /var/www/html/app-peticoesbr/.env: No such file or directory
+sup_wescc@srvappsprod:/var/www/html/app-peticoesbr$ cat /var/www/html/app-peticoesbr/docker-compose.yml
+version: '3.8'
+
+services:
+  backend:
+    image: ghcr.io/devs-wescctech/app-peticoesbr-backend:latest
+    container_name: peticoesbr-backend
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      # ⚠️ Preencher com os MESMOS valores que você usa hoje no servidor antigo
+      - NODE_ENV=production
+      - PORT=3001
+      - DATABASE_URL=postgresql://auth_bd:4uth@1307BD@172.17.0.1:5432/peticoesbr
+      - JWT_SECRET=2Iz5EHu2ZKRnebbtxV+R/e1JcPxjX/zcF68Xt5q/mXo=
+      - JWT_REFRESH_SECRET=Rluyhnj/nLYM7C/gr+mCCQguNGP6J4uuzFDDqG+uyoQ=
+    volumes:
+      - /var/www/html/app-peticoesbr/uploads:/app/uploads
+    networks:
+      - peticoesbr-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+
+  frontend:
+    image: ghcr.io/devs-wescctech/app-peticoesbr-frontend:latest
+    container_name: peticoesbr-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"     # front exposto na 3000 (Nginx já aponta pra 127.0.0.1:3000)
+    depends_on:
+      - backend
+    networks:
+      - peticoesbr-network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+networks:
+  peticoesbr-network:
+    driver: bridge
+sup_wescc@srvappsprod:/var/www/html/app-peticoesbr$ ls -la /var/www/html/app-peticoesbr/
+total 16
+drwxr-xr-x 3 sup_wescc sup_wescc 4096 Dec  8 21:26 .
+drwxr-xr-x 6 root      root      4096 Feb  9 12:18 ..
+-rw-rw-r-- 1 sup_wescc sup_wescc 1361 Dec  2 20:59 docker-compose.yml
+drwxr-xr-x 2 sup_wescc sup_wescc 4096 Feb  5 11:11 uploads
+sup_wescc@srvappsprod:/var/www/html/app-peticoesbr$ 
