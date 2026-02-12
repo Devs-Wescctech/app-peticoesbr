@@ -157,22 +157,31 @@ app.get('/api/share/petition/:slug', async (req, res) => {
       metaTags += `\n  <meta name="twitter:image" content="${absoluteImageUrl}" />`;
     }
 
+    const userAgent = (req.get('user-agent') || '').toLowerCase();
+    const isBot = /facebookexternalhit|facebot|whatsapp|twitterbot|linkedinbot|telegrambot|slackbot|discordbot|googlebot|bingbot|yandex|baiduspider|duckduckbot|pinterest|embedly|quora|outbrain|vkshare|skype/i.test(userAgent);
+
+    let bodyContent;
+    if (isBot) {
+      bodyContent = `<p>${escapedTitle}</p><p>${escapedDescription}</p>`;
+    } else {
+      bodyContent = `<p>Redirecionando...</p>
+  <script>window.location.href = '${redirectUrl}';</script>`;
+    }
+
     const html = `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-${metaTags}
-  <meta http-equiv="refresh" content="0;url=${redirectUrl}">
+${metaTags}${isBot ? '' : `\n  <meta http-equiv="refresh" content="0;url=${redirectUrl}">`}
 </head>
 <body>
-  <p>Redirecionando...</p>
-  <script>window.location.href = '${redirectUrl}';</script>
+  ${bodyContent}
 </body>
 </html>`;
 
     res.set('Content-Type', 'text/html');
-    res.send(html);
+    res.status(200).send(html);
   } catch (error) {
     console.error('Error in OG share route:', error);
     res.redirect('/');
