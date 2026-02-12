@@ -127,10 +127,9 @@ app.get('/api/share/petition/:slug', async (req, res) => {
         absoluteImageUrl = `${baseUrl}${imageUrl.startsWith('/') ? imageUrl : '/' + imageUrl}`;
       }
     }
-    const canonicalUrl = `${baseUrl}/p?s=${escapedSlug}`;
+    const shareUrl = `${baseUrl}/api/share/petition/${escapedSlug}`;
     const redirectUrl = `/p?s=${escapedSlug}`;
 
-    // Start building the HTML with meta tags
     let metaTags = `  <title>${escapedTitle}</title>
   <meta property="og:title" content="${escapedTitle}" />
   <meta property="og:description" content="${escapedDescription}" />`;
@@ -138,11 +137,14 @@ app.get('/api/share/petition/:slug', async (req, res) => {
     if (absoluteImageUrl) {
       metaTags += `
   <meta property="og:image" content="${absoluteImageUrl}" />
-  <meta property="og:image:secure_url" content="${absoluteImageUrl}" />`;
+  <meta property="og:image:secure_url" content="${absoluteImageUrl}" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />`;
     }
 
     metaTags += `
-  <meta property="og:url" content="${canonicalUrl}" />
+  <meta property="og:url" content="${shareUrl}" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="PetiçõesBR" />
   <meta name="twitter:card" content="summary_large_image" />
