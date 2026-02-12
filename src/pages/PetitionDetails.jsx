@@ -37,6 +37,7 @@ export default function PetitionDetails() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [sigPage, setSigPage] = useState(1);
   const [downloadingPdf, setDownloadingPdf] = useState(false);
   const [downloadingQr, setDownloadingQr] = useState(false);
 
@@ -86,6 +87,8 @@ export default function PetitionDetails() {
     ? `${window.location.origin}${createPageUrl(`p?s=${petition.slug}`)}`
     : `${window.location.origin}${createPageUrl(`PetitionLanding?id=${petition.id}`)}`;
 
+  const sigsPerPage = 10;
+
   // Analytics
   const signaturesByDay = signatures.reduce((acc, sig) => {
     const date = new Date(sig.created_date).toLocaleDateString('pt-BR');
@@ -93,9 +96,17 @@ export default function PetitionDetails() {
     return acc;
   }, {});
 
-  const last7Days = Object.entries(signaturesByDay)
-    .slice(-7)
-    .map(([date, count]) => ({ date, count }));
+  const last7Days = (() => {
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const key = d.toLocaleDateString('pt-BR');
+      const label = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`;
+      days.push({ date: label, count: signaturesByDay[key] || 0 });
+    }
+    return days;
+  })();
 
   const citiesCount = signatures.reduce((acc, sig) => {
     if (sig.city) {
@@ -299,22 +310,26 @@ export default function PetitionDetails() {
                 </div>
 
                 {/* Últimos 7 dias */}
-                {last7Days.length > 0 && (
-                  <div className="mt-6">
-                    <h4 className="font-semibold text-gray-900 mb-3">Assinaturas nos Últimos 7 Dias</h4>
-                    <div className="flex items-end justify-between gap-2 h-32">
-                      {last7Days.map((day, index) => (
-                        <div key={index} className="flex-1 flex flex-col items-center gap-2">
-                          <div 
-                            className="w-full bg-gradient-to-t from-indigo-500 to-purple-500 rounded-t"
-                            style={{ height: `${(day.count / Math.max(...last7Days.map(d => d.count))) * 100}%` }}
+                <div className="mt-6">
+                  <h4 className="font-semibold text-gray-900 mb-3">Assinaturas nos Últimos 7 Dias</h4>
+                  <div className="flex items-end justify-between gap-2" style={{ height: '160px' }}>
+                    {last7Days.map((day, index) => {
+                      const maxCount = Math.max(...last7Days.map(d => d.count), 1);
+                      const barPercent = maxCount > 0 ? (day.count / maxCount) * 100 : 0;
+                      const barHeight = day.count > 0 ? Math.max(barPercent, 8) : 4;
+                      return (
+                        <div key={index} className="flex-1 flex flex-col items-center justify-end h-full">
+                          <span className="text-xs font-semibold text-gray-700 mb-1">{day.count}</span>
+                          <div
+                            className="w-full max-w-[40px] bg-gradient-to-t from-indigo-500 to-purple-500 rounded-t-md"
+                            style={{ height: `${barHeight}%` }}
                           />
-                          <span className="text-xs text-gray-600">{day.count}</span>
+                          <span className="text-xs text-gray-500 mt-1">{day.date}</span>
                         </div>
-                      ))}
-                    </div>
+                      );
+                    })}
                   </div>
-                )}
+                </div>
               </CardContent>
             </Card>
 
@@ -370,12 +385,12 @@ export default function PetitionDetails() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Users className="w-5 h-5" />
-                  Assinaturas Recentes ({signatureCount})
+                  Assinaturas ({signatureCount})
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <div className="space-y-4 max-h-96 overflow-y-auto">
-                  {signatures.slice(0, 20).map((signature) => (
+                <div className="space-y-4">
+                  {signatures.slice((sigPage - 1) * sigsPerPage, sigPage * sigsPerPage).map((signature) => (
                     <div
                       key={signature.id}
                       className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
@@ -437,6 +452,29 @@ export default function PetitionDetails() {
                     </p>
                   )}
                 </div>
+                {signatureCount > sigsPerPage && (
+                  <div className="flex items-center justify-between mt-6 pt-4 border-t">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setSigPage(p => Math.max(1, p - 1))}
+                      disabled={sigPage === 1}
+                    >
+                      Anterior
+                    </Button>
+                    <span className="text-sm text-gray-600">
+                      Página {sigPage} de {Math.ceil(signatureCount / sigsPerPage)}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setSigPage(p => Math.min(Math.ceil(signatureCount / sigsPerPage), p + 1))}
+                      disabled={sigPage >= Math.ceil(signatureCount / sigsPerPage)}
+                    >
+                      Próxima
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
