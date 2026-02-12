@@ -87,12 +87,12 @@ export default function PetitionLanding() {
       if (!response.ok) {
         const text = await response.text();
         console.error('Error response:', text);
+        let errorMsg = `Erro ao assinar: ${response.status}`;
         try {
-          const error = JSON.parse(text);
-          throw new Error(error.error || 'Erro ao assinar petição');
-        } catch (e) {
-          throw new Error(`Erro ao assinar: ${response.status} - ${text.substring(0, 100)}`);
-        }
+          const errorData = JSON.parse(text);
+          errorMsg = errorData.error || errorMsg;
+        } catch (e) {}
+        throw new Error(errorMsg);
       }
       return response.json();
     },

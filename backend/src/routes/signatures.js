@@ -42,13 +42,24 @@ router.post('/public', async (req, res) => {
     }
 
     const ipAddress = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || null;
+    const cleanEmail = email && email.trim() !== '' ? email.trim() : null;
+
+    if (cleanEmail) {
+      const existingSignature = await pool.query(
+        'SELECT id FROM signatures WHERE petition_id = $1 AND email = $2',
+        [petition_id, cleanEmail]
+      );
+      if (existingSignature.rows.length > 0) {
+        return res.status(409).json({ error: 'Este email já assinou esta petição.' });
+      }
+    }
     
     const result = await pool.query(
       `INSERT INTO signatures (
         petition_id, name, email, phone, city, state, cpf, comment, ip_address
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING *`,
-      [petition_id, name, email, phone, city, state, cpf, comment, ipAddress]
+      [petition_id, name, cleanEmail, phone || null, city || null, state || null, cpf || null, comment || null, ipAddress]
     );
     
     res.status(201).json(result.rows[0]);
