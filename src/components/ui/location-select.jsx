@@ -210,16 +210,20 @@ function fetchAllMunicipios() {
   if (cachedMunicipios) return Promise.resolve(cachedMunicipios);
   if (fetchPromise) return fetchPromise;
   fetchPromise = fetch("https://servicodados.ibge.gov.br/api/v1/localidades/municipios?orderBy=nome")
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error("Erro ao carregar municípios");
+      return res.json();
+    })
     .then(data => {
       cachedMunicipios = data.map(m => ({
         id: m.id,
         nome: m.nome,
-        uf: m.microrregiao.mesorregiao.UF.sigla,
+        uf: m.microrregiao?.mesorregiao?.UF?.sigla || "",
       }));
       return cachedMunicipios;
     })
-    .catch(() => {
+    .catch((err) => {
+      console.error("Erro ao carregar municípios IBGE:", err);
       fetchPromise = null;
       return [];
     });
@@ -236,26 +240,40 @@ export function CidadeUnificadaSelect({
 }) {
   const [municipios, setMunicipios] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-  const [inputValue, setInputValue] = React.useState("");
+  const [loadError, setLoadError] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState("");
   const [showDropdown, setShowDropdown] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(-1);
+  const [isSelected, setIsSelected] = React.useState(false);
   const wrapperRef = React.useRef(null);
   const inputRef = React.useRef(null);
 
   React.useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setLoadError(false);
     fetchAllMunicipios().then(data => {
-      setMunicipios(data);
+      if (cancelled) return;
+      if (!data || data.length === 0) {
+        setLoadError(true);
+      }
+      setMunicipios(data || []);
       setLoading(false);
     });
+    return () => { cancelled = true; };
   }, []);
+
+  const displayValue = React.useMemo(() => {
+    if (isSelected && cityValue && stateValue) {
+      return `${cityValue} - ${stateValue}`;
+    }
+    return searchTerm;
+  }, [isSelected, cityValue, stateValue, searchTerm]);
 
   React.useEffect(() => {
     if (cityValue && stateValue) {
-      setInputValue(`${cityValue} - ${stateValue}`);
-    } else if (cityValue) {
-      setInputValue(cityValue);
-    } else {
-      setInputValue("");
+      setIsSelected(true);
+      setSearchTerm("");
     }
   }, [cityValue, stateValue]);
 
@@ -273,17 +291,18 @@ export function CidadeUnificadaSelect({
     str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
   const filtered = React.useMemo(() => {
-    if (inputValue.length < 3) return [];
-    const term = normalizeStr(inputValue);
+    if (!searchTerm || searchTerm.length < 2) return [];
+    const term = normalizeStr(searchTerm);
     return municipios.filter(m => normalizeStr(m.nome).includes(term));
-  }, [inputValue, municipios]);
+  }, [searchTerm, municipios]);
 
   const displayedResults = filtered.slice(0, 20);
   const hasMore = filtered.length > 20;
 
   function handleInputChange(e) {
     const val = e.target.value;
-    setInputValue(val);
+    setSearchTerm(val);
+    setIsSelected(false);
     setSelectedIndex(-1);
     setShowDropdown(true);
     if (cityValue || stateValue) {
@@ -295,9 +314,24 @@ export function CidadeUnificadaSelect({
   function handleSelect(m) {
     onCityChange(m.nome);
     onStateChange(m.uf);
-    setInputValue(`${m.nome} - ${m.uf}`);
+    setSearchTerm("");
+    setIsSelected(true);
     setShowDropdown(false);
     setSelectedIndex(-1);
+  }
+
+  function handleRetry() {
+    cachedMunicipios = null;
+    fetchPromise = null;
+    setLoading(true);
+    setLoadError(false);
+    fetchAllMunicipios().then(data => {
+      if (!data || data.length === 0) {
+        setLoadError(true);
+      }
+      setMunicipios(data || []);
+      setLoading(false);
+    });
   }
 
   function handleKeyDown(e) {
@@ -322,12 +356,20 @@ export function CidadeUnificadaSelect({
         <input
           ref={inputRef}
           type="text"
-          value={inputValue}
+          value={displayValue}
           onChange={handleInputChange}
-          onFocus={() => inputValue.length >= 3 && setShowDropdown(true)}
+          onFocus={() => {
+            if (isSelected) {
+              setSearchTerm("");
+              setIsSelected(false);
+              onCityChange("");
+              onStateChange("");
+            }
+            if (searchTerm.length >= 2) setShowDropdown(true);
+          }}
           onKeyDown={handleKeyDown}
           disabled={disabled || loading}
-          placeholder={loading ? "Carregando cidades..." : placeholder}
+          placeholder={loading ? "Carregando cidades..." : loadError ? "Erro ao carregar. Toque para tentar novamente." : placeholder}
           className={cn(
             "flex h-11 w-full rounded-md border-2 border-input bg-white px-3 py-2 text-sm",
             "ring-offset-background placeholder:text-muted-foreground",
@@ -335,6 +377,9 @@ export function CidadeUnificadaSelect({
             "disabled:cursor-not-allowed disabled:opacity-50",
             "pr-10"
           )}
+          onClick={() => {
+            if (loadError && !loading) handleRetry();
+          }}
         />
         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
           {loading ? (
@@ -345,11 +390,11 @@ export function CidadeUnificadaSelect({
         </div>
       </div>
 
-      {showDropdown && inputValue.length >= 3 && !loading && (
+      {showDropdown && searchTerm.length >= 2 && !loading && !isSelected && (
         <div className="absolute z-50 mt-1 w-full rounded-md border bg-white shadow-lg max-h-[260px] overflow-y-auto">
           {displayedResults.length === 0 ? (
             <div className="px-3 py-3 text-sm text-muted-foreground text-center">
-              Nenhuma cidade encontrada.
+              {municipios.length === 0 ? "Erro ao carregar cidades. Recarregue a página." : "Nenhuma cidade encontrada."}
             </div>
           ) : (
             <>
