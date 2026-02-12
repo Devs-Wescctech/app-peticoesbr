@@ -1,0 +1,28 @@
+Creating peticoesbr-backend ... done
+Creating peticoesbr-frontend ... done
+sup_wescc@srvappsprod:/var/www/html/app-peticoesbr$ curl -s -H "User-Agent: facebookexternalhit/1.1" http://127.0.0.1:3001/api/share/petition/se-voce-e-a-favor-de-que-o-preso-detento-trabalhe-enquanto-cumpre-a-pena-participe-deste-abaixo-assinado-depois-deixe-seu-comentario-e-sua-opiniao-ela-e-importante-para-mim-e-para-o-rio-grande-do-sul | grep og:image
+  <meta property="og:image" content="https://peticoesbr.com.br/uploads/whatsapp-image-2026-02-05-at-08-39-25-1770300657629-480219100.jpeg" />
+  <meta property="og:image:secure_url" content="https://peticoesbr.com.br/uploads/whatsapp-image-2026-02-05-at-08-39-25-1770300657629-480219100.jpeg" />
+sup_wescc@srvappsprod:/var/www/html/app-peticoesbr$ curl -s -H "User-Agent: facebookexternalhit/1.1" http://127.0.0.1:3001/api/share/petition/se-voce-e-a-favor-de-que-o-preso-detento-trabalhe-enquanto-cumpre-a-pena-participe-deste-abaixo-assinado-depois-deixe-seu-comentario-e-sua-opiniao-ela-e-importante-para-mim-e-para-o-rio-grande-do-sul
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOCÊ CONCORDA EM COLOCAR OS PRESOS A TRABALHAR? ENTÃO APOIE E ASSINE ESSE ABAIXO ASSINADO.</title>
+  <meta property="og:title" content="VOCÊ CONCORDA EM COLOCAR OS PRESOS A TRABALHAR? ENTÃO APOIE E ASSINE ESSE ABAIXO ASSINADO." />
+  <meta property="og:description" content="Em 2025, o Secretário dos Sistemas Penal e Socioeducativo, Jorge Pozzobom colocou em prática o Projeto MÃOS QUE RECONSTROEM, que fomenta a utilização da mão de obra de pessoas privadas de liberdade pa" />
+  <meta property="og:image" content="https://peticoesbr.com.br/uploads/whatsapp-image-2026-02-05-at-08-39-25-1770300657629-480219100.jpeg" />
+  <meta property="og:image:secure_url" content="https://peticoesbr.com.br/uploads/whatsapp-image-2026-02-05-at-08-39-25-1770300657629-480219100.jpeg" />
+  <meta property="og:url" content="https://peticoesbr.com.br/p?s=se-voce-e-a-favor-de-que-o-preso-detento-trabalhe-enquanto-cumpre-a-pena-participe-deste-abaixo-assinado-depois-deixe-seu-comentario-e-sua-opiniao-ela-e-importante-para-mim-e-para-o-rio-grande-do-sul" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="PetiçõesBR" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="VOCÊ CONCORDA EM COLOCAR OS PRESOS A TRABALHAR? ENTÃO APOIE E ASSINE ESSE ABAIXO ASSINADO." />
+  <meta name="twitter:description" content="Em 2025, o Secretário dos Sistemas Penal e Socioeducativo, Jorge Pozzobom colocou em prática o Projeto MÃOS QUE RECONSTROEM, que fomenta a utilização da mão de obra de pessoas privadas de liberdade pa" />
+  <meta name="twitter:image" content="https://peticoesbr.com.br/uploads/whatsapp-image-2026-02-05-at-08-39-25-1770300657629-480219100.jpeg" />
+</head>
+<body>
+  <p>VOCÊ CONCORDA EM COLOCAR OS PRESOS A TRABALHAR? ENTÃO APOIE E ASSINE ESSE ABAIXO ASSINADO.</p><p>Em 2025, o Secretário dos Sistemas Penal e Socioeducativo, Jorge Pozzobom colocou em prática o Projeto MÃOS QUE RECONSTROEM, que fomenta a utilização da mão de obra de pessoas privadas de liberdade pa</p>
+</body>
+</html>sup_wescc@srvappsprod:/var/www/html/app-peticoesbr$ 
