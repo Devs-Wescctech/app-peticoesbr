@@ -82,10 +82,13 @@ export default function PetitionDetails() {
   const signatureCount = signatures.length;
   const progress = Math.min((signatureCount / petition.goal) * 100, 100);
   
-  // Gera a URL pública correta - CORRIGIDO
   const publicUrl = petition.slug 
     ? `${window.location.origin}${createPageUrl(`p?s=${petition.slug}`)}`
     : `${window.location.origin}${createPageUrl(`PetitionLanding?id=${petition.id}`)}`;
+
+  const shareUrl = petition.slug
+    ? `${window.location.origin}/api/share/petition/${petition.slug}`
+    : publicUrl;
 
   const sigsPerPage = 10;
 
@@ -150,7 +153,7 @@ export default function PetitionDetails() {
   };
 
   const copyLink = () => {
-    navigator.clipboard.writeText(publicUrl);
+    navigator.clipboard.writeText(shareUrl);
     alert('Link copiado para a área de transferência!');
   };
 
@@ -208,13 +211,13 @@ export default function PetitionDetails() {
         await navigator.share({
           title: petition.title,
           text: petition.description,
-          url: publicUrl,
+          url: shareUrl,
         });
       } catch (error) {
         console.log('Compartilhamento cancelado');
       }
     } else {
-      navigator.clipboard.writeText(publicUrl);
+      navigator.clipboard.writeText(shareUrl);
       alert('Link copiado para a área de transferência!');
     }
   };

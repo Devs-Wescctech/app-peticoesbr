@@ -125,10 +125,13 @@ export default function PetitionLanding() {
   const progress = Math.min((signatureCountValue / petition.goal) * 100, 100);
   const primaryColor = petition.primary_color || "#6366f1";
   const landingUrl = window.location.href;
+  const ogShareUrl = slug
+    ? `${window.location.origin}/api/share/petition/${slug}`
+    : landingUrl;
   
   const shareText = petition.share_text 
-    ? petition.share_text.replace('{link}', landingUrl)
-    : `Acabei de assinar "${petition.title}". Junte-se a mim! ${landingUrl}`;
+    ? petition.share_text.replace('{link}', ogShareUrl)
+    : `Acabei de assinar "${petition.title}". Junte-se a mim! ${ogShareUrl}`;
 
   const socialShares = [
     {
@@ -141,7 +144,7 @@ export default function PetitionLanding() {
       name: "Facebook",
       icon: Facebook,
       color: "from-blue-600 to-blue-700",
-      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(landingUrl)}`
+      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogShareUrl)}`
     },
     {
       name: "Twitter",
@@ -153,13 +156,13 @@ export default function PetitionLanding() {
       name: "LinkedIn",
       icon: Linkedin,
       color: "from-blue-700 to-blue-800",
-      url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(landingUrl)}`
+      url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(ogShareUrl)}`
     },
     {
       name: "Telegram",
       icon: Send,
       color: "from-cyan-500 to-cyan-600",
-      url: `https://t.me/share/url?url=${encodeURIComponent(landingUrl)}&text=${encodeURIComponent(shareText)}`
+      url: `https://t.me/share/url?url=${encodeURIComponent(ogShareUrl)}&text=${encodeURIComponent(shareText)}`
     },
     {
       name: "Instagram",
@@ -177,7 +180,7 @@ export default function PetitionLanding() {
         await navigator.share({
           title: petition.title,
           text: shareText,
-          url: landingUrl,
+          url: ogShareUrl,
         });
       } catch (error) {
         console.log('Compartilhamento cancelado');
@@ -189,7 +192,7 @@ export default function PetitionLanding() {
   };
 
   const copyLink = () => {
-    navigator.clipboard.writeText(landingUrl);
+    navigator.clipboard.writeText(ogShareUrl);
     alert('Link copiado para área de transferência!');
   };
 
