@@ -16,7 +16,6 @@ import {
   Hash,
   MessageSquare,
   Mail,
-  Map,
   Eye,
   Save,
   Rocket,
@@ -54,7 +53,7 @@ export default function CreatePetition() {
     collect_email: false,
     collect_phone: false,
     collect_city: true,
-    collect_state: false,
+    collect_state: true,
     collect_cpf: false,
     collect_comment: true,
     lgpd_text: "Ao assinar, você concorda em receber atualizações sobre esta petição",
@@ -191,8 +190,13 @@ export default function CreatePetition() {
   const handleChange = (field, value) =>
     setFormData((prev) => ({ ...prev, [field]: value }));
 
-  const toggleField = (field) =>
-    setFormData((prev) => ({ ...prev, [field]: !prev[field] }));
+  const toggleField = (field) => {
+    if (field === 'collect_location') {
+      setFormData((prev) => ({ ...prev, collect_city: !prev.collect_city, collect_state: !prev.collect_state }));
+    } else {
+      setFormData((prev) => ({ ...prev, [field]: !prev[field] }));
+    }
+  };
 
   const collectionFields = [
     {
@@ -203,11 +207,11 @@ export default function CreatePetition() {
       description: "Coletar email do assinante",
     },
     {
-      id: "collect_city",
-      label: "Cidade",
+      id: "collect_location",
+      label: "Localidade",
       icon: MapPin,
       color: "from-blue-500 to-blue-600",
-      description: "Coletar cidade do assinante",
+      description: "Coletar cidade e estado do assinante",
     },
     {
       id: "collect_phone",
@@ -215,13 +219,6 @@ export default function CreatePetition() {
       icon: Phone,
       color: "from-green-500 to-green-600",
       description: "Coletar telefone do assinante",
-    },
-    {
-      id: "collect_state",
-      label: "Estado",
-      icon: Map,
-      color: "from-purple-500 to-purple-600",
-      description: "Coletar estado do assinante",
     },
     {
       id: "collect_cpf",
@@ -626,12 +623,14 @@ export default function CreatePetition() {
                     Campos a Coletar
                   </Label>
                   <div className="grid grid-cols-1 gap-2">
-                    {collectionFields.map((field) => (
+                    {collectionFields.map((field) => {
+                      const isActive = field.id === 'collect_location' ? formData.collect_city : formData[field.id];
+                      return (
                       <div
                         key={field.id}
                         onClick={() => toggleField(field.id)}
                         className={`relative cursor-pointer rounded-lg p-3 border-2 transition-all duration-300 ${
-                          formData[field.id]
+                          isActive
                             ? `border-transparent bg-gradient-to-br ${field.color} shadow-md`
                             : "border-gray-200 bg-white hover:border-gray-300"
                         }`}
@@ -639,12 +638,12 @@ export default function CreatePetition() {
                         <div className="flex items-center gap-2.5">
                           <div
                             className={`p-1.5 rounded-lg ${
-                              formData[field.id] ? "bg-white/20" : "bg-gray-50"
+                              isActive ? "bg-white/20" : "bg-gray-50"
                             }`}
                           >
                             <field.icon
                               className={`w-4 h-4 ${
-                                formData[field.id]
+                                isActive
                                   ? "text-white"
                                   : "text-gray-600"
                               }`}
@@ -653,7 +652,7 @@ export default function CreatePetition() {
                           <div className="flex-1">
                             <h4
                               className={`font-semibold text-sm ${
-                                formData[field.id] ? "text-white" : "text-gray-900"
+                                isActive ? "text-white" : "text-gray-900"
                               }`}
                             >
                               {field.label}
@@ -661,12 +660,12 @@ export default function CreatePetition() {
                           </div>
                           <div
                             className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                              formData[field.id]
+                              isActive
                                 ? "border-white bg-white"
                                 : "border-gray-300"
                             }`}
                           >
-                            {formData[field.id] && (
+                            {isActive && (
                               <div
                                 className={`w-2 h-2 rounded-full bg-gradient-to-br ${field.color}`}
                               />
@@ -674,7 +673,8 @@ export default function CreatePetition() {
                           </div>
                         </div>
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -788,17 +788,12 @@ export default function CreatePetition() {
                     </Badge>
                     {formData.collect_city && (
                       <Badge variant="secondary" className="text-xs">
-                        Cidade
+                        Localidade
                       </Badge>
                     )}
                     {formData.collect_phone && (
                       <Badge variant="secondary" className="text-xs">
                         Telefone
-                      </Badge>
-                    )}
-                    {formData.collect_state && (
-                      <Badge variant="secondary" className="text-xs">
-                        Estado
                       </Badge>
                     )}
                     {formData.collect_cpf && (
