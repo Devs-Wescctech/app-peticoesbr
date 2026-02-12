@@ -3,6 +3,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import sharp from 'sharp';
 import { initDatabase } from './utils/initDatabase.js';
 import pool from './config/database.js';
 
@@ -61,6 +62,29 @@ function escapeHtml(text) {
   return text.replace(/[&<>"'\/]/g, (char) => escapeMap[char]);
 }
 
+app.get('/api/og-image/:filename', async (req, res) => {
+  try {
+    const { filename } = req.params;
+    if (filename.includes('..')) {
+      return res.status(400).json({ error: 'Invalid filename' });
+    }
+    const filePath = path.join(__dirname, '../uploads', filename);
+    const compressed = await sharp(filePath)
+      .resize({ width: 1200, withoutEnlargement: true })
+      .jpeg({ quality: 80 })
+      .toBuffer();
+    res.set('Content-Type', 'image/jpeg');
+    res.set('Cache-Control', 'public, max-age=86400');
+    res.send(compressed);
+  } catch (error) {
+    if (error.message && error.message.includes('Input file is missing')) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+    console.error('Error serving OG image:', error);
+    res.status(404).json({ error: 'Image not found' });
+  }
+});
+
 app.get('/api/share/petition/:slug', async (req, res) => {
   try {
     const { slug } = req.params;
@@ -95,9 +119,15 @@ app.get('/api/share/petition/:slug', async (req, res) => {
     }
 
     const imageUrl = petition.logo_url || petition.banner_url || '';
-    const absoluteImageUrl = imageUrl
-      ? (imageUrl.startsWith('http') ? imageUrl : `${baseUrl}${imageUrl}`)
-      : '';
+    let absoluteImageUrl = '';
+    if (imageUrl) {
+      if (imageUrl.startsWith('http')) {
+        absoluteImageUrl = imageUrl;
+      } else {
+        const filename = imageUrl.split('/').pop();
+        absoluteImageUrl = `${baseUrl}/api/og-image/${filename}`;
+      }
+    }
     const canonicalUrl = `${baseUrl}/p?s=${escapedSlug}`;
     const redirectUrl = `/p?s=${escapedSlug}`;
 
