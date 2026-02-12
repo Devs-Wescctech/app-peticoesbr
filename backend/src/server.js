@@ -124,8 +124,7 @@ app.get('/api/share/petition/:slug', async (req, res) => {
       if (imageUrl.startsWith('http')) {
         absoluteImageUrl = imageUrl;
       } else {
-        const filename = imageUrl.split('/').pop();
-        absoluteImageUrl = `${baseUrl}/api/og-image/${filename}`;
+        absoluteImageUrl = `${baseUrl}${imageUrl.startsWith('/') ? imageUrl : '/' + imageUrl}`;
       }
     }
     const canonicalUrl = `${baseUrl}/p?s=${escapedSlug}`;
@@ -139,10 +138,7 @@ app.get('/api/share/petition/:slug', async (req, res) => {
     if (absoluteImageUrl) {
       metaTags += `
   <meta property="og:image" content="${absoluteImageUrl}" />
-  <meta property="og:image:secure_url" content="${absoluteImageUrl}" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />`;
+  <meta property="og:image:secure_url" content="${absoluteImageUrl}" />`;
     }
 
     metaTags += `
