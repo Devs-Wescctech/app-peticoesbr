@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { EstadoSelect, CidadeSelect } from "@/components/ui/location-select";
+import { EstadoSelect, CidadeSelect, CidadeUnificadaSelect } from "@/components/ui/location-select";
 import { 
   Users, 
   TrendingUp, 
@@ -433,35 +433,19 @@ export default function PetitionLanding() {
                     )}
 
                     {(petition.collect_state || petition.collect_city) && (
-                      <div className="grid grid-cols-2 gap-3">
-                        {petition.collect_state && (
-                          <div>
-                            <Label htmlFor="state" className="text-sm font-bold text-gray-900">
-                              Estado
-                            </Label>
-                            <div className="mt-1.5">
-                              <EstadoSelect
-                                value={formData.state}
-                                onChange={(value) => setFormData({...formData, state: value, city: ""})}
-                              />
-                            </div>
-                          </div>
-                        )}
-
-                        {petition.collect_city && (
-                          <div>
-                            <Label htmlFor="city" className="text-sm font-bold text-gray-900">
-                              Cidade
-                            </Label>
-                            <div className="mt-1.5">
-                              <CidadeSelect
-                                value={formData.city}
-                                onChange={(value) => setFormData({...formData, city: value})}
-                                uf={formData.state}
-                              />
-                            </div>
-                          </div>
-                        )}
+                      <div>
+                        <Label htmlFor="city" className="text-sm font-bold text-gray-900">
+                          Localidade
+                        </Label>
+                        <div className="mt-1.5">
+                          <CidadeUnificadaSelect
+                            cityValue={formData.city}
+                            stateValue={formData.state}
+                            onCityChange={(value) => setFormData(prev => ({...prev, city: value}))}
+                            onStateChange={(value) => setFormData(prev => ({...prev, state: value}))}
+                            placeholder="Digite sua cidade..."
+                          />
+                        </div>
                       </div>
                     )}
 

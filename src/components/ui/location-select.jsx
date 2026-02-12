@@ -202,3 +202,182 @@ export function CidadeSelect({ value, onChange, uf, disabled }) {
     </Popover>
   );
 }
+
+let cachedMunicipios = null;
+let fetchPromise = null;
+
+function fetchAllMunicipios() {
+  if (cachedMunicipios) return Promise.resolve(cachedMunicipios);
+  if (fetchPromise) return fetchPromise;
+  fetchPromise = fetch("https://servicodados.ibge.gov.br/api/v1/localidades/municipios?orderBy=nome")
+    .then(res => res.json())
+    .then(data => {
+      cachedMunicipios = data.map(m => ({
+        id: m.id,
+        nome: m.nome,
+        uf: m.microrregiao.mesorregiao.UF.sigla,
+      }));
+      return cachedMunicipios;
+    })
+    .catch(() => {
+      fetchPromise = null;
+      return [];
+    });
+  return fetchPromise;
+}
+
+export function CidadeUnificadaSelect({
+  cityValue,
+  stateValue,
+  onCityChange,
+  onStateChange,
+  disabled,
+  placeholder = "Digite o nome da cidade...",
+}) {
+  const [municipios, setMunicipios] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [inputValue, setInputValue] = React.useState("");
+  const [showDropdown, setShowDropdown] = React.useState(false);
+  const [selectedIndex, setSelectedIndex] = React.useState(-1);
+  const wrapperRef = React.useRef(null);
+  const inputRef = React.useRef(null);
+
+  React.useEffect(() => {
+    fetchAllMunicipios().then(data => {
+      setMunicipios(data);
+      setLoading(false);
+    });
+  }, []);
+
+  React.useEffect(() => {
+    if (cityValue && stateValue) {
+      setInputValue(`${cityValue} - ${stateValue}`);
+    } else if (cityValue) {
+      setInputValue(cityValue);
+    } else {
+      setInputValue("");
+    }
+  }, [cityValue, stateValue]);
+
+  React.useEffect(() => {
+    function handleClickOutside(e) {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const normalizeStr = (str) =>
+    str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+  const filtered = React.useMemo(() => {
+    if (inputValue.length < 3) return [];
+    const term = normalizeStr(inputValue);
+    return municipios.filter(m => normalizeStr(m.nome).includes(term));
+  }, [inputValue, municipios]);
+
+  const displayedResults = filtered.slice(0, 20);
+  const hasMore = filtered.length > 20;
+
+  function handleInputChange(e) {
+    const val = e.target.value;
+    setInputValue(val);
+    setSelectedIndex(-1);
+    setShowDropdown(true);
+    if (cityValue || stateValue) {
+      onCityChange("");
+      onStateChange("");
+    }
+  }
+
+  function handleSelect(m) {
+    onCityChange(m.nome);
+    onStateChange(m.uf);
+    setInputValue(`${m.nome} - ${m.uf}`);
+    setShowDropdown(false);
+    setSelectedIndex(-1);
+  }
+
+  function handleKeyDown(e) {
+    if (!showDropdown || displayedResults.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setSelectedIndex(prev => (prev < displayedResults.length - 1 ? prev + 1 : 0));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setSelectedIndex(prev => (prev > 0 ? prev - 1 : displayedResults.length - 1));
+    } else if (e.key === "Enter" && selectedIndex >= 0) {
+      e.preventDefault();
+      handleSelect(displayedResults[selectedIndex]);
+    } else if (e.key === "Escape") {
+      setShowDropdown(false);
+    }
+  }
+
+  return (
+    <div ref={wrapperRef} className="relative w-full">
+      <div className="relative">
+        <input
+          ref={inputRef}
+          type="text"
+          value={inputValue}
+          onChange={handleInputChange}
+          onFocus={() => inputValue.length >= 3 && setShowDropdown(true)}
+          onKeyDown={handleKeyDown}
+          disabled={disabled || loading}
+          placeholder={loading ? "Carregando cidades..." : placeholder}
+          className={cn(
+            "flex h-11 w-full rounded-md border-2 border-input bg-white px-3 py-2 text-sm",
+            "ring-offset-background placeholder:text-muted-foreground",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+            "disabled:cursor-not-allowed disabled:opacity-50",
+            "pr-10"
+          )}
+        />
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+          {loading ? (
+            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+          ) : (
+            <Search className="h-4 w-4 text-muted-foreground" />
+          )}
+        </div>
+      </div>
+
+      {showDropdown && inputValue.length >= 3 && !loading && (
+        <div className="absolute z-50 mt-1 w-full rounded-md border bg-white shadow-lg max-h-[260px] overflow-y-auto">
+          {displayedResults.length === 0 ? (
+            <div className="px-3 py-3 text-sm text-muted-foreground text-center">
+              Nenhuma cidade encontrada.
+            </div>
+          ) : (
+            <>
+              {displayedResults.map((m, idx) => (
+                <div
+                  key={m.id}
+                  className={cn(
+                    "px-3 py-2 text-sm cursor-pointer flex items-center gap-2",
+                    "hover:bg-gray-100",
+                    idx === selectedIndex && "bg-gray-100"
+                  )}
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => handleSelect(m)}
+                  onMouseEnter={() => setSelectedIndex(idx)}
+                >
+                  <span className="truncate">{m.nome}</span>
+                  <span className="text-muted-foreground shrink-0">- {m.uf}</span>
+                </div>
+              ))}
+              {hasMore && (
+                <div className="px-3 py-2 text-xs text-muted-foreground text-center border-t">
+                  Digite mais para refinar ({filtered.length} resultados)
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
