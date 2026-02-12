@@ -70,8 +70,8 @@ app.get('/api/og-image/:filename', async (req, res) => {
     }
     const filePath = path.join(__dirname, '../uploads', filename);
     const compressed = await sharp(filePath)
-      .resize({ width: 1200, withoutEnlargement: true })
-      .jpeg({ quality: 80 })
+      .resize({ width: 1200, height: 630, fit: 'cover', position: 'center' })
+      .jpeg({ quality: 75, progressive: true })
       .toBuffer();
     res.set('Content-Type', 'image/jpeg');
     res.set('Cache-Control', 'public, max-age=86400');
@@ -136,19 +136,23 @@ app.get('/api/share/petition/:slug', async (req, res) => {
   <meta property="og:title" content="${escapedTitle}" />
   <meta property="og:description" content="${escapedDescription}" />`;
 
-    // Only include og:image and twitter:image if images exist
     if (absoluteImageUrl) {
-      metaTags += `\n  <meta property="og:image" content="${absoluteImageUrl}" />`;
+      metaTags += `
+  <meta property="og:image" content="${absoluteImageUrl}" />
+  <meta property="og:image:secure_url" content="${absoluteImageUrl}" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />`;
     }
 
-    metaTags += `\n  <meta property="og:url" content="${canonicalUrl}" />
+    metaTags += `
+  <meta property="og:url" content="${canonicalUrl}" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="PetiçõesBR" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${escapedTitle}" />
   <meta name="twitter:description" content="${escapedDescription}" />`;
 
-    // Only include twitter:image if images exist
     if (absoluteImageUrl) {
       metaTags += `\n  <meta name="twitter:image" content="${absoluteImageUrl}" />`;
     }
