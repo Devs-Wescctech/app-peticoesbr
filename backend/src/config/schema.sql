@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS signatures (
     state VARCHAR(50),
     cpf VARCHAR(14),
     comment TEXT,
+    ip_address VARCHAR(45),
     created_by UUID REFERENCES users(id) ON DELETE SET NULL,
     created_date TIMESTAMP DEFAULT NOW(),
     updated_date TIMESTAMP DEFAULT NOW(),

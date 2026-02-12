@@ -109,6 +109,7 @@ export default function PetitionDetails() {
     .slice(0, 5);
 
   const downloadCSV = () => {
+    if (!signatures || signatures.length === 0) return;
     const csvData = signatures.map(sig => ({
       'Nome': sig.name,
       'Email': sig.email,
@@ -117,6 +118,7 @@ export default function PetitionDetails() {
       'Estado': sig.state || '',
       'CPF': sig.cpf || '',
       'Comentário': sig.comment || '',
+      'IP': sig.ip_address || '',
       'Data': new Date(sig.created_date).toLocaleDateString('pt-BR')
     }));
 

@@ -40,13 +40,15 @@ router.post('/public', async (req, res) => {
     if (petitionCheck.rows.length === 0) {
       return res.status(404).json({ error: 'Petition not found' });
     }
+
+    const ipAddress = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || null;
     
     const result = await pool.query(
       `INSERT INTO signatures (
-        petition_id, name, email, phone, city, state, cpf, comment
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        petition_id, name, email, phone, city, state, cpf, comment, ip_address
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING *`,
-      [petition_id, name, email, phone, city, state, cpf, comment]
+      [petition_id, name, email, phone, city, state, cpf, comment, ipAddress]
     );
     
     res.status(201).json(result.rows[0]);
@@ -129,12 +131,14 @@ router.post('/', authenticate, requireTenant, async (req, res) => {
       return res.status(404).json({ error: 'Petition not found' });
     }
     
+    const ipAddress = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || null;
+
     const result = await pool.query(
       `INSERT INTO signatures (
-        petition_id, name, email, phone, city, state, cpf, comment
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        petition_id, name, email, phone, city, state, cpf, comment, ip_address
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING *`,
-      [petition_id, name, email, phone, city, state, cpf, comment]
+      [petition_id, name, email, phone, city, state, cpf, comment, ipAddress]
     );
     
     res.status(201).json(result.rows[0]);

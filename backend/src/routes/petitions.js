@@ -231,13 +231,15 @@ router.get('/:id/pdf', authenticate, requireTenant, async (req, res) => {
     const colNum = margin;
     const colNumW = 30;
     const colName = colNum + colNumW;
-    const colDateW = 70;
+    const colDateW = 65;
+    const colIpW = 80;
     const colDate = margin + contentWidth - colDateW;
+    const colIp = colDate - colIpW;
     let colCityW = 0;
-    let colCity = colDate;
+    let colCity = colIp;
     if (showCityState) {
-      colCityW = 95;
-      colCity = colDate - colCityW;
+      colCityW = 85;
+      colCity = colIp - colCityW;
     }
     const colNameW = colCity - colName;
     const rowHeight = 18;
@@ -255,6 +257,7 @@ router.get('/:id/pdf', authenticate, requireTenant, async (req, res) => {
       if (showCityState) {
         doc.text('CIDADE / UF', colCity + 4, textY, { width: colCityW - 4, lineBreak: false });
       }
+      doc.text('IP ORIGEM', colIp + 4, textY, { width: colIpW - 4, lineBreak: false });
       doc.text('DATA', colDate + 4, textY, { width: colDateW - 4, lineBreak: false });
       doc.fillColor('#000000');
       return yPos + rowHeight + 2;
@@ -403,6 +406,9 @@ router.get('/:id/pdf', authenticate, requireTenant, async (req, res) => {
           doc.fontSize(8).fillColor('#555555');
           doc.text(cityState, colCity + 4, textY, { width: colCityW - 4, lineBreak: false });
         }
+        const ipText = sig.ip_address ? (sig.ip_address.length > 15 ? sig.ip_address.substring(0, 15) : sig.ip_address) : '-';
+        doc.fontSize(6.5).fillColor('#888888');
+        doc.text(ipText, colIp + 4, textY, { width: colIpW - 4, lineBreak: false });
         doc.fontSize(7.5).fillColor('#666666');
         doc.text(formatDate(sig.created_date), colDate + 4, textY, { width: colDateW - 4, lineBreak: false });
 
