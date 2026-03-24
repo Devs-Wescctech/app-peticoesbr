@@ -23,6 +23,7 @@ const LinkBioPages = lazy(() => import("./LinkBioPages"));
 const PPage = lazy(() => import("./p"));
 const BioPage = lazy(() => import("./bio"));
 const PetitionDemo = lazy(() => import("./PetitionDemo"));
+const TermosDeUso = lazy(() => import("./TermosDeUso"));
 
 const PAGES = {
   LandingPage,
@@ -94,6 +95,7 @@ function PagesContent() {
           <Route path="/p" element={<PPage />} />
           <Route path="/bio" element={<BioPage />} />
           <Route path="/petition-demo" element={<PetitionDemo />} />
+          <Route path="/termos-de-uso" element={<TermosDeUso />} />
           
           <Route path="/Login" element={<Navigate to="/login" replace />} />
           <Route path="/Dashboard" element={<Navigate to="/dashboard" replace />} />

@@ -39,6 +39,8 @@ export default function PetitionLanding() {
   const slug = urlParams.get('s');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [acceptedLgpd, setAcceptedLgpd] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -108,6 +110,7 @@ export default function PetitionLanding() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!acceptedTerms || !acceptedLgpd) return;
     signMutation.mutate({
       ...formData,
       petition_id: petition?.id,
@@ -482,12 +485,52 @@ export default function PetitionLanding() {
                       </div>
                     )}
 
+                    <div className="space-y-3 pt-1">
+                      <label className="flex items-start gap-3 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          checked={acceptedTerms}
+                          onChange={(e) => setAcceptedTerms(e.target.checked)}
+                          className="mt-0.5 h-4 w-4 rounded border-gray-300 accent-current shrink-0"
+                          style={{ accentColor: primaryColor }}
+                        />
+                        <span className="text-xs text-gray-600 leading-relaxed">
+                          Li e aceito os{" "}
+                          <a
+                            href="/termos-de-uso"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-semibold underline hover:opacity-80"
+                            style={{ color: primaryColor }}
+                          >
+                            Termos de Uso e Política de Privacidade
+                          </a>{" "}
+                          da plataforma Petição BR.
+                        </span>
+                      </label>
+
+                      <label className="flex items-start gap-3 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          checked={acceptedLgpd}
+                          onChange={(e) => setAcceptedLgpd(e.target.checked)}
+                          className="mt-0.5 h-4 w-4 rounded border-gray-300 accent-current shrink-0"
+                          style={{ accentColor: primaryColor }}
+                        />
+                        <span className="text-xs text-gray-600 leading-relaxed">
+                          {petition.lgpd_text || "Declaro estar ciente e de acordo com o tratamento dos meus dados pessoais conforme a Lei Geral de Proteção de Dados (LGPD) para os fins desta petição."}
+                        </span>
+                      </label>
+                    </div>
+
                     <Button
                       type="submit"
-                      disabled={signMutation.isPending}
-                      className="w-full text-white text-base h-14 font-black shadow-xl hover:shadow-2xl transition-all"
+                      disabled={signMutation.isPending || !acceptedTerms || !acceptedLgpd}
+                      className="w-full text-white text-base h-14 font-black shadow-xl hover:shadow-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       style={{
-                        background: `linear-gradient(135deg, ${primaryColor} 0%, ${primaryColor}dd 100%)`
+                        background: (!acceptedTerms || !acceptedLgpd)
+                          ? '#9ca3af'
+                          : `linear-gradient(135deg, ${primaryColor} 0%, ${primaryColor}dd 100%)`
                       }}
                     >
                       {signMutation.isPending ? (
@@ -502,10 +545,6 @@ export default function PetitionLanding() {
                         </>
                       )}
                     </Button>
-
-                    <p className="text-xs text-gray-500 text-center leading-relaxed">
-                      {petition.lgpd_text || "Ao assinar, você concorda em receber atualizações sobre esta petição"}
-                    </p>
                   </form>
                 </CardContent>
               </Card>
