@@ -240,16 +240,9 @@ export default function PetitionLanding() {
               src={petition.banner_url}
               alt=""
               className="absolute inset-0 w-full h-full object-cover"
-              style={{ objectPosition: 'center center', filter: 'blur(20px) brightness(0.5)', transform: 'scale(1.15)' }}
+              style={{ filter: 'blur(25px) brightness(0.7) saturate(1.2)', transform: 'scale(1.2)' }}
             />
-            <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-              <img
-                src={petition.banner_url}
-                alt=""
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/75" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/80" />
             <div className="absolute inset-0" style={{ background: `linear-gradient(to right, ${primaryColor}4D, ${primaryColor}4D)` }} />
           </div>
         ) : (
