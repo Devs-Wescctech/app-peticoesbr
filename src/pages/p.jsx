@@ -235,10 +235,12 @@ export default function PetitionLanding() {
     <div className="min-h-screen bg-black">
       <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {petition.banner_url ? (
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${petition.banner_url})` }}
-          >
+          <div className="absolute inset-0">
+            <img
+              src={petition.banner_url}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover object-center"
+            />
             <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/90" />
             <div className="absolute inset-0" style={{ background: `linear-gradient(to right, ${primaryColor}4D, ${primaryColor}4D)` }} />
           </div>
@@ -264,11 +266,11 @@ export default function PetitionLanding() {
               <div className="flex justify-center mb-8">
                 <div className="relative group">
                   <div className="absolute -inset-4 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity" style={{ background: `linear-gradient(to right, ${primaryColor}, ${primaryColor}cc, ${primaryColor}99)` }} />
-                  <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 backdrop-blur-sm">
+                  <div className="relative max-w-xs md:max-w-sm lg:max-w-md rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 backdrop-blur-sm">
                     <img
                       src={petition.logo_url}
                       alt={petition.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-auto max-h-[300px] md:max-h-[400px] object-contain"
                     />
                   </div>
                 </div>
