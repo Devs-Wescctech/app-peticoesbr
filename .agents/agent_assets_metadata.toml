@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "9wnVdDVp8iht2uTjCWI8l"
+uri = "file://attached_assets/recanto-maestro-1920x1080.jpeg"
+type = "image"
+title = "Recanto Maestro - 1920x1080"
