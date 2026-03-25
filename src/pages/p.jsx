@@ -147,7 +147,7 @@ export default function PetitionLanding() {
       name: "Facebook",
       icon: Facebook,
       color: "from-blue-600 to-blue-700",
-      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogShareUrl)}`
+      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogShareUrl)}&quote=${encodeURIComponent(shareText)}`
     },
     {
       name: "Twitter",
@@ -171,12 +171,21 @@ export default function PetitionLanding() {
       name: "Instagram",
       icon: Instagram,
       color: "from-pink-500 via-purple-500 to-orange-500",
-      url: `https://www.instagram.com/`
+      action: "instagram"
     },
   ];
 
   const handleShare = async (social) => {
-    if (social) {
+    if (social?.action === 'instagram') {
+      try {
+        await navigator.clipboard.writeText(ogShareUrl);
+        alert('Link copiado! Cole no seu post ou story do Instagram.');
+      } catch {
+        prompt('Copie o link abaixo para compartilhar no Instagram:', ogShareUrl);
+      }
+      return;
+    }
+    if (social?.url) {
       window.open(social.url, '_blank', 'width=600,height=400');
     } else if (navigator.share) {
       try {
