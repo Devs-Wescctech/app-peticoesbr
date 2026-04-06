@@ -6,6 +6,41 @@ import QRCode from 'qrcode';
 
 const router = express.Router();
 
+function encodeLgpdWithRequire(lgpdText, requireFlags) {
+  return JSON.stringify({
+    text: lgpdText || '',
+    require_email: !!requireFlags.require_email,
+    require_phone: !!requireFlags.require_phone,
+    require_location: !!requireFlags.require_location,
+    require_cpf: !!requireFlags.require_cpf,
+    require_comment: !!requireFlags.require_comment,
+  });
+}
+
+function decodeLgpdWithRequire(lgpdRaw) {
+  const defaults = { require_email: false, require_phone: false, require_location: false, require_cpf: false, require_comment: false };
+  if (!lgpdRaw) return { lgpd_text: '', ...defaults };
+  try {
+    const parsed = JSON.parse(lgpdRaw);
+    if (parsed && typeof parsed === 'object' && 'text' in parsed) {
+      return {
+        lgpd_text: parsed.text || '',
+        require_email: !!parsed.require_email,
+        require_phone: !!parsed.require_phone,
+        require_location: !!parsed.require_location,
+        require_cpf: !!parsed.require_cpf,
+        require_comment: !!parsed.require_comment,
+      };
+    }
+  } catch {}
+  return { lgpd_text: lgpdRaw, ...defaults };
+}
+
+function enrichPetition(row) {
+  const decoded = decodeLgpdWithRequire(row.lgpd_text);
+  return { ...row, ...decoded };
+}
+
 // GET /api/petitions - List all petitions for the authenticated tenant
 router.get('/', authenticate, requireTenant, async (req, res) => {
   try {
@@ -15,7 +50,7 @@ router.get('/', authenticate, requireTenant, async (req, res) => {
       'SELECT * FROM petitions WHERE tenant_id = $1 ORDER BY created_date DESC',
       [tenantId]
     );
-    res.json(result.rows);
+    res.json(result.rows.map(enrichPetition));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -36,7 +71,7 @@ router.get('/slug/:slug', async (req, res) => {
       return res.status(404).json({ error: 'Petition not found' });
     }
     
-    res.json(result.rows[0]);
+    res.json(enrichPetition(result.rows[0]));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -57,7 +92,7 @@ router.get('/:id', authenticate, requireTenant, async (req, res) => {
       return res.status(404).json({ error: 'Petition not found' });
     }
     
-    res.json(result.rows[0]);
+    res.json(enrichPetition(result.rows[0]));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -74,27 +109,27 @@ router.post('/', authenticate, requireTenant, async (req, res) => {
       require_email, require_phone, require_location, require_cpf, require_comment
     } = req.body;
     
+    const encodedLgpd = encodeLgpdWithRequire(lgpd_text, { require_email, require_phone, require_location, require_cpf, require_comment });
+    
     console.log('📝 Creating petition:', { title, slug, tenantId });
     
     const result = await pool.query(
       `INSERT INTO petitions (
         title, description, banner_url, logo_url, primary_color,
         share_text, goal, status, slug, collect_phone, collect_city,
-        collect_state, collect_cpf, collect_comment, tenant_id, lgpd_text, collect_email, video_url,
-        require_email, require_phone, require_location, require_cpf, require_comment
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23)
+        collect_state, collect_cpf, collect_comment, tenant_id, lgpd_text, collect_email, video_url
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
       RETURNING *`,
       [
         title, description, banner_url, logo_url, primary_color || '#6366f1',
         share_text, goal || 1, status || 'rascunho', slug,
         collect_phone || false, collect_city || false, collect_state || false,
-        collect_cpf || false, collect_comment || false, tenantId, lgpd_text || null, collect_email || false, video_url || null,
-        require_email || false, require_phone || false, require_location || false, require_cpf || false, require_comment || false
+        collect_cpf || false, collect_comment || false, tenantId, encodedLgpd, collect_email || false, video_url || null
       ]
     );
     
     console.log('✅ Petition created:', result.rows[0].id);
-    res.status(201).json(result.rows[0]);
+    res.status(201).json(enrichPetition(result.rows[0]));
   } catch (error) {
     console.error('❌ Error creating petition:', error.message, error.code);
     if (error.code === '23505') {
@@ -116,6 +151,23 @@ router.put('/:id', authenticate, requireTenant, async (req, res) => {
       require_email, require_phone, require_location, require_cpf, require_comment
     } = req.body;
     
+    let encodedLgpd = undefined;
+    const hasLgpdOrRequire = lgpd_text !== undefined || require_email !== undefined || require_phone !== undefined || require_location !== undefined || require_cpf !== undefined || require_comment !== undefined;
+    if (hasLgpdOrRequire) {
+      const current = await pool.query('SELECT lgpd_text FROM petitions WHERE id = $1 AND tenant_id = $2', [id, tenantId]);
+      const currentDecoded = current.rows.length > 0 ? decodeLgpdWithRequire(current.rows[0].lgpd_text) : {};
+      encodedLgpd = encodeLgpdWithRequire(
+        lgpd_text !== undefined ? lgpd_text : currentDecoded.lgpd_text,
+        {
+          require_email: require_email !== undefined ? require_email : currentDecoded.require_email,
+          require_phone: require_phone !== undefined ? require_phone : currentDecoded.require_phone,
+          require_location: require_location !== undefined ? require_location : currentDecoded.require_location,
+          require_cpf: require_cpf !== undefined ? require_cpf : currentDecoded.require_cpf,
+          require_comment: require_comment !== undefined ? require_comment : currentDecoded.require_comment,
+        }
+      );
+    }
+    
     const result = await pool.query(
       `UPDATE petitions SET
         title = COALESCE($1, title),
@@ -132,22 +184,16 @@ router.put('/:id', authenticate, requireTenant, async (req, res) => {
         collect_state = COALESCE($12, collect_state),
         collect_cpf = COALESCE($13, collect_cpf),
         collect_comment = COALESCE($14, collect_comment),
-        lgpd_text = $15,
+        lgpd_text = COALESCE($15, lgpd_text),
         collect_email = COALESCE($16, collect_email),
         video_url = $17,
-        require_email = COALESCE($20, require_email),
-        require_phone = COALESCE($21, require_phone),
-        require_location = COALESCE($22, require_location),
-        require_cpf = COALESCE($23, require_cpf),
-        require_comment = COALESCE($24, require_comment),
         updated_date = CURRENT_TIMESTAMP
       WHERE id = $18 AND tenant_id = $19
       RETURNING *`,
       [
         title, description, banner_url, logo_url, primary_color,
         share_text, goal, status, slug, collect_phone, collect_city,
-        collect_state, collect_cpf, collect_comment, lgpd_text || null, collect_email, video_url || null, id, tenantId,
-        require_email ?? null, require_phone ?? null, require_location ?? null, require_cpf ?? null, require_comment ?? null
+        collect_state, collect_cpf, collect_comment, encodedLgpd || null, collect_email, video_url || null, id, tenantId
       ]
     );
     
@@ -155,7 +201,7 @@ router.put('/:id', authenticate, requireTenant, async (req, res) => {
       return res.status(404).json({ error: 'Petition not found' });
     }
     
-    res.json(result.rows[0]);
+    res.json(enrichPetition(result.rows[0]));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -197,7 +243,7 @@ router.get('/:id/pdf', authenticate, requireTenant, async (req, res) => {
       return res.status(404).json({ error: 'Petition not found' });
     }
 
-    const petition = petitionResult.rows[0];
+    const petition = enrichPetition(petitionResult.rows[0]);
 
     const signaturesResult = await pool.query(
       'SELECT * FROM signatures WHERE petition_id = $1 ORDER BY created_date ASC',

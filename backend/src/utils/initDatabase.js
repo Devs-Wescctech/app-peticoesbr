@@ -27,20 +27,6 @@ export async function initDatabase() {
     await pool.query(tenantSchemaSQL);
     console.log('✅ Tenant schema created');
     
-    console.log('🔄 Adding require fields to petitions...');
-    const requireFields = [
-      'require_email', 'require_phone', 'require_location', 'require_cpf', 'require_comment'
-    ];
-    for (const field of requireFields) {
-      await pool.query(`
-        DO $$ BEGIN
-          ALTER TABLE petitions ADD COLUMN ${field} BOOLEAN DEFAULT false;
-        EXCEPTION WHEN duplicate_column THEN NULL;
-        END $$;
-      `);
-    }
-    console.log('✅ Require fields ready');
-
     console.log('✅ Database schema initialized successfully');
   } catch (error) {
     console.error('❌ Error initializing database:', error);
