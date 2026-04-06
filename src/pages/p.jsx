@@ -147,11 +147,19 @@ export default function PetitionLanding() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!acceptedTerms || !acceptedLgpd) return;
+    if ((petition.collect_city || petition.collect_state) && petition.require_location && !formData.city) {
+      alert('Por favor, informe sua localidade.');
+      return;
+    }
     if (petition.collect_cpf && formData.cpf) {
       if (!validateCpf(formData.cpf)) {
         setCpfError('CPF inválido');
         return;
       }
+    }
+    if (petition.collect_cpf && petition.require_cpf && !formData.cpf) {
+      setCpfError('CPF é obrigatório');
+      return;
     }
     signMutation.mutate({
       ...formData,
@@ -459,7 +467,7 @@ export default function PetitionLanding() {
                       {petition.collect_email && (
                         <div>
                           <Label htmlFor="email" className="text-sm font-bold text-gray-900">
-                            Email
+                            Email {petition.require_email && <span className="text-red-500">*</span>}
                           </Label>
                           <Input
                             id="email"
@@ -467,6 +475,7 @@ export default function PetitionLanding() {
                             value={formData.email}
                             onChange={(e) => setFormData({...formData, email: e.target.value})}
                             placeholder="seu@email.com"
+                            required={!!petition.require_email}
                             className="mt-1.5 h-11 border-2"
                           />
                         </div>
@@ -476,7 +485,7 @@ export default function PetitionLanding() {
                     {petition.collect_phone && (
                       <div>
                         <Label htmlFor="phone" className="text-sm font-bold text-gray-900">
-                          Telefone
+                          Telefone {petition.require_phone && <span className="text-red-500">*</span>}
                         </Label>
                         <Input
                           id="phone"
@@ -484,6 +493,7 @@ export default function PetitionLanding() {
                           value={formData.phone}
                           onChange={(e) => setFormData({...formData, phone: e.target.value})}
                           placeholder="(00) 00000-0000"
+                          required={!!petition.require_phone}
                           className="mt-1.5 h-11 border-2"
                         />
                       </div>
@@ -492,7 +502,7 @@ export default function PetitionLanding() {
                     {(petition.collect_state || petition.collect_city) && (
                       <div>
                         <Label htmlFor="city" className="text-sm font-bold text-gray-900">
-                          Localidade
+                          Localidade {petition.require_location && <span className="text-red-500">*</span>}
                         </Label>
                         <div className="mt-1.5">
                           <CidadeUnificadaSelect
@@ -509,7 +519,7 @@ export default function PetitionLanding() {
                     {petition.collect_cpf && (
                       <div>
                         <Label htmlFor="cpf" className="text-sm font-bold text-gray-900">
-                          CPF
+                          CPF {petition.require_cpf && <span className="text-red-500">*</span>}
                         </Label>
                         <Input
                           id="cpf"
@@ -518,6 +528,7 @@ export default function PetitionLanding() {
                           placeholder="000.000.000-00"
                           maxLength={14}
                           inputMode="numeric"
+                          required={!!petition.require_cpf}
                           className={`mt-1.5 h-11 border-2 ${cpfError ? 'border-red-500' : ''}`}
                         />
                         {cpfError && (
@@ -529,13 +540,14 @@ export default function PetitionLanding() {
                     {petition.collect_comment && (
                       <div>
                         <Label htmlFor="comment" className="text-sm font-bold text-gray-900">
-                          Por que você apoia? (opcional)
+                          {petition.require_comment ? 'Por que você apoia?' : 'Por que você apoia? (opcional)'} {petition.require_comment && <span className="text-red-500">*</span>}
                         </Label>
                         <Textarea
                           id="comment"
                           value={formData.comment}
                           onChange={(e) => setFormData({...formData, comment: e.target.value})}
                           placeholder="Compartilhe sua razão..."
+                          required={!!petition.require_comment}
                           className="mt-1.5 h-20 resize-none border-2"
                         />
                       </div>

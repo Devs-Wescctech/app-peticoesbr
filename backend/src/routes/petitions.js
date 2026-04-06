@@ -70,7 +70,8 @@ router.post('/', authenticate, requireTenant, async (req, res) => {
     const {
       title, description, banner_url, logo_url, primary_color,
       share_text, goal, status, slug, collect_phone, collect_city,
-      collect_state, collect_cpf, collect_comment, lgpd_text, collect_email, video_url
+      collect_state, collect_cpf, collect_comment, lgpd_text, collect_email, video_url,
+      require_email, require_phone, require_location, require_cpf, require_comment
     } = req.body;
     
     console.log('📝 Creating petition:', { title, slug, tenantId });
@@ -79,14 +80,16 @@ router.post('/', authenticate, requireTenant, async (req, res) => {
       `INSERT INTO petitions (
         title, description, banner_url, logo_url, primary_color,
         share_text, goal, status, slug, collect_phone, collect_city,
-        collect_state, collect_cpf, collect_comment, tenant_id, lgpd_text, collect_email, video_url
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
+        collect_state, collect_cpf, collect_comment, tenant_id, lgpd_text, collect_email, video_url,
+        require_email, require_phone, require_location, require_cpf, require_comment
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23)
       RETURNING *`,
       [
         title, description, banner_url, logo_url, primary_color || '#6366f1',
         share_text, goal || 1, status || 'rascunho', slug,
         collect_phone || false, collect_city || false, collect_state || false,
-        collect_cpf || false, collect_comment || false, tenantId, lgpd_text || null, collect_email || false, video_url || null
+        collect_cpf || false, collect_comment || false, tenantId, lgpd_text || null, collect_email || false, video_url || null,
+        require_email || false, require_phone || false, require_location || false, require_cpf || false, require_comment || false
       ]
     );
     
@@ -109,7 +112,8 @@ router.put('/:id', authenticate, requireTenant, async (req, res) => {
     const {
       title, description, banner_url, logo_url, primary_color,
       share_text, goal, status, slug, collect_phone, collect_city,
-      collect_state, collect_cpf, collect_comment, lgpd_text, collect_email, video_url
+      collect_state, collect_cpf, collect_comment, lgpd_text, collect_email, video_url,
+      require_email, require_phone, require_location, require_cpf, require_comment
     } = req.body;
     
     const result = await pool.query(
@@ -131,13 +135,19 @@ router.put('/:id', authenticate, requireTenant, async (req, res) => {
         lgpd_text = $15,
         collect_email = COALESCE($16, collect_email),
         video_url = $17,
+        require_email = COALESCE($20, require_email),
+        require_phone = COALESCE($21, require_phone),
+        require_location = COALESCE($22, require_location),
+        require_cpf = COALESCE($23, require_cpf),
+        require_comment = COALESCE($24, require_comment),
         updated_date = CURRENT_TIMESTAMP
       WHERE id = $18 AND tenant_id = $19
       RETURNING *`,
       [
         title, description, banner_url, logo_url, primary_color,
         share_text, goal, status, slug, collect_phone, collect_city,
-        collect_state, collect_cpf, collect_comment, lgpd_text || null, collect_email, video_url || null, id, tenantId
+        collect_state, collect_cpf, collect_comment, lgpd_text || null, collect_email, video_url || null, id, tenantId,
+        require_email ?? null, require_phone ?? null, require_location ?? null, require_cpf ?? null, require_comment ?? null
       ]
     );
     

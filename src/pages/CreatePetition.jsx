@@ -56,6 +56,11 @@ export default function CreatePetition() {
     collect_state: true,
     collect_cpf: false,
     collect_comment: true,
+    require_email: false,
+    require_phone: false,
+    require_location: false,
+    require_cpf: false,
+    require_comment: false,
     lgpd_text: "Ao assinar, você concorda em receber atualizações sobre esta petição",
     video_url: "",
   });
@@ -89,6 +94,11 @@ export default function CreatePetition() {
         collect_state: !!existingPetition.collect_state,
         collect_cpf: !!existingPetition.collect_cpf,
         collect_comment: !!existingPetition.collect_comment,
+        require_email: !!existingPetition.require_email,
+        require_phone: !!existingPetition.require_phone,
+        require_location: !!existingPetition.require_location,
+        require_cpf: !!existingPetition.require_cpf,
+        require_comment: !!existingPetition.require_comment,
         lgpd_text: existingPetition.lgpd_text || "Ao assinar, você concorda em receber atualizações sobre esta petição",
         video_url: existingPetition.video_url || "",
       });
@@ -121,6 +131,11 @@ export default function CreatePetition() {
         collect_state: !!data.collect_state,
         collect_cpf: !!data.collect_cpf,
         collect_comment: !!data.collect_comment,
+        require_email: !!data.require_email,
+        require_phone: !!data.require_phone,
+        require_location: !!data.require_location,
+        require_cpf: !!data.require_cpf,
+        require_comment: !!data.require_comment,
         lgpd_text: data.lgpd_text || null,
         video_url: data.video_url || null,
       };
@@ -191,10 +206,23 @@ export default function CreatePetition() {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
   const toggleField = (field) => {
+    const requireMap = {
+      collect_email: 'require_email',
+      collect_phone: 'require_phone',
+      collect_location: 'require_location',
+      collect_cpf: 'require_cpf',
+      collect_comment: 'require_comment',
+    };
     if (field === 'collect_location') {
-      setFormData((prev) => ({ ...prev, collect_city: !prev.collect_city, collect_state: !prev.collect_state }));
+      setFormData((prev) => {
+        const newVal = !prev.collect_city;
+        return { ...prev, collect_city: newVal, collect_state: newVal, ...(!newVal ? { require_location: false } : {}) };
+      });
     } else {
-      setFormData((prev) => ({ ...prev, [field]: !prev[field] }));
+      setFormData((prev) => {
+        const newVal = !prev[field];
+        return { ...prev, [field]: newVal, ...(!newVal && requireMap[field] ? { [requireMap[field]]: false } : {}) };
+      });
     }
   };
 
@@ -205,6 +233,7 @@ export default function CreatePetition() {
       icon: Mail,
       color: "from-orange-500 to-orange-600",
       description: "Coletar email do assinante",
+      requireId: "require_email",
     },
     {
       id: "collect_location",
@@ -212,6 +241,7 @@ export default function CreatePetition() {
       icon: MapPin,
       color: "from-blue-500 to-blue-600",
       description: "Coletar cidade e estado do assinante",
+      requireId: "require_location",
     },
     {
       id: "collect_phone",
@@ -219,6 +249,7 @@ export default function CreatePetition() {
       icon: Phone,
       color: "from-green-500 to-green-600",
       description: "Coletar telefone do assinante",
+      requireId: "require_phone",
     },
     {
       id: "collect_cpf",
@@ -226,6 +257,7 @@ export default function CreatePetition() {
       icon: Hash,
       color: "from-pink-500 to-pink-600",
       description: "Coletar CPF do assinante",
+      requireId: "require_cpf",
     },
     {
       id: "collect_comment",
@@ -233,6 +265,7 @@ export default function CreatePetition() {
       icon: MessageSquare,
       color: "from-indigo-500 to-indigo-600",
       description: "Permitir comentário dos assinantes",
+      requireId: "require_comment",
     },
   ];
 
@@ -672,6 +705,25 @@ export default function CreatePetition() {
                             )}
                           </div>
                         </div>
+                        {isActive && (
+                          <div className="mt-2 ml-9">
+                            <label
+                              className="flex items-center gap-2 cursor-pointer"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={!!formData[field.requireId]}
+                                onChange={(e) => {
+                                  e.stopPropagation();
+                                  setFormData(prev => ({ ...prev, [field.requireId]: e.target.checked }));
+                                }}
+                                className="w-3.5 h-3.5 rounded border-white/50 accent-white"
+                              />
+                              <span className="text-xs font-medium text-white/90">Obrigatório</span>
+                            </label>
+                          </div>
+                        )}
                       </div>
                       );
                     })}
